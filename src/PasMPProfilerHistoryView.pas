@@ -345,34 +345,33 @@ unit PasMPProfilerHistoryView;
 interface
 
 uses
-{$IFDEF fpc}
+  {$IFDEF fpc}
   LCLIntf,
   LResources,
   LCLType,
   LCLClasses,
   LMessages,
   Messages,
-{$ELSE}
+  {$ELSE}
   Windows,
   Messages,
-{$ENDIF}
+  {$ENDIF}
   SysUtils,
   Classes,
   Math,
   Graphics,
   Controls,
   Forms,
-  PasMP
-  ;
+  PasMP;
 
 type
   TPasMPProfilerHistoryView = class(TCustomControl)
   private
-    fPasMPInstance: TPasMP;
+    fPasMPInstance:     TPasMP;
     fVisibleTimePeriod: TPasMPHighResolutionTime;
     fMultipleReaderSingleWriterLock: TPasMPMultipleReaderSingleWriterLock;
-    fBufferBitmap: TBitmap;
-    fProfilerHistory: TPasMPProfilerHistory;
+    fBufferBitmap:      TBitmap;
+    fProfilerHistory:   TPasMPProfilerHistory;
     fProfilerHistoryCount: TPasMPInt32;
     fThreadMaxStackDepths: array of TPasMPInt32;
   protected
@@ -382,9 +381,9 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-{$IFDEF fpc}
+    {$IFDEF fpc}
        procedure EraseBackground(DC:HDC); override;
-{$ENDIF}
+    {$ENDIF}
     procedure TransferData;
     property PasMPInstance: TPasMP read fPasMPInstance write fPasMPInstance;
     property VisibleTimePeriod: TPasMPHighResolutionTime
@@ -393,11 +392,11 @@ type
 
 implementation
 
-uses SyncObjs;
+uses
+  SyncObjs;
 
 constructor TPasMPProfilerHistoryView.Create(AOwner: TComponent);
 begin
-
   inherited Create(AOwner);
 
   fPasMPInstance := nil;
@@ -409,7 +408,6 @@ begin
   fBufferBitmap := TBitmap.Create;
 
   fThreadMaxStackDepths := nil;
-
 end;
 
 destructor TPasMPProfilerHistoryView.Destroy;
@@ -445,13 +443,17 @@ const
   FixedPointScale = 16;
 var
   WorkCanvas: TCanvas;
-  CanvasWidth, CanvasHeight, ThreadIndex, StackDepth, HistoryIndex,
-  x0, x1, y0, y1: TPasMPInt32;
-  HeightPerThread: int64;
+  CanvasWidth, CanvasHeight,
+  ThreadIndex,
+  StackDepth,
+  HistoryIndex,
+  x0, x1,
+  y0, y1: TPasMPInt32;
+  HeightPerThread: Int64;
   FirstTime: TPasMPHighResolutionTime;
   ProfilerHistoryRingBufferItem: PPasMPProfilerHistoryRingBufferItem;
   c: TColor;
-  s: string;
+  s: String;
 begin
   fMultipleReaderSingleWriterLock.AcquireRead;
   try
@@ -491,7 +493,7 @@ begin
         SetLength(fThreadMaxStackDepths, fPasMPInstance.CountJobWorkerThreads);
       end;
 
-      HeightPerThread := (int64(CanvasHeight) shl FixedPointScale) div
+      HeightPerThread := (Int64(CanvasHeight) shl FixedPointScale) div
         fPasMPInstance.CountJobWorkerThreads;
 
       for ThreadIndex := 0 to fPasMPInstance.CountJobWorkerThreads - 1 do
@@ -576,8 +578,8 @@ begin
               StackDepth := TPasMPInt32(
                 ProfilerHistoryRingBufferItem.ThreadIndexStackDepth shr 16);
               y0 := ((HeightPerThread * ThreadIndex) +
-                ((StackDepth * HeightPerThread) div fThreadMaxStackDepths[ThreadIndex]))
-                shr FixedPointScale;
+                ((StackDepth * HeightPerThread) div
+                fThreadMaxStackDepths[ThreadIndex])) shr FixedPointScale;
               y1 := ((HeightPerThread * ThreadIndex) + Min(
                 ((StackDepth + 1) * HeightPerThread) div
                 fThreadMaxStackDepths[ThreadIndex], HeightPerThread)) shr
@@ -612,7 +614,7 @@ begin
         WorkCanvas.TextOut(WorkCanvas.TextWidth(' '),
           // (CanvasWidth-WorkCanvas.TextWidth(s)) div 2,
           ((HeightPerThread * ThreadIndex) +
-          ((HeightPerThread - (int64(WorkCanvas.TextHeight(s)) shl FixedPointScale)) div
+          ((HeightPerThread - (Int64(WorkCanvas.TextHeight(s)) shl FixedPointScale)) div
           2)) shr FixedPointScale,
           s);
       end;

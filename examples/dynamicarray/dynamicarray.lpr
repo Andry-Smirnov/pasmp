@@ -1,15 +1,15 @@
 program dynamicarray;
 {$ifdef fpc}
- {$mode delphi}
+  {$mode delphi}
 {$endif}
 {$ifdef Win32}
- {$define Windows}
+  {$define Windows}
 {$endif}
 {$ifdef Win64}
- {$define Windows}
+  {$define Windows}
 {$endif}
 {$ifdef WinCE}
- {$define Windows}
+  {$define Windows}
 {$endif}
 {$APPTYPE CONSOLE}
 
@@ -20,9 +20,9 @@ uses
   SysUtils,
   PasMP in '..\..\src\PasMP.pas';
 
-  {$if defined(win32) or defined(win64) or defined(windows)}
-procedure Sleep(ms:longword); stdcall; external 'kernel32.dll' name 'Sleep';
-  {$ifend}
+{$if defined(win32) or defined(win64) or defined(windows)}
+procedure Sleep(ms: longword); stdcall; external 'kernel32.dll' name 'Sleep';
+{$ifend}
 
 var
   TestDynamicArray: TPasMPDynamicArray;
@@ -78,6 +78,7 @@ begin
     a := 16;
     TestDynamicArray.Push(a);
     WriteLn(TestDynamicArray.Size);
+    //
     for a := 0 to TestDynamicArray.Size - 1 do
     begin
       if TestDynamicArray.GetItem(a, b) then
