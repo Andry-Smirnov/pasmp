@@ -51,284 +51,284 @@
  *                                                                            *
  ******************************************************************************)
 unit PasMPProfilerHistoryView;
-{$ifdef fpc}
+{$IFDEF fpc}
  {$mode delphi}
- {$ifdef CPUi386}
+ {$IFDEF CPUi386}
   {$define CPU386}
- {$endif}
- {$ifdef CPUAMD64}
+ {$ENDIF}
+ {$IFDEF CPUAMD64}
   {$define CPUx86_64}
- {$endif}
- {$ifdef CPU386}
-  {$define CPUx86}
-  {$define CPU32}
+ {$ENDIF}
+ {$IFDEF CPU386}
+  {$DEFINE CPUx86}
+  {$DEFINE CPU32}
   {$asmmode intel}
- {$endif}
- {$ifdef CPUx86_64}
-  {$define CPUx64}
-  {$define CPU64}
+ {$ENDIF}
+ {$IFDEF CPUx86_64}
+  {$DEFINE CPUx64}
+  {$DEFINE CPU64}
   {$asmmode intel}
- {$endif}
- {$ifdef FPC_LITTLE_ENDIAN}
-  {$define LITTLE_ENDIAN}
- {$else}
-  {$ifdef FPC_BIG_ENDIAN}
-   {$define BIG_ENDIAN}
-  {$endif}
- {$endif}
+ {$ENDIF}
+ {$IFDEF FPC_LITTLE_ENDIAN}
+  {$DEFINE LITTLE_ENDIAN}
+ {$ELSE}
+  {$IFDEF FPC_BIG_ENDIAN}
+   {$DEFINE BIG_ENDIAN}
+  {$ENDIF}
+ {$ENDIF}
  {-$pic off}
- {$define HAS_ADVANCED_RECORDS}
- {$define CAN_INLINE}
- {$ifdef FPC_HAS_TYPE_EXTENDED}
-  {$define HAS_TYPE_EXTENDED}
- {$else}
+ {$DEFINE HAS_ADVANCED_RECORDS}
+ {$DEFINE CAN_INLINE}
+ {$IFDEF FPC_HAS_TYPE_EXTENDED}
+  {$DEFINE HAS_TYPE_EXTENDED}
+ {$ELSE}
   {$undef HAS_TYPE_EXTENDED}
- {$endif}
- {$ifdef FPC_HAS_TYPE_DOUBLE}
-  {$define HAS_TYPE_DOUBLE}
- {$else}
+ {$ENDIF}
+ {$IFDEF FPC_HAS_TYPE_DOUBLE}
+  {$DEFINE HAS_TYPE_DOUBLE}
+ {$ELSE}
   {$undef HAS_TYPE_DOUBLE}
- {$endif}
- {$ifdef FPC_HAS_TYPE_SINGLE}
-  {$define HAS_TYPE_SINGLE}
- {$else}
+ {$ENDIF}
+ {$IFDEF FPC_HAS_TYPE_SINGLE}
+  {$DEFINE HAS_TYPE_SINGLE}
+ {$ELSE}
   {$undef HAS_TYPE_SINGLE}
- {$endif}
+ {$ENDIF}
  {$if declared(RawByteString)}
-  {$define HAS_TYPE_RAWBYTESTRING}
- {$else}
+  {$DEFINE HAS_TYPE_RAWBYTESTRING}
+ {$ELSE}
   {$undef HAS_TYPE_RAWBYTESTRING}
  {$ifend}
  {$if declared(UTF8String)}
-  {$define HAS_TYPE_UTF8STRING}
- {$else}
+  {$DEFINE HAS_TYPE_UTF8STRING}
+ {$ELSE}
   {$undef HAS_TYPE_UTF8STRING}
  {$ifend}
- {$define HAS_GENERICS}
- {$define HAS_STATIC}
-{$else}
- {$realcompatibility off}
- {$localsymbols on}
- {$define LITTLE_ENDIAN}
- {$ifndef CPU64}
-  {$define CPU32}
- {$endif}
- {$ifdef CPUx64}
-  {$define CPUx86_64}
-  {$define CPU64}
- {$else}
-  {$ifdef CPU386}
-   {$define CPUx86}
-   {$define CPU32}
-  {$endif}
- {$endif}
- {$define HAS_TYPE_EXTENDED}
- {$define HAS_TYPE_DOUBLE}
- {$define HAS_TYPE_SINGLE}
- {$undef HAS_TYPE_RAWBYTESTRING}
- {$undef HAS_TYPE_UTF8STRING}
- {$realcompatibility off}
- {$localsymbols on}
- {$define LITTLE_ENDIAN}
- {$ifndef cpu64}
-  {$define cpu32}
- {$endif}
- {$ifndef BCB}
-  {$ifdef ver120}
-   {$define Delphi4or5}
-  {$endif}
-  {$ifdef ver130}
-   {$define Delphi4or5}
-  {$endif}
-  {$ifdef ver140}
-   {$define Delphi6}
-  {$endif}
-  {$ifdef ver150}
-   {$define Delphi7}
-  {$endif}
-  {$ifdef ver170}
-   {$define Delphi2005}
-  {$endif}
- {$else}
-  {$ifdef ver120}
-   {$define Delphi4or5}
-   {$define BCB4}
-  {$endif}
-  {$ifdef ver130}
-   {$define Delphi4or5}
-  {$endif}
- {$endif}
- {$ifdef conditionalexpressions}
+ {$DEFINE HAS_GENERICS}
+ {$DEFINE HAS_STATIC}
+{$ELSE}
+{$realcompatibility off}
+{$localsymbols on}
+{$DEFINE LITTLE_ENDIAN}
+{$IFNDEF CPU64}
+{$DEFINE CPU32}
+{$ENDIF}
+{$IFDEF CPUx64}
+  {$DEFINE CPUx86_64}
+  {$DEFINE CPU64}
+{$ELSE}
+{$IFDEF CPU386}
+   {$DEFINE CPUx86}
+   {$DEFINE CPU32}
+{$ENDIF}
+{$ENDIF}
+{$DEFINE HAS_TYPE_EXTENDED}
+{$DEFINE HAS_TYPE_DOUBLE}
+{$DEFINE HAS_TYPE_SINGLE}
+{$undef HAS_TYPE_RAWBYTESTRING}
+{$undef HAS_TYPE_UTF8STRING}
+{$realcompatibility off}
+{$localsymbols on}
+{$DEFINE LITTLE_ENDIAN}
+{$IFNDEF cpu64}
+{$DEFINE cpu32}
+{$ENDIF}
+{$IFNDEF BCB}
+{$IFDEF ver120}
+   {$DEFINE Delphi4or5}
+{$ENDIF}
+{$IFDEF ver130}
+   {$DEFINE Delphi4or5}
+{$ENDIF}
+{$IFDEF ver140}
+   {$DEFINE Delphi6}
+{$ENDIF}
+{$IFDEF ver150}
+   {$DEFINE Delphi7}
+{$ENDIF}
+{$IFDEF ver170}
+   {$DEFINE Delphi2005}
+{$ENDIF}
+{$ELSE}
+  {$IFDEF ver120}
+   {$DEFINE Delphi4or5}
+   {$DEFINE BCB4}
+  {$ENDIF}
+  {$IFDEF ver130}
+   {$DEFINE Delphi4or5}
+  {$ENDIF}
+{$ENDIF}
+{$IFDEF conditionalexpressions}
   {$if CompilerVersion>=24.0}
    {$legacyifend on}
   {$ifend}
   {$if declared(RawByteString)}
-   {$define HAS_TYPE_RAWBYTESTRING}
-  {$else}
+   {$DEFINE HAS_TYPE_RAWBYTESTRING}
+  {$ELSE}
    {$undef HAS_TYPE_RAWBYTESTRING}
   {$ifend}
   {$if declared(UTF8String)}
-   {$define HAS_TYPE_UTF8STRING}
-  {$else}
+   {$DEFINE HAS_TYPE_UTF8STRING}
+  {$ELSE}
    {$undef HAS_TYPE_UTF8STRING}
   {$ifend}
   {$if CompilerVersion>=14.0}
    {$if CompilerVersion=14.0}
-    {$define Delphi6}
+    {$DEFINE Delphi6}
    {$ifend}
-   {$define Delphi6AndUp}
+   {$DEFINE Delphi6AndUp}
   {$ifend}
   {$if CompilerVersion>=15.0}
    {$if CompilerVersion=15.0}
-    {$define Delphi7}
+    {$DEFINE Delphi7}
    {$ifend}
-   {$define Delphi7AndUp}
+   {$DEFINE Delphi7AndUp}
   {$ifend}
   {$if CompilerVersion>=17.0}
    {$if CompilerVersion=17.0}
-    {$define Delphi2005}
+    {$DEFINE Delphi2005}
    {$ifend}
-   {$define Delphi2005AndUp}
+   {$DEFINE Delphi2005AndUp}
   {$ifend}
   {$if CompilerVersion>=18.0}
    {$if CompilerVersion=18.0}
-    {$define BDS2006}
-    {$define Delphi2006}
+    {$DEFINE BDS2006}
+    {$DEFINE Delphi2006}
    {$ifend}
-   {$define Delphi2006AndUp}
-   {$define CAN_INLINE}
-   {$define HAS_ADVANCED_RECORDS}
+   {$DEFINE Delphi2006AndUp}
+   {$DEFINE CAN_INLINE}
+   {$DEFINE HAS_ADVANCED_RECORDS}
   {$ifend}
   {$if CompilerVersion>=18.5}
    {$if CompilerVersion=18.5}
-    {$define Delphi2007}
+    {$DEFINE Delphi2007}
    {$ifend}
-   {$define Delphi2007AndUp}
+   {$DEFINE Delphi2007AndUp}
   {$ifend}
   {$if CompilerVersion=19.0}
-   {$define Delphi2007Net}
+   {$DEFINE Delphi2007Net}
   {$ifend}
   {$if CompilerVersion>=20.0}
    {$if CompilerVersion=20.0}
-    {$define Delphi2009}
+    {$DEFINE Delphi2009}
    {$ifend}
-   {$define Delphi2009AndUp}
-   {$define HAS_ANONYMOUS_METHODS}
-   {$define HAS_GENERICS}
-   {$define HAS_STATIC}
+   {$DEFINE Delphi2009AndUp}
+   {$DEFINE HAS_ANONYMOUS_METHODS}
+   {$DEFINE HAS_GENERICS}
+   {$DEFINE HAS_STATIC}
   {$ifend}
   {$if CompilerVersion>=21.0}
    {$if CompilerVersion=21.0}
-    {$define Delphi2010}
+    {$DEFINE Delphi2010}
    {$ifend}
-   {$define Delphi2010AndUp}
+   {$DEFINE Delphi2010AndUp}
   {$ifend}
   {$if CompilerVersion>=22.0}
    {$if CompilerVersion=22.0}
-    {$define DelphiXE}
+    {$DEFINE DelphiXE}
    {$ifend}
-   {$define DelphiXEAndUp}
+   {$DEFINE DelphiXEAndUp}
   {$ifend}
   {$if CompilerVersion>=23.0}
    {$if CompilerVersion=23.0}
-    {$define DelphiXE2}
+    {$DEFINE DelphiXE2}
    {$ifend}
-   {$define DelphiXE2AndUp}
+   {$DEFINE DelphiXE2AndUp}
   {$ifend}
   {$if CompilerVersion>=24.0}
    {$if CompilerVersion=24.0}
-    {$define DelphiXE3}
+    {$DEFINE DelphiXE3}
    {$ifend}
-   {$define DelphiXE3AndUp}
-   {$define HAS_ATOMICS}
+   {$DEFINE DelphiXE3AndUp}
+   {$DEFINE HAS_ATOMICS}
   {$ifend}
   {$if CompilerVersion>=25.0}
    {$if CompilerVersion=25.0}
-    {$define DelphiXE4}
+    {$DEFINE DelphiXE4}
    {$ifend}
-   {$define DelphiXE4AndUp}
-   {$define HAS_WEAK}
-   {$define HAS_VOLATILE}
-   {$define HAS_REF}
+   {$DEFINE DelphiXE4AndUp}
+   {$DEFINE HAS_WEAK}
+   {$DEFINE HAS_VOLATILE}
+   {$DEFINE HAS_REF}
   {$ifend}
   {$if CompilerVersion>=26.0}
    {$if CompilerVersion=26.0}
-    {$define DelphiXE5}
+    {$DEFINE DelphiXE5}
    {$ifend}
-   {$define DelphiXE5AndUp}
+   {$DEFINE DelphiXE5AndUp}
   {$ifend}
   {$if CompilerVersion>=27.0}
    {$if CompilerVersion=27.0}
-    {$define DelphiXE6}
+    {$DEFINE DelphiXE6}
    {$ifend}
-   {$define DelphiXE6AndUp}
+   {$DEFINE DelphiXE6AndUp}
   {$ifend}
   {$if CompilerVersion>=28.0}
    {$if CompilerVersion=28.0}
-    {$define DelphiXE7}
+    {$DEFINE DelphiXE7}
    {$ifend}
-   {$define DelphiXE7AndUp}
+   {$DEFINE DelphiXE7AndUp}
   {$ifend}
   {$if CompilerVersion>=29.0}
    {$if CompilerVersion=29.0}
-    {$define DelphiXE8}
+    {$DEFINE DelphiXE8}
    {$ifend}
-   {$define DelphiXE8AndUp}
+   {$DEFINE DelphiXE8AndUp}
   {$ifend}
   {$if CompilerVersion>=30.0}
    {$if CompilerVersion=30.0}
-    {$define Delphi10Seattle}
+    {$DEFINE Delphi10Seattle}
    {$ifend}
-   {$define Delphi10SeattleAndUp}
+   {$DEFINE Delphi10SeattleAndUp}
   {$ifend}
   {$if CompilerVersion>=31.0}
    {$if CompilerVersion=31.0}
-    {$define Delphi10Berlin}
+    {$DEFINE Delphi10Berlin}
    {$ifend}
-   {$define Delphi10BerlinAndUp}
+   {$DEFINE Delphi10BerlinAndUp}
   {$ifend}
- {$endif}
- {$ifndef Delphi4or5}
-  {$ifndef BCB}
-   {$define Delphi6AndUp}
-  {$endif}
-   {$ifndef Delphi6}
-    {$define BCB6OrDelphi7AndUp}
-    {$ifndef BCB}
-     {$define Delphi7AndUp}
-    {$endif}
-    {$ifndef BCB}
-     {$ifndef Delphi7}
-      {$ifndef Delphi2005}
-       {$define BDS2006AndUp}
-      {$endif}
-     {$endif}
-    {$endif}
-   {$endif}
- {$endif}
- {$ifdef Delphi6AndUp}
-  {$warn symbol_platform off}
-  {$warn symbol_deprecated off}
- {$endif}
-{$endif}
-{$ifdef CPU386}
- {$define HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-{$endif}
-{$ifdef CPUx86_64}
- {$define HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-{$endif}
-{$ifdef CPUARM}
- {$define HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-{$endif}
-{$ifdef Win32}
- {$define Windows}
-{$endif}
-{$ifdef Win64}
- {$define Windows}
-{$endif}
-{$ifdef WinCE}
- {$define Windows}
-{$endif}
+{$ENDIF}
+{$IFNDEF Delphi4or5}
+{$IFNDEF BCB}
+{$DEFINE Delphi6AndUp}
+{$ENDIF}
+{$IFNDEF Delphi6}
+{$DEFINE BCB6OrDelphi7AndUp}
+{$IFNDEF BCB}
+{$DEFINE Delphi7AndUp}
+{$ENDIF}
+{$IFNDEF BCB}
+{$IFNDEF Delphi7}
+{$IFNDEF Delphi2005}
+{$DEFINE BDS2006AndUp}
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
+{$IFDEF Delphi6AndUp}
+{$warn symbol_platform off}
+{$warn symbol_deprecated off}
+{$ENDIF}
+{$ENDIF}
+{$IFDEF CPU386}
+ {$DEFINE HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$ENDIF}
+{$IFDEF CPUx86_64}
+ {$DEFINE HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$ENDIF}
+{$IFDEF CPUARM}
+ {$DEFINE HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$ENDIF}
+{$IFDEF Win32}
+ {$DEFINE Windows}
+{$ENDIF}
+{$IFDEF Win64}
+ {$DEFINE Windows}
+{$ENDIF}
+{$IFDEF WinCE}
+ {$DEFINE Windows}
+{$ENDIF}
 {$rangechecks off}
 {$extendedsyntax on}
 {$writeableconst on}
@@ -344,238 +344,311 @@ unit PasMPProfilerHistoryView;
 
 interface
 
-uses {$ifdef fpc}
-      LCLIntf,LResources,LCLType,LCLClasses,LMessages,Messages,
-     {$else}
-      Windows,Messages,
-     {$endif}
-     SysUtils,Classes,Math,Graphics,Controls,Forms,PasMP;
+uses
+{$IFDEF fpc}
+  LCLIntf,
+  LResources,
+  LCLType,
+  LCLClasses,
+  LMessages,
+  Messages,
+{$ELSE}
+  Windows,
+  Messages,
+{$ENDIF}
+  SysUtils,
+  Classes,
+  Math,
+  Graphics,
+  Controls,
+  Forms,
+  PasMP
+  ;
 
-type TPasMPProfilerHistoryView=class(TCustomControl)
-      private
-       fPasMPInstance:TPasMP;
-       fVisibleTimePeriod:TPasMPHighResolutionTime;
-       fMultipleReaderSingleWriterLock:TPasMPMultipleReaderSingleWriterLock;
-       fBufferBitmap:TBitmap;
-       fProfilerHistory:TPasMPProfilerHistory;
-       fProfilerHistoryCount:TPasMPInt32;
-       fThreadMaxStackDepths:array of TPasMPInt32;
-      protected
-       procedure WMGetDlgCode(var Message:TWMNoParams); message WM_GETDLGCODE;
-       procedure WMEraseBkgnd(var Message:TWMEraseBkgnd); message WM_ERASEBKGND;
-       procedure Paint; override;
-      public
-       constructor Create(AOwner:TComponent); override;
-       destructor Destroy; override;
-{$ifdef fpc}
+type
+  TPasMPProfilerHistoryView = class(TCustomControl)
+  private
+    fPasMPInstance: TPasMP;
+    fVisibleTimePeriod: TPasMPHighResolutionTime;
+    fMultipleReaderSingleWriterLock: TPasMPMultipleReaderSingleWriterLock;
+    fBufferBitmap: TBitmap;
+    fProfilerHistory: TPasMPProfilerHistory;
+    fProfilerHistoryCount: TPasMPInt32;
+    fThreadMaxStackDepths: array of TPasMPInt32;
+  protected
+    procedure WMGetDlgCode(var Message: TWMNoParams); message WM_GETDLGCODE;
+    procedure WMEraseBkgnd(var Message: TWMEraseBkgnd); message WM_ERASEBKGND;
+    procedure Paint; override;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+{$IFDEF fpc}
        procedure EraseBackground(DC:HDC); override;
-{$endif}
-       procedure TransferData;
-       property PasMPInstance:TPasMP read fPasMPInstance write fPasMPInstance;
-       property VisibleTimePeriod:TPasMPHighResolutionTime read fVisibleTimePeriod write fVisibleTimePeriod;
-     end;
+{$ENDIF}
+    procedure TransferData;
+    property PasMPInstance: TPasMP read fPasMPInstance write fPasMPInstance;
+    property VisibleTimePeriod: TPasMPHighResolutionTime
+      read fVisibleTimePeriod write fVisibleTimePeriod;
+  end;
 
 implementation
 
 uses SyncObjs;
 
-constructor TPasMPProfilerHistoryView.Create(AOwner:TComponent);
+constructor TPasMPProfilerHistoryView.Create(AOwner: TComponent);
 begin
 
- inherited Create(AOwner);
+  inherited Create(AOwner);
 
- fPasMPInstance:=nil;
+  fPasMPInstance := nil;
 
- fVisibleTimePeriod:=1;
+  fVisibleTimePeriod := 1;
 
- fMultipleReaderSingleWriterLock:=TPasMPMultipleReaderSingleWriterLock.Create;
+  fMultipleReaderSingleWriterLock := TPasMPMultipleReaderSingleWriterLock.Create;
 
- fBufferBitmap:=TBitmap.Create;
+  fBufferBitmap := TBitmap.Create;
 
- fThreadMaxStackDepths:=nil;
+  fThreadMaxStackDepths := nil;
 
 end;
 
 destructor TPasMPProfilerHistoryView.Destroy;
 begin
- SetLength(fThreadMaxStackDepths,0);
- fBufferBitmap.Free;
- fMultipleReaderSingleWriterLock.Free;
- inherited Destroy;
+  SetLength(fThreadMaxStackDepths, 0);
+  fBufferBitmap.Free;
+  fMultipleReaderSingleWriterLock.Free;
+  inherited Destroy;
 end;
 
-procedure TPasMPProfilerHistoryView.WMGetDlgCode(var Message:TWMNoParams);
+procedure TPasMPProfilerHistoryView.WMGetDlgCode(var Message: TWMNoParams);
 begin
- Message.result:=DLGC_WANTARROWS or DLGC_WANTCHARS or DLGC_WANTALLKEYS or DLGC_WANTTAB;
+  Message.Result := DLGC_WANTARROWS or DLGC_WANTCHARS or DLGC_WANTALLKEYS or
+    DLGC_WANTTAB;
 end;
 
-procedure TPasMPProfilerHistoryView.WMEraseBkgnd(var Message:TWMEraseBkgnd);
+procedure TPasMPProfilerHistoryView.WMEraseBkgnd(var Message: TWMEraseBkgnd);
 begin
- Message.Result:=1;
+  Message.Result := 1;
 end;
 
-{$ifdef fpc}
+{$IFDEF fpc}
 procedure TPasMPProfilerHistoryView.EraseBackground(DC:HDC);
 begin
 end;
-{$endif}
+{$ENDIF}
 
 procedure TPasMPProfilerHistoryView.Paint;
-const ProfilerNotActivated='Profiler not activated';
-      Colors:array[0..7] of TColor=
-       (
-        $ff0000,
-        $00ff00,
-        $0000ff,
-        $ff00ff,
-        $ffff00,
-        $ff00ff,
-        $00ffff,
-        $ff80ff
-       );
-       FixedPointScale=16;
-var WorkCanvas:TCanvas;
-    CanvasWidth,CanvasHeight,ThreadIndex,StackDepth,
-    HistoryIndex,x0,x1,y0,y1:TPasMPInt32;
-    HeightPerThread:int64;
-    FirstTime:TPasMPHighResolutionTime;
-    ProfilerHistoryRingBufferItem:PPasMPProfilerHistoryRingBufferItem;
-    c:TColor;
-    s:string;
+const
+  ProfilerNotActivated = 'Profiler not activated';
+  Colors: array[0..7] of TColor =
+    ($ff0000, $00ff00, $0000ff, $ff00ff, $ffff00, $ff00ff, $00ffff, $ff80ff);
+  FixedPointScale = 16;
+var
+  WorkCanvas: TCanvas;
+  CanvasWidth, CanvasHeight, ThreadIndex, StackDepth, HistoryIndex,
+  x0, x1, y0, y1: TPasMPInt32;
+  HeightPerThread: int64;
+  FirstTime: TPasMPHighResolutionTime;
+  ProfilerHistoryRingBufferItem: PPasMPProfilerHistoryRingBufferItem;
+  c: TColor;
+  s: string;
 begin
- fMultipleReaderSingleWriterLock.AcquireRead;
- try
+  fMultipleReaderSingleWriterLock.AcquireRead;
+  try
 
-  CanvasWidth:=ClientWidth+1;
-  CanvasHeight:=ClientHeight+1;
+    CanvasWidth := ClientWidth + 1;
+    CanvasHeight := ClientHeight + 1;
 
-  if (fBufferBitmap.Width<>CanvasWidth) or (fBufferBitmap.Height<>CanvasHeight) or
-     (fBufferBitmap.PixelFormat<>pf32Bit) {$ifndef fpc}or (fBufferBitmap.HandleType<>bmDDB){$endif} then begin
-   fBufferBitmap.Height:=0;
-   fBufferBitmap.Width:=CanvasWidth;
-   fBufferBitmap.Height:=CanvasHeight;
-   fBufferBitmap.PixelFormat:=pf32Bit;
-{$ifndef fpc}
-   fBufferBitmap.HandleType:=bmDDB;
-{$endif}
-  end;
-
-  WorkCanvas:=fBufferBitmap.Canvas;
-
-  WorkCanvas.Brush.Color:=clWhite;
-  WorkCanvas.Brush.Style:=bsSolid;
-  WorkCanvas.Pen.Color:=clBlack;
-  WorkCanvas.Pen.Style:=psClear;
-  WorkCanvas.Rectangle(0,0,fBufferBitmap.Width,fBufferBitmap.Height);
-
-  if assigned(fPasMPInstance.Profiler) then begin
-
-   if length(fThreadMaxStackDepths)<fPasMPInstance.CountJobWorkerThreads then begin
-    SetLength(fThreadMaxStackDepths,fPasMPInstance.CountJobWorkerThreads);
-   end;
-
-   HeightPerThread:=(int64(CanvasHeight) shl FixedPointScale) div fPasMPInstance.CountJobWorkerThreads;
-
-   for ThreadIndex:=0 to fPasMPInstance.CountJobWorkerThreads-1 do begin
-    if (ThreadIndex and 1)<>0 then begin
-     WorkCanvas.Brush.Color:=$aaaaaa;
-    end else begin
-     WorkCanvas.Brush.Color:=$eeeeee;
+    if (fBufferBitmap.Width <> CanvasWidth) or (fBufferBitmap.Height <> CanvasHeight) or
+      (fBufferBitmap.PixelFormat <> pf32Bit)
+      {$IFNDEF fpc}
+      or (fBufferBitmap.HandleType <> bmDDB)
+    {$ENDIF}
+    then
+    begin
+      fBufferBitmap.Height := 0;
+      fBufferBitmap.Width := CanvasWidth;
+      fBufferBitmap.Height := CanvasHeight;
+      fBufferBitmap.PixelFormat := pf32Bit;
+      {$IFNDEF fpc}
+      fBufferBitmap.HandleType := bmDDB;
+      {$ENDIF}
     end;
-    WorkCanvas.Brush.Style:=bsSolid;
-    WorkCanvas.Pen.Color:=clBlack;
-    WorkCanvas.Pen.Style:=psClear;
-    if ThreadIndex=(fPasMPInstance.CountJobWorkerThreads-1) then begin
-     WorkCanvas.Rectangle(0,(HeightPerThread*ThreadIndex) shr FixedPointScale,CanvasWidth,CanvasHeight);
-    end else begin
-     WorkCanvas.Rectangle(0,(HeightPerThread*ThreadIndex) shr FixedPointScale,CanvasWidth,(HeightPerThread*(ThreadIndex+1)) shr FixedPointScale);
-    end;
-   end;
 
-   if fProfilerHistoryCount>0 then begin
-    FirstTime:=Max(fProfilerHistory[0].StartTime,
-                   fProfilerHistory[Min(fProfilerHistoryCount-1,PasMPProfilerHistoryRingBufferSizeMask)].EndTime-fVisibleTimePeriod);
-    for ThreadIndex:=0 to fPasMPInstance.CountJobWorkerThreads-1 do begin
-     fThreadMaxStackDepths[ThreadIndex]:=1;
-    end;
-    for HistoryIndex:=0 to Min(fProfilerHistoryCount-1,PasMPProfilerHistoryRingBufferSizeMask) do begin
-     ProfilerHistoryRingBufferItem:=@fProfilerHistory[HistoryIndex];
-     x1:=((((ProfilerHistoryRingBufferItem^.EndTime-FirstTime)*CanvasWidth)+(fVisibleTimePeriod-1)) div fVisibleTimePeriod);
-     if x1>=0 then begin
-      x0:=(((ProfilerHistoryRingBufferItem^.StartTime-FirstTime)*CanvasWidth) div fVisibleTimePeriod);
-      if x0>=CanvasWidth then begin
-       break;
-      end else begin
-       ThreadIndex:=TPasMPInt32(ProfilerHistoryRingBufferItem.ThreadIndexStackDepth and $ffff);
-       fThreadMaxStackDepths[ThreadIndex]:=Max(fThreadMaxStackDepths[ThreadIndex],TPasMPInt32(ProfilerHistoryRingBufferItem.ThreadIndexStackDepth shr 16)+1);
+    WorkCanvas := fBufferBitmap.Canvas;
+
+    WorkCanvas.Brush.Color := clWhite;
+    WorkCanvas.Brush.Style := bsSolid;
+    WorkCanvas.Pen.Color := clBlack;
+    WorkCanvas.Pen.Style := psClear;
+    WorkCanvas.Rectangle(0, 0, fBufferBitmap.Width, fBufferBitmap.Height);
+
+    if assigned(fPasMPInstance.Profiler) then
+    begin
+
+      if length(fThreadMaxStackDepths) < fPasMPInstance.CountJobWorkerThreads then
+      begin
+        SetLength(fThreadMaxStackDepths, fPasMPInstance.CountJobWorkerThreads);
       end;
-     end;
-    end;
-    for HistoryIndex:=0 to Min(fProfilerHistoryCount-1,PasMPProfilerHistoryRingBufferSizeMask) do begin
-     ProfilerHistoryRingBufferItem:=@fProfilerHistory[HistoryIndex];
-     x1:=((((ProfilerHistoryRingBufferItem^.EndTime-FirstTime)*CanvasWidth)+(fVisibleTimePeriod-1)) div fVisibleTimePeriod);
-     if x1>=0 then begin
-      x0:=(((ProfilerHistoryRingBufferItem^.StartTime-FirstTime)*CanvasWidth) div fVisibleTimePeriod);
-      if x0>=CanvasWidth then begin
-       break;
-      end else begin
-       ThreadIndex:=TPasMPInt32(ProfilerHistoryRingBufferItem.ThreadIndexStackDepth and $ffff);
-       StackDepth:=TPasMPInt32(ProfilerHistoryRingBufferItem.ThreadIndexStackDepth shr 16);
-       y0:=((HeightPerThread*ThreadIndex)+((StackDepth*HeightPerThread) div fThreadMaxStackDepths[ThreadIndex])) shr FixedPointScale;
-       y1:=((HeightPerThread*ThreadIndex)+Min(((StackDepth+1)*HeightPerThread) div fThreadMaxStackDepths[ThreadIndex],HeightPerThread)) shr FixedPointScale;
-       c:=Colors[ProfilerHistoryRingBufferItem^.JobTag and 7];
-       WorkCanvas.Brush.Color:=c;
-       WorkCanvas.Brush.Style:=bsSolid;
-       WorkCanvas.Pen.Color:=(((c and $ff00ff) shr 1) and $ff00ff) or (((c and $00ff00) shr 1) and $00ff00);
-       WorkCanvas.Pen.Style:=psSolid;
-       WorkCanvas.Rectangle(x0,y0,x1,y1);
+
+      HeightPerThread := (int64(CanvasHeight) shl FixedPointScale) div
+        fPasMPInstance.CountJobWorkerThreads;
+
+      for ThreadIndex := 0 to fPasMPInstance.CountJobWorkerThreads - 1 do
+      begin
+        if (ThreadIndex and 1) <> 0 then
+        begin
+          WorkCanvas.Brush.Color := $aaaaaa;
+        end
+        else
+        begin
+          WorkCanvas.Brush.Color := $eeeeee;
+        end;
+        WorkCanvas.Brush.Style := bsSolid;
+        WorkCanvas.Pen.Color := clBlack;
+        WorkCanvas.Pen.Style := psClear;
+        if ThreadIndex = (fPasMPInstance.CountJobWorkerThreads - 1) then
+        begin
+          WorkCanvas.Rectangle(0, (HeightPerThread * ThreadIndex) shr
+            FixedPointScale, CanvasWidth, CanvasHeight);
+        end
+        else
+        begin
+          WorkCanvas.Rectangle(0, (HeightPerThread * ThreadIndex) shr
+            FixedPointScale, CanvasWidth, (HeightPerThread * (ThreadIndex + 1)) shr
+            FixedPointScale);
+        end;
       end;
-     end;
+
+      if fProfilerHistoryCount > 0 then
+      begin
+        FirstTime := Max(fProfilerHistory[0].StartTime,
+          fProfilerHistory[Min(fProfilerHistoryCount - 1,
+          PasMPProfilerHistoryRingBufferSizeMask)].EndTime - fVisibleTimePeriod);
+        for ThreadIndex := 0 to fPasMPInstance.CountJobWorkerThreads - 1 do
+        begin
+          fThreadMaxStackDepths[ThreadIndex] := 1;
+        end;
+        for HistoryIndex := 0 to Min(fProfilerHistoryCount - 1,
+            PasMPProfilerHistoryRingBufferSizeMask) do
+        begin
+          ProfilerHistoryRingBufferItem := @fProfilerHistory[HistoryIndex];
+          x1 := ((((ProfilerHistoryRingBufferItem^.EndTime - FirstTime) * CanvasWidth) +
+            (fVisibleTimePeriod - 1)) div fVisibleTimePeriod);
+          if x1 >= 0 then
+          begin
+            x0 := (((ProfilerHistoryRingBufferItem^.StartTime - FirstTime) *
+              CanvasWidth) div fVisibleTimePeriod);
+            if x0 >= CanvasWidth then
+            begin
+              break;
+            end
+            else
+            begin
+              ThreadIndex :=
+                TPasMPInt32(ProfilerHistoryRingBufferItem.ThreadIndexStackDepth and
+                $ffff);
+              fThreadMaxStackDepths[ThreadIndex] :=
+                Max(fThreadMaxStackDepths[ThreadIndex], TPasMPInt32(
+                ProfilerHistoryRingBufferItem.ThreadIndexStackDepth shr 16) + 1);
+            end;
+          end;
+        end;
+        for HistoryIndex := 0 to Min(fProfilerHistoryCount - 1,
+            PasMPProfilerHistoryRingBufferSizeMask) do
+        begin
+          ProfilerHistoryRingBufferItem := @fProfilerHistory[HistoryIndex];
+          x1 := ((((ProfilerHistoryRingBufferItem^.EndTime - FirstTime) * CanvasWidth) +
+            (fVisibleTimePeriod - 1)) div fVisibleTimePeriod);
+          if x1 >= 0 then
+          begin
+            x0 := (((ProfilerHistoryRingBufferItem^.StartTime - FirstTime) *
+              CanvasWidth) div fVisibleTimePeriod);
+            if x0 >= CanvasWidth then
+            begin
+              break;
+            end
+            else
+            begin
+              ThreadIndex :=
+                TPasMPInt32(ProfilerHistoryRingBufferItem.ThreadIndexStackDepth and
+                $ffff);
+              StackDepth := TPasMPInt32(
+                ProfilerHistoryRingBufferItem.ThreadIndexStackDepth shr 16);
+              y0 := ((HeightPerThread * ThreadIndex) +
+                ((StackDepth * HeightPerThread) div fThreadMaxStackDepths[ThreadIndex]))
+                shr FixedPointScale;
+              y1 := ((HeightPerThread * ThreadIndex) + Min(
+                ((StackDepth + 1) * HeightPerThread) div
+                fThreadMaxStackDepths[ThreadIndex], HeightPerThread)) shr
+                FixedPointScale;
+              c := Colors[ProfilerHistoryRingBufferItem^.JobTag and 7];
+              WorkCanvas.Brush.Color := c;
+              WorkCanvas.Brush.Style := bsSolid;
+              WorkCanvas.Pen.Color :=
+                (((c and $ff00ff) shr 1) and $ff00ff) or
+                (((c and $00ff00) shr 1) and $00ff00);
+              WorkCanvas.Pen.Style := psSolid;
+              WorkCanvas.Rectangle(x0, y0, x1, y1);
+            end;
+          end;
+        end;
+      end;
+
+      WorkCanvas.Font.Color := clBlack;
+      WorkCanvas.Font.Size := 12;
+
+      for ThreadIndex := 0 to fPasMPInstance.CountJobWorkerThreads - 1 do
+      begin
+        WorkCanvas.Brush.Color := clWhite;
+        WorkCanvas.Brush.Style := bsClear;
+        WorkCanvas.Pen.Color := clBlack;
+        WorkCanvas.Pen.Style := psSolid;
+        WorkCanvas.MoveTo(0, ((HeightPerThread * (ThreadIndex + 1)) shr
+          FixedPointScale) - 1);
+        WorkCanvas.LineTo(CanvasWidth, ((HeightPerThread * (ThreadIndex + 1)) shr
+          FixedPointScale) - 1);
+        s := 'Worker thread #' + IntToStr(ThreadIndex);
+        WorkCanvas.TextOut(WorkCanvas.TextWidth(' '),
+          // (CanvasWidth-WorkCanvas.TextWidth(s)) div 2,
+          ((HeightPerThread * ThreadIndex) +
+          ((HeightPerThread - (int64(WorkCanvas.TextHeight(s)) shl FixedPointScale)) div
+          2)) shr FixedPointScale,
+          s);
+      end;
+
+    end
+    else
+    begin
+      WorkCanvas.Font.Color := clBlack;
+      WorkCanvas.Font.Size := 32;
+      WorkCanvas.TextOut((CanvasWidth - WorkCanvas.TextWidth(
+        ProfilerNotActivated)) div 2,
+        (CanvasHeight - WorkCanvas.TextHeight(ProfilerNotActivated)) div 2,
+        ProfilerNotActivated);
     end;
-   end;
 
-   WorkCanvas.Font.Color:=clBlack;
-   WorkCanvas.Font.Size:=12;
+    Canvas.Draw(0, 0, fBufferBitmap);
 
-   for ThreadIndex:=0 to fPasMPInstance.CountJobWorkerThreads-1 do begin
-    WorkCanvas.Brush.Color:=clWhite;
-    WorkCanvas.Brush.Style:=bsClear;
-    WorkCanvas.Pen.Color:=clBlack;
-    WorkCanvas.Pen.Style:=psSolid;
-    WorkCanvas.MoveTo(0,((HeightPerThread*(ThreadIndex+1)) shr FixedPointScale)-1);
-    WorkCanvas.LineTo(CanvasWidth,((HeightPerThread*(ThreadIndex+1)) shr FixedPointScale)-1);
-    s:='Worker thread #'+IntToStr(ThreadIndex);
-    WorkCanvas.TextOut(WorkCanvas.TextWidth(' '), // (CanvasWidth-WorkCanvas.TextWidth(s)) div 2,
-                       ((HeightPerThread*ThreadIndex)+((HeightPerThread-(int64(WorkCanvas.TextHeight(s)) shl FixedPointScale)) div 2)) shr FixedPointScale,
-                       s);
-   end;
-
-  end else begin
-   WorkCanvas.Font.Color:=clBlack;
-   WorkCanvas.Font.Size:=32;
-   WorkCanvas.TextOut((CanvasWidth-WorkCanvas.TextWidth(ProfilerNotActivated)) div 2,
-                      (CanvasHeight-WorkCanvas.TextHeight(ProfilerNotActivated)) div 2,
-                      ProfilerNotActivated);
+  finally
+    fMultipleReaderSingleWriterLock.ReleaseRead;
   end;
-
-  Canvas.Draw(0,0,fBufferBitmap);
-
- finally
-  fMultipleReaderSingleWriterLock.ReleaseRead;
- end;
 end;
 
 procedure TPasMPProfilerHistoryView.TransferData;
 begin
- fMultipleReaderSingleWriterLock.AcquireWrite;
- try
-  if assigned(fPasMPInstance.Profiler) then begin
-   fProfilerHistoryCount:=fPasMPInstance.Profiler.Count;
-   Move(fPasMPInstance.Profiler.History^,fProfilerHistory,Min(fProfilerHistoryCount,PasMPProfilerHistoryRingBufferSize)*SizeOf(TPasMPProfilerHistoryRingBufferItem));
+  fMultipleReaderSingleWriterLock.AcquireWrite;
+  try
+    if assigned(fPasMPInstance.Profiler) then
+    begin
+      fProfilerHistoryCount := fPasMPInstance.Profiler.Count;
+      Move(fPasMPInstance.Profiler.History^, fProfilerHistory, Min(
+        fProfilerHistoryCount, PasMPProfilerHistoryRingBufferSize) *
+        SizeOf(TPasMPProfilerHistoryRingBufferItem));
+    end;
+  finally
+    fMultipleReaderSingleWriterLock.ReleaseWrite;
   end;
- finally
-  fMultipleReaderSingleWriterLock.ReleaseWrite;
- end;
 end;
 
 end.

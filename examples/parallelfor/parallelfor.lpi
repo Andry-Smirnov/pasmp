@@ -8,7 +8,6 @@
         <MainUnitHasCreateFormStatements Value="False"/>
         <MainUnitHasTitleStatement Value="False"/>
         <MainUnitHasScaledStatement Value="False"/>
-        <UseDefaultCompilerOptions Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <Title Value="parallelfor"/>
@@ -25,9 +24,18 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
+    <RequiredPackages>
+      <Item>
+        <PackageName Value="LCL"/>
+      </Item>
+    </RequiredPackages>
     <Units>
       <Unit>
         <Filename Value="parallelfor.dpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\src\PasMP.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
@@ -35,10 +43,9 @@
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
-    <Target>
-      <Filename Value="parallelfor"/>
-    </Target>
     <SearchPaths>
+      <IncludeFiles Value="..\..\src"/>
+      <OtherUnitFiles Value="..\..\src"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -46,6 +53,9 @@
         <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
     </Linking>
+    <Other>
+      <CustomOptions Value="-dBorland -dVer150 -dDelphi7 -dCompiler6_Up -dPUREPASCAL"/>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>

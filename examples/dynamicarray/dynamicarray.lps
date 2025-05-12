@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="dynamicarray.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="18" Y="34"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="346"/>
+        <CursorPos X="23" Y="373"/>
+        <UsageCount Value="20"/>
+        <Bookmarks Count="3">
+          <Item0 Y="6488" ID="3"/>
+          <Item1 Y="373" ID="1"/>
+          <Item2 Y="2060" ID="2"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\sysosh.inc"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="9"/>
+        <CursorPos X="22" Y="31"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\wininc\redef.inc"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="178"/>
+        <CursorPos X="11" Y="202"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="329"/>
+        <CursorPos Y="377"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+        <Caret Line="59" Column="5" TopLine="49"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+        <Caret Line="434" Column="8" TopLine="393"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+        <Caret Line="434" Column="8" TopLine="393"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+        <Caret Line="60" Column="7" TopLine="25"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+        <Caret Line="355" TopLine="319"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMPProfilerHistoryView.pas"/>
+        <Caret Line="377" TopLine="329"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6441" Column="42" TopLine="6416"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="1023" TopLine="999"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6442" TopLine="6420"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="1024" Column="13" TopLine="999"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6456" Column="23" TopLine="6423"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6483" Column="13" TopLine="6459"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6449" TopLine="6423"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6484" Column="3" TopLine="6459"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6445" Column="3" TopLine="6423"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="1023" TopLine="999"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="6524" Column="25" TopLine="6496"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="109" Column="45" TopLine="93"/>
+      </Position>
+      <Position>
+        <Filename Value="dynamicarray.lpr"/>
+        <Caret Line="34" Column="18"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="1929" Column="37" TopLine="1908"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="14710" Column="333" TopLine="14669"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="14690" Column="42" TopLine="14669"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="15567" Column="62" TopLine="15526"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="15541" Column="100" TopLine="15513"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="373" TopLine="349"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\src\PasMP.pas"/>
+        <Caret Line="2048" TopLine="2024"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

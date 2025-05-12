@@ -51,307 +51,309 @@
  *                                                                            *
  ******************************************************************************)
 unit PasMP;
-{$ifdef fpc}
- {$mode delphi}
- {$ifdef CPUi386}
-  {$define CPU386}
- {$endif}
- {$ifdef CPUAMD64}
-  {$define CPUx86_64}
- {$endif}
- {$ifdef CPU386}
-  {$define CPUx86}
-  {$define CPU32}
-  {$asmmode intel}
-  {$define PasMPHaveFPUControls}
- {$endif}
- {$ifdef CPUx86_64}
-  {$define CPUx64}
-  {$define CPU64}
-  {$asmmode intel}
-  {$define PasMPHaveFPUControls}
- {$endif}
- {$ifdef FPC_LITTLE_ENDIAN}
-  {$define LITTLE_ENDIAN}
- {$else}
-  {$ifdef FPC_BIG_ENDIAN}
-   {$define BIG_ENDIAN}
-  {$endif}
- {$endif}
- {-$pic off}
- {$define HAS_ADVANCED_RECORDS}
- {$define CAN_INLINE}
- {$ifdef FPC_HAS_TYPE_EXTENDED}
-  {$define HAS_TYPE_EXTENDED}
- {$else}
-  {$undef HAS_TYPE_EXTENDED}
- {$endif}
- {$ifdef FPC_HAS_TYPE_DOUBLE}
-  {$define HAS_TYPE_DOUBLE}
- {$else}
-  {$undef HAS_TYPE_DOUBLE}
- {$endif}
- {$ifdef FPC_HAS_TYPE_SINGLE}
-  {$define HAS_TYPE_SINGLE}
- {$else}
-  {$undef HAS_TYPE_SINGLE}
- {$endif}
- {$if defined(FPC_FULLVERSION) and (FPC_FULLVERSION>=30301) and not defined(PASMP_NO_ANONYMOUS_METHODS)}
-  {$modeswitch functionreferences}
-  {$modeswitch anonymousfunctions}
-  {$warn 5036 off}
-  {$define HAS_ANONYMOUS_METHODS}
- {$else}
-  {$undef HAS_ANONYMOUS_METHODS}
- {$ifend}
- {$if declared(RawByteString)}
-  {$define HAS_TYPE_RAWBYTESTRING}
- {$else}
-  {$undef HAS_TYPE_RAWBYTESTRING}
- {$ifend}
- {$if declared(UTF8String)}
-  {$define HAS_TYPE_UTF8STRING}
- {$else}
-  {$undef HAS_TYPE_UTF8STRING}
- {$ifend}
- {$define HAS_GENERICS}
- {$define HAS_STATIC}
- {$if defined(FPC_VERSION) and (FPC_VERSION>=3)}
-  {$define HAS_NAMETHREADFORDEBUGGING}
- {$ifend}
-{$else}
+
+{$IFDEF fpc}
+  {$mode delphi}
+  {$IFDEF CPUi386}
+    {$DEFINE CPU386}
+  {$ENDIF}
+  {$IFDEF CPUAMD64}
+    {$DEFINE CPUx86_64}
+  {$ENDIF}
+  {$IFDEF CPU386}
+    {$DEFINE CPUx86}
+    {$DEFINE CPU32}
+    {$asmmode intel}
+    {$DEFINE PasMPHaveFPUControls}
+  {$ENDIF}
+  {$IFDEF CPUx86_64}
+    {$DEFINE CPUx64}
+    {$DEFINE CPU64}
+    {$asmmode intel}
+    {$DEFINE PasMPHaveFPUControls}
+  {$ENDIF}
+  {$IFDEF FPC_LITTLE_ENDIAN}
+    {$DEFINE LITTLE_ENDIAN}
+  {$ELSE}
+    {$IFDEF FPC_BIG_ENDIAN}
+      {$DEFINE BIG_ENDIAN}
+    {$ENDIF}
+  {$ENDIF}
+  {-$pic off}
+  {$DEFINE HAS_ADVANCED_RECORDS}
+  {$DEFINE CAN_INLINE}
+  {$IFDEF FPC_HAS_TYPE_EXTENDED}
+    {$DEFINE HAS_TYPE_EXTENDED}
+  {$ELSE}
+    {$UNDEF HAS_TYPE_EXTENDED}
+  {$ENDIF}
+  {$IFDEF FPC_HAS_TYPE_DOUBLE}
+    {$DEFINE HAS_TYPE_DOUBLE}
+  {$ELSE}
+    {$UNDEF HAS_TYPE_DOUBLE}
+  {$ENDIF}
+  {$IFDEF FPC_HAS_TYPE_SINGLE}
+    {$DEFINE HAS_TYPE_SINGLE}
+    {}
+  {$ELSE}
+    {$UNDEF HAS_TYPE_SINGLE}
+  {$ENDIF}
+  {$IF DEFINED(FPC_FULLVERSION) and (FPC_FULLVERSION>=30301) and not DEFINED(PASMP_NO_ANONYMOUS_METHODS)}
+    {$modeswitch functionreferences}
+    {$modeswitch anonymousfunctions}
+    {$warn 5036 off}
+    {$DEFINE HAS_ANONYMOUS_METHODS}
+  {$ELSE}
+    {$UNDEF HAS_ANONYMOUS_METHODS}
+  {$IFEND}
+  {$IF DECLARED(RawByteString)}
+    {$DEFINE HAS_TYPE_RAWBYTESTRING}
+  {$ELSE}
+    {$UNDEF HAS_TYPE_RAWBYTESTRING}
+  {$IFEND}
+  {$IF DECLARED(UTF8String)}
+    {$DEFINE HAS_TYPE_UTF8STRING}
+  {$ELSE}
+    {$UNDEF HAS_TYPE_UTF8STRING}
+  {$IFEND}
+  {$DEFINE HAS_GENERICS}
+  {$DEFINE HAS_STATIC}
+  {$IF DEFINED(FPC_VERSION) and (FPC_VERSION>=3)}
+    {$DEFINE HAS_NAMETHREADFORDEBUGGING}
+  {$IFEND}
+{$ELSE}
+  {$realcompatibility off}
+  {$localsymbols on}
+  {$DEFINE LITTLE_ENDIAN}
+  {$IFNDEF CPU64}
+    {$DEFINE CPU32}
+  {$ENDIF}
+  {$IFDEF CPUx64}
+    {$DEFINE CPUx86_64}
+    {$DEFINE CPU64}
+    {$DEFINE PasMPHaveFPUControls}
+  {$ELSE}
+   {$IFDEF CPU386}
+     {$DEFINE CPUx86}
+     {$DEFINE CPU32}
+     {$DEFINE PasMPHaveFPUControls}
+   {$ENDIF}
+ {$ENDIF}
+ {$DEFINE HAS_TYPE_EXTENDED}
+ {$DEFINE HAS_TYPE_DOUBLE}
+ {$DEFINE HAS_TYPE_SINGLE}
+ {$UNDEF HAS_TYPE_RAWBYTESTRING}
+ {$UNDEF HAS_TYPE_UTF8STRING}
  {$realcompatibility off}
  {$localsymbols on}
- {$define LITTLE_ENDIAN}
- {$ifndef CPU64}
-  {$define CPU32}
- {$endif}
- {$ifdef CPUx64}
-  {$define CPUx86_64}
-  {$define CPU64}
-  {$define PasMPHaveFPUControls}
- {$else}
-  {$ifdef CPU386}
-   {$define CPUx86}
-   {$define CPU32}
-   {$define PasMPHaveFPUControls}
-  {$endif}
- {$endif}
- {$define HAS_TYPE_EXTENDED}
- {$define HAS_TYPE_DOUBLE}
- {$define HAS_TYPE_SINGLE}
- {$undef HAS_TYPE_RAWBYTESTRING}
- {$undef HAS_TYPE_UTF8STRING}
- {$realcompatibility off}
- {$localsymbols on}
- {$define LITTLE_ENDIAN}
- {$ifndef cpu64}
-  {$define cpu32}
- {$endif}
- {$ifndef BCB}
-  {$ifdef ver120}
-   {$define Delphi4or5}
-  {$endif}
-  {$ifdef ver130}
-   {$define Delphi4or5}
-  {$endif}
-  {$ifdef ver140}
-   {$define Delphi6}
-  {$endif}
-  {$ifdef ver150}
-   {$define Delphi7}
-  {$endif}
-  {$ifdef ver170}
-   {$define Delphi2005}
-  {$endif}
- {$else}
-  {$ifdef ver120}
-   {$define Delphi4or5}
-   {$define BCB4}
-  {$endif}
-  {$ifdef ver130}
-   {$define Delphi4or5}
-  {$endif}
- {$endif}
- {$ifdef conditionalexpressions}
-  {$if CompilerVersion>=24.0}
+ {$DEFINE LITTLE_ENDIAN}
+ {$IFNDEF cpu64}
+   {$DEFINE cpu32}
+ {$ENDIF}
+ {$IFNDEF BCB}
+   {$IFDEF ver120}
+     {$DEFINE Delphi4or5}
+   {$ENDIF}
+   {$IFDEF ver130}
+     {$DEFINE Delphi4or5}
+   {$ENDIF}
+   {$IFDEF ver140}
+     {$DEFINE Delphi6}
+   {$ENDIF}
+   {$IFDEF ver150}
+     {$DEFINE Delphi7}
+   {$ENDIF}
+   {$IFDEF ver170}
+     {$DEFINE Delphi2005}
+   {$ENDIF}
+ {$ELSE}
+  {$IFDEF ver120}
+   {$DEFINE Delphi4or5}
+   {$DEFINE BCB4}
+  {$ENDIF}
+  {$IFDEF ver130}
+   {$DEFINE Delphi4or5}
+  {$ENDIF}
+ {$ENDIF}
+ {$IFDEF conditionalexpressions}
+  {$IF CompilerVersion>=24.0}
    {$legacyifend on}
-  {$ifend}
-  {$if declared(RawByteString)}
-   {$define HAS_TYPE_RAWBYTESTRING}
-  {$else}
-   {$undef HAS_TYPE_RAWBYTESTRING}
-  {$ifend}
-  {$if declared(UTF8String)}
-   {$define HAS_TYPE_UTF8STRING}
-  {$else}
-   {$undef HAS_TYPE_UTF8STRING}
-  {$ifend}
-  {$if CompilerVersion>=14.0}
-   {$if CompilerVersion=14.0}
-    {$define Delphi6}
-   {$ifend}
-   {$define Delphi6AndUp}
-  {$ifend}
-  {$if CompilerVersion>=15.0}
-   {$if CompilerVersion=15.0}
-    {$define Delphi7}
-   {$ifend}
-   {$define Delphi7AndUp}
-  {$ifend}
-  {$if CompilerVersion>=17.0}
-   {$if CompilerVersion=17.0}
-    {$define Delphi2005}
-   {$ifend}
-   {$define Delphi2005AndUp}
-  {$ifend}
-  {$if CompilerVersion>=18.0}
-   {$if CompilerVersion=18.0}
-    {$define BDS2006}
-    {$define Delphi2006}
-   {$ifend}
-   {$define Delphi2006AndUp}
-   {$define CAN_INLINE}
-   {$define HAS_ADVANCED_RECORDS}
-  {$ifend}
-  {$if CompilerVersion>=18.5}
-   {$if CompilerVersion=18.5}
-    {$define Delphi2007}
-   {$ifend}
-   {$define Delphi2007AndUp}
-  {$ifend}
-  {$if CompilerVersion=19.0}
-   {$define Delphi2007Net}
-  {$ifend}
-  {$if CompilerVersion>=20.0}
-   {$if CompilerVersion=20.0}
-    {$define Delphi2009}
-   {$ifend}
-   {$define Delphi2009AndUp}
-   {$ifndef PASMP_NO_ANONYMOUS_METHODS}
-    {$define HAS_ANONYMOUS_METHODS}
-   {$endif}
-   {$define HAS_GENERICS}
-   {$define HAS_STATIC}
-  {$ifend}
-  {$if CompilerVersion>=21.0}
-   {$if CompilerVersion=21.0}
-    {$define Delphi2010}
-   {$ifend}
-   {$define Delphi2010AndUp}
-  {$ifend}
-  {$if CompilerVersion>=22.0}
-   {$if CompilerVersion=22.0}
-    {$define DelphiXE}
-   {$ifend}
-   {$define DelphiXEAndUp}
-  {$ifend}
-  {$if CompilerVersion>=23.0}
-   {$if CompilerVersion=23.0}
-    {$define DelphiXE2}
-   {$ifend}
-   {$define DelphiXE2AndUp}
-  {$ifend}
-  {$if CompilerVersion>=24.0}
-   {$if CompilerVersion=24.0}
-    {$define DelphiXE3}
-   {$ifend}
-   {$define DelphiXE3AndUp}
-   {$define HAS_ATOMICS}
-  {$ifend}
-  {$if CompilerVersion>=25.0}
-   {$if CompilerVersion=25.0}
-    {$define DelphiXE4}
-   {$ifend}
-   {$define DelphiXE4AndUp}
-   {$define HAS_WEAK}
-   {$define HAS_VOLATILE}
-   {$define HAS_REF}
-  {$ifend}
-  {$if CompilerVersion>=26.0}
-   {$if CompilerVersion=26.0}
-    {$define DelphiXE5}
-   {$ifend}
-   {$define DelphiXE5AndUp}
-  {$ifend}
-  {$if CompilerVersion>=27.0}
-   {$if CompilerVersion=27.0}
-    {$define DelphiXE6}
-   {$ifend}
-   {$define DelphiXE6AndUp}
-  {$ifend}
-  {$if CompilerVersion>=28.0}
-   {$if CompilerVersion=28.0}
-    {$define DelphiXE7}
-   {$ifend}
-   {$define DelphiXE7AndUp}
-  {$ifend}
-  {$if CompilerVersion>=29.0}
-   {$if CompilerVersion=29.0}
-    {$define DelphiXE8}
-   {$ifend}
-   {$define DelphiXE8AndUp}
-  {$ifend}
-  {$if CompilerVersion>=30.0}
-   {$if CompilerVersion=30.0}
-    {$define Delphi10Seattle}
-   {$ifend}
-   {$define Delphi10SeattleAndUp}
-  {$ifend}
-  {$if CompilerVersion>=31.0}
-   {$if CompilerVersion=31.0}
-    {$define Delphi10Berlin}
-   {$ifend}
-   {$define Delphi10BerlinAndUp}
-  {$ifend}
-  {$if CompilerVersion>=31.0}
-   {$define HAS_NAMETHREADFORDEBUGGING}
-  {$ifend}
- {$endif}
- {$ifndef Delphi4or5}
-  {$ifndef BCB}
-   {$define Delphi6AndUp}
-  {$endif}
-  {$ifndef Delphi6}
-   {$define BCB6OrDelphi7AndUp}
-   {$ifndef BCB}
-    {$define Delphi7AndUp}
-   {$endif}
-   {$ifndef BCB}
-    {$ifndef Delphi7}
-     {$ifndef Delphi2005}
-      {$define BDS2006AndUp}
-     {$endif}
-    {$endif}
-   {$endif}
-  {$endif}
- {$endif}
- {$ifdef Delphi6AndUp}
-  {$warn symbol_platform off}
-  {$warn symbol_deprecated off}
- {$endif}
- {$ifdef Posix}
-  {$define Unix}
- {$endif}
-{$endif}
-{$if defined(CPU386) or defined(CPUx86_64) or (defined(FPC) and defined(CPUAARCH64))}
- {$define PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-{$elseif defined(CPUARM)}
- {$if defined(CPUARMV6K)}
-  // = CPUARMV6K
-  {$ifdef PASMP_FORCE_ARM_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-   {$define PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-  {$endif}
- {$elseif defined(CPUARM_HAS_DMB) and defined(CPUARM_HAS_LDREX)}
-  // >= CPUARMV7A
-  {$ifdef PASMP_FORCE_ARM_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-   {$define PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-  {$endif}
- {$ifend}
-{$ifend}
-{$if defined(Win32) or defined(Win64) or defined(WinCE)}
- {$define Windows}
-{$ifend}
+  {$IFEND}
+  {$IF DECLARED(RawByteString)}
+   {$DEFINE HAS_TYPE_RAWBYTESTRING}
+  {$ELSE}
+   {$UNDEF HAS_TYPE_RAWBYTESTRING}
+  {$IFEND}
+  {$IF DECLARED(UTF8String)}
+   {$DEFINE HAS_TYPE_UTF8STRING}
+  {$ELSE}
+   {$UNDEF HAS_TYPE_UTF8STRING}
+  {$IFEND}
+  {$IF CompilerVersion>=14.0}
+   {$IF CompilerVersion=14.0}
+    {$DEFINE Delphi6}
+   {$IFEND}
+   {$DEFINE Delphi6AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=15.0}
+   {$IF CompilerVersion=15.0}
+    {$DEFINE Delphi7}
+   {$IFEND}
+   {$DEFINE Delphi7AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=17.0}
+   {$IF CompilerVersion=17.0}
+    {$DEFINE Delphi2005}
+   {$IFEND}
+   {$DEFINE Delphi2005AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=18.0}
+   {$IF CompilerVersion=18.0}
+    {$DEFINE BDS2006}
+    {$DEFINE Delphi2006}
+   {$IFEND}
+   {$DEFINE Delphi2006AndUp}
+   {$DEFINE CAN_INLINE}
+   {$DEFINE HAS_ADVANCED_RECORDS}
+  {$IFEND}
+  {$IF CompilerVersion>=18.5}
+   {$IF CompilerVersion=18.5}
+    {$DEFINE Delphi2007}
+   {$IFEND}
+   {$DEFINE Delphi2007AndUp}
+  {$IFEND}
+  {$IF CompilerVersion=19.0}
+   {$DEFINE Delphi2007Net}
+  {$IFEND}
+  {$IF CompilerVersion>=20.0}
+   {$IF CompilerVersion=20.0}
+    {$DEFINE Delphi2009}
+   {$IFEND}
+   {$DEFINE Delphi2009AndUp}
+   {$IFNDEF PASMP_NO_ANONYMOUS_METHODS}
+    {$DEFINE HAS_ANONYMOUS_METHODS}
+   {$ENDIF}
+   {$DEFINE HAS_GENERICS}
+   {$DEFINE HAS_STATIC}
+  {$IFEND}
+  {$IF CompilerVersion>=21.0}
+   {$IF CompilerVersion=21.0}
+    {$DEFINE Delphi2010}
+   {$IFEND}
+   {$DEFINE Delphi2010AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=22.0}
+   {$IF CompilerVersion=22.0}
+    {$DEFINE DelphiXE}
+   {$IFEND}
+   {$DEFINE DelphiXEAndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=23.0}
+   {$IF CompilerVersion=23.0}
+    {$DEFINE DelphiXE2}
+   {$IFEND}
+   {$DEFINE DelphiXE2AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=24.0}
+   {$IF CompilerVersion=24.0}
+    {$DEFINE DelphiXE3}
+   {$IFEND}
+   {$DEFINE DelphiXE3AndUp}
+   {$DEFINE HAS_ATOMICS}
+  {$IFEND}
+  {$IF CompilerVersion>=25.0}
+   {$IF CompilerVersion=25.0}
+    {$DEFINE DelphiXE4}
+   {$IFEND}
+   {$DEFINE DelphiXE4AndUp}
+   {$DEFINE HAS_WEAK}
+   {$DEFINE HAS_VOLATILE}
+   {$DEFINE HAS_REF}
+  {$IFEND}
+  {$IF CompilerVersion>=26.0}
+   {$IF CompilerVersion=26.0}
+    {$DEFINE DelphiXE5}
+   {$IFEND}
+   {$DEFINE DelphiXE5AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=27.0}
+   {$IF CompilerVersion=27.0}
+    {$DEFINE DelphiXE6}
+   {$IFEND}
+   {$DEFINE DelphiXE6AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=28.0}
+   {$IF CompilerVersion=28.0}
+    {$DEFINE DelphiXE7}
+   {$IFEND}
+   {$DEFINE DelphiXE7AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=29.0}
+   {$IF CompilerVersion=29.0}
+    {$DEFINE DelphiXE8}
+   {$IFEND}
+   {$DEFINE DelphiXE8AndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=30.0}
+   {$IF CompilerVersion=30.0}
+    {$DEFINE Delphi10Seattle}
+   {$IFEND}
+   {$DEFINE Delphi10SeattleAndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=31.0}
+   {$IF CompilerVersion=31.0}
+    {$DEFINE Delphi10Berlin}
+   {$IFEND}
+   {$DEFINE Delphi10BerlinAndUp}
+  {$IFEND}
+  {$IF CompilerVersion>=31.0}
+   {$DEFINE HAS_NAMETHREADFORDEBUGGING}
+  {$IFEND}
+ {$ENDIF}
+  {$IFNDEF Delphi4or5}
+    {$IFNDEF BCB}
+      {$DEFINE Delphi6AndUp}
+    {$ENDIF}
+    {$IFNDEF Delphi6}
+      {$DEFINE BCB6OrDelphi7AndUp}
+      {$IFNDEF BCB}
+        {$DEFINE Delphi7AndUp}
+      {$ENDIF}
+      {$IFNDEF BCB}
+        {$IFNDEF Delphi7}
+          {$IFNDEF Delphi2005}
+            {$DEFINE BDS2006AndUp}
+          {$ENDIF}
+        {$ENDIF}
+      {$ENDIF}
+    {$ENDIF}
+  {$ENDIF}
+  {$IFDEF Delphi6AndUp}
+    {$warn symbol_platform off}
+    {$warn symbol_deprecated off}
+  {$ENDIF}
+  {$IFDEF Posix}
+    {$DEFINE Unix}
+  {$ENDIF}
+{$ENDIF}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64) or (DEFINED(FPC) and DEFINED(CPUAARCH64))}
+  {$DEFINE PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$ELSEIF DEFINED(CPUARM)}
+  {$IF DEFINED(CPUARMV6K)}
+    // = CPUARMV6K
+    {$IFDEF PASMP_FORCE_ARM_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+       {$DEFINE PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+    {$ENDIF}
+  {$ELSEIF DEFINED(CPUARM_HAS_DMB) and DEFINED(CPUARM_HAS_LDREX)}
+    // >= CPUARMV7A
+    {$IFDEF PASMP_FORCE_ARM_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+      {$DEFINE PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+    {$ENDIF}
+  {$IFEND}
+{$IFEND}
+{$IF DEFINED(Win32) or DEFINED(Win64) or DEFINED(WinCE)}
+  {$DEFINE Windows}
+{$IFEND}
 {$rangechecks off}
 {$extendedsyntax on}
 {$writeableconst on}
@@ -365,140 +367,149 @@ unit PasMP;
 {$longstrings on}
 {$openstrings on}
 
-{$undef UseThreadLocalStorage}
-{$undef UseThreadLocalStorageX8632}
+{$UNDEF UseThreadLocalStorage}
+{$UNDEF UseThreadLocalStorageX8632}
 
-{$if defined(Linux) or defined(Android)}
- {$ifdef fpc}
-  {$define PasMPPThreadSpinLock}
-  {$define PasMPPThreadBarrier}
- {$else}
-  {$undef PasMPPThreadSpinLock}
-  {$undef PasMPPThreadBarrier}
- {$endif}
-{$else}
- {$undef PasMPPThreadSpinLock}
- {$undef PasMPPThreadBarrier}
-{$ifend}
+{$IF DEFINED(Linux) or DEFINED(Android)}
+  {$IFDEF fpc}
+    {$DEFINE PasMPPThreadSpinLock}
+    {$DEFINE PasMPPThreadBarrier}
+  {$ELSE}
+    {$UNDEF PasMPPThreadSpinLock}
+    {$UNDEF PasMPPThreadBarrier}
+  {$ENDIF}
+{$ELSE}
+  {$UNDEF PasMPPThreadSpinLock}
+  {$UNDEF PasMPPThreadBarrier}
+{$IFEND}
 
-{$ifdef PasMPUseAsStrictSingletonInstance}
-{$if defined(Windows) and (defined(CPU386) or defined(CPUx86_64)) and not (defined(FPC) or defined(UseMultiplePasMPInstanceInstances))}
+{$IFDEF PasMPUseAsStrictSingletonInstance}
+{$IF DEFINED(Windows) and (DEFINED(CPU386) or DEFINED(CPUx86_64)) and not (DEFINED(FPC) or DEFINED(UseMultiplePasMPInstanceInstances))}
  // Delphi (under x86 Windows) has fast thread local storage handling (per nearly direct TEB access by reading fs:[0x18])
- {$define UseThreadLocalStorage}
- {$ifdef cpu386}
-  {$define UseThreadLocalStorageX8632}
- {$endif}
- {$ifdef cpux86_64}
-  {$define UseThreadLocalStorageX8664}
- {$endif}
-{$else}
+ {$DEFINE UseThreadLocalStorage}
+ {$IFDEF cpu386}
+  {$DEFINE UseThreadLocalStorageX8632}
+ {$ENDIF}
+ {$IFDEF cpux86_64}
+  {$DEFINE UseThreadLocalStorageX8664}
+ {$ENDIF}
+{$ELSE}
  // FreePascal has portable but unfortunately slow thread local storage handling (for example under Windows, over TLSGetIndex
  // calls etc. in FPC_THREADVAR_RELOCATE), so use here the bit faster thread ID hash table approach with less total CPU-cycle
  // count and less OS-API calls than with the FPC_THREADVAR_RELOCATE variant
-{$ifend}
-{$endif}
+{$IFEND}
+{$ENDIF}
 
-{$define PasMPUseWakeUpConditionVariable}
+{$DEFINE PasMPUseWakeUpConditionVariable}
 
 interface
 
-uses {$ifdef Windows}
-      Windows,MMSystem,
-     {$else}
-      {$ifdef fpc}
-       {$ifdef Unix}
-        {$ifdef usecthreads}
-         cthreads,
-        {$endif}
-        BaseUnix,Unix,UnixType,{$ifndef AndroidOld}PThreads,{$endif}
-        {$if defined(Linux) or defined(Android)}
-         Linux,
-        {$else}
-         ctypes,sysctl,
-        {$ifend}
-       {$endif}
-      {$else}
-       {$if defined(DelphiXE2AndUp) and defined(Posix)}
-        Posix.Base,
-        Posix.StdDef,
-        Posix.SysTypes,
-        Posix.SysTime,
-        Posix.Time,
-        Posix.Sched,
-        Posix.Semaphore,
-        Posix.Pthread,
-        Posix.Errno,
-       {$ifend}
-      {$endif}
-     {$endif}
-     SysUtils,Classes,
-     {$ifdef HAS_GENERICS}
-      {$if defined(fpc)}
-       {$if defined(FreePascalGenericsCollectionsLibrary) or (defined(fpc) and (((fpc_version=3.0) and (fpc_release>=1.0)) or (fpc_version>3.0)))}
-     Generics.Defaults,
-        {$define HasGenericsCollections}
-       {$ifend}
-      {$else}
+uses
+{$IFDEF Windows}
+  Windows,
+  MMSystem,
+{$ELSE}
+  {$IFDEF fpc}
+    {$IFDEF Unix}
+      {$IFDEF usecthreads}
+        cthreads,
+      {$ENDIF}
+      BaseUnix,
+      Unix,
+      UnixType,
+      {$IFNDEF AndroidOld}PThreads,{$ENDIF}
+      {$IF DEFINED(Linux) or DEFINED(Android)}
+        Linux,
+      {$ELSE}
+        ctypes,sysctl,
+      {$IFEND}
+    {$ENDIF}
+  {$ELSE}
+    {$IF DEFINED(DelphiXE2AndUp) and DEFINED(Posix)}
+      Posix.Base,
+      Posix.StdDef,
+      Posix.SysTypes,
+      Posix.SysTime,
+      Posix.Time,
+      Posix.Sched,
+      Posix.Semaphore,
+      Posix.Pthread,
+      Posix.Errno,
+    {$IFEND}
+  {$ENDIF}
+{$ENDIF}
+{$IFDEF HAS_GENERICS}
+  {$IF DEFINED(fpc)}
+    {$IF DEFINED(FreePascalGenericsCollectionsLibrary) or (DEFINED(fpc) and (((fpc_version=3.0) and (fpc_release>=1.0)) or (fpc_version>3.0)))}
+      Generics.Defaults,
+      {$DEFINE HasGenericsCollections}
+    {$IFEND}
+  {$ELSE}
      System.Generics.Defaults,
-       {$define HasGenericsCollections}
-      {$ifend}
-     {$endif}
-     Math,SyncObjs;
+     {$DEFINE HasGenericsCollections}
+  {$IFEND}
+{$ENDIF}
+  SysUtils,
+  Classes,
+  Math,
+  LCLIntf,
+  SyncObjs
+  ;
 
-type TPasMPInt8={$if declared(Int8)}Int8{$else}shortint{$ifend};
+type TPasMPInt8={$IF DECLARED(Int8)}Int8{$ELSE}shortint{$IFEND};
      PPasMPInt8=^TPasMPInt8;
 
-     TPasMPUInt8={$if declared(UInt8)}UInt8{$else}byte{$ifend};
+     TPasMPUInt8={$IF DECLARED(UInt8)}UInt8{$ELSE}byte{$IFEND};
      PPasMPUInt8=^TPasMPUInt8;
 
-     TPasMPInt16={$if declared(Int16)}Int16{$else}smallint{$ifend};
+     TPasMPInt16={$IF DECLARED(Int16)}Int16{$ELSE}smallint{$IFEND};
      PPasMPInt16=^TPasMPInt16;
 
-     TPasMPUInt16={$if declared(UInt16)}UInt16{$else}word{$ifend};
+     TPasMPUInt16={$IF DECLARED(UInt16)}UInt16{$ELSE}word{$IFEND};
      PPasMPUInt16=^TPasMPUInt16;
 
-     TPasMPInt32={$if declared(Int32)}Int32{$else}longint{$ifend};
+     TPasMPInt32={$IF DECLARED(Int32)}Int32{$ELSE}longint{$IFEND};
      PPasMPInt32=^TPasMPInt32;
 
-     TPasMPUInt32={$if declared(UInt32)}UInt32{$else}longword{$ifend};
+     TPasMPUInt32={$IF DECLARED(UInt32)}UInt32{$ELSE}longword{$IFEND};
      PPasMPUInt32=^TPasMPUInt32;
 
      TPasMPInt64=int64;
      PPasMPInt64=^TPasMPInt64;
 
-{$ifdef fpc}
- {$undef OldDelphi}
+{$IFDEF fpc}
+ {$UNDEF OldDelphi}
      TPasMPUInt64=uint64;
      TPasMPPtrUInt=PtrUInt;
      TPasMPPtrInt=PtrInt;
-{$else}
- {$ifdef conditionalexpressions}
-  {$if CompilerVersion>=23.0}
-   {$undef OldDelphi}
+{$ELSE}
+ {$IFDEF conditionalexpressions}
+  {$IF CompilerVersion>=23.0}
+   {$UNDEF OldDelphi}
      TPasMPUInt64=uint64;
      TPasMPPtrUInt=NativeUInt;
      TPasMPPtrInt=NativeInt;
-  {$else}
-   {$define OldDelphi}
-  {$ifend}
- {$else}
-  {$define OldDelphi}
- {$endif}
-{$endif}
-{$ifdef OldDelphi}
-  {$if CompilerVersion>=15.0}
+  {$ELSE}
+   {$DEFINE OldDelphi}
+  {$IFEND}
+ {$ELSE}
+  {$DEFINE OldDelphi}
+ {$ENDIF}
+{$ENDIF}
+{$IFDEF OldDelphi}
+  {$IF CompilerVersion>=15.0}
      TPasMPUInt64=uint64;
-  {$else}
+  {$ELSE}
      TPasMPUInt64=TPasMPInt64;
-  {$ifend}
-  {$ifdef CPU64}
+  {$IFEND}
+  {$IFDEF CPU64}
      TPasMPPtrUInt=qword;
      TPasMPPtrInt=TPasMPInt64;
-  {$else}
+  {$ELSE}
      TPasMPPtrUInt=TPasMPUInt32;
      TPasMPPtrInt=TPasMPInt32;
-  {$endif}
-{$endif}
+  {$ENDIF}
+{$ENDIF}
 
      PPasMPUInt64=^TPasMPUInt64;
 
@@ -519,13 +530,13 @@ type TPasMPInt8={$if declared(Int8)}Int8{$else}shortint{$ifend};
      TPasMPSizeInt=TPasMPPtrInt;
      PPasMPSizeInt=^TPasMPSizeInt;
 
-     TPasMPSizeIntEx={$ifdef cpu64}TPasMPInt64{$else}TPasMPInt32{$endif};
+     TPasMPSizeIntEx={$IFDEF cpu64}TPasMPInt64{$ELSE}TPasMPInt32{$ENDIF};
      PPasMPSizeIntEx=^TPasMPSizeIntEx;
 
-     TPasMPSizeUIntEx={$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif};
+     TPasMPSizeUIntEx={$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF};
      PPasMPSizeUIntEx=^TPasMPSizeUIntEx;
 
-     TPasMPBoolean=boolean;
+     TPasMPBoolean=Boolean;
      PPasMPBoolean=^TPasMPBoolean;
 
      TPasMPBool8=bytebool;
@@ -588,7 +599,7 @@ const PasMPAllocatorPoolBucketBits=12;
       PasMPProfilerHistoryRingBufferSize=TPasMPUInt32(1) shl PasMPProfilerHistoryRingBufferSizeBits;
       PasMPProfilerHistoryRingBufferSizeMask=TPasMPUInt32(PasMPProfilerHistoryRingBufferSize-1);
 
-      PasMPOnceInit={$ifdef Linux}PTHREAD_ONCE_INIT{$else}0{$endif};
+      PasMPOnceInit={$IFDEF Linux}PTHREAD_ONCE_INIT{$ELSE}0{$ENDIF};
 
       PasMPJobQueuePriorityLow=2;
       PasMPJobQueuePriorityNormal=1;
@@ -601,21 +612,21 @@ const PasMPAllocatorPoolBucketBits=12;
       PasMPVersionMinor=1000;
       PasMPVersionRelease=1;
 
-{$ifndef FPC}
+{$IFNDEF FPC}
       // Delphi evaluates every $IF-directive even if it is disabled by a surrounding, so it's then a error in Delphi, and for to avoid it, we define dummys here.
       FPC_VERSION=0;
       FPC_RELEASE=0;
       FPC_PATCH=0;
       FPC_FULLVERSION=(FPC_VERSION*10000)+(FPC_RELEASE*100)+(FPC_PATCH*1);
-{$endif}
+{$ENDIF}
 
 //    FPC_VERSION_PASMP=(FPC_VERSION*PasMPVersionMajor)+(FPC_RELEASE*PasMPVersionMinor)+(FPC_PATCH*PasMPVersionRelease);
 
-{$ifndef Windows}
-{$ifndef fpc}
+{$IFNDEF Windows}
+{$IFNDEF fpc}
       INFINITE=TPasMPUInt32(-1);
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 
       PasMPThreadSafeDynamicArrayFirstBucketBits=3;
       PasMPThreadSafeDynamicArrayFirstBucketSize=1 shl PasMPThreadSafeDynamicArrayFirstBucketBits;
@@ -666,231 +677,236 @@ const PasMPAllocatorPoolBucketBits=12;
       PasMPBSRDebruijn64Table:array[0..63] of TPasMPInt32=(0,47,1,56,48,27,2,60,57,49,41,37,28,16,3,61,54,58,35,52,50,42,21,44,38,32,29,23,17,11,4,62,
                                                            46,55,26,59,40,36,15,53,34,51,20,43,31,22,10,45,25,39,14,33,19,30,9,24,13,18,8,12,7,6,5,63);
 
-type TPasMPAvailableCPUCores=array of TPasMPInt32;
+type
+  TPasMPAvailableCPUCores=array of TPasMPInt32;
 
-     PPasMPInt128Record=^TPasMPInt128Record;
-     TPasMPInt128Record=record
-{$ifdef BIG_ENDIAN}
-      Hi,Lo:TPasMPUInt64;
-{$else}
-      Lo,Hi:TPasMPUInt64;
-{$endif}
-     end;
+  PPasMPInt128Record=^TPasMPInt128Record;
+  TPasMPInt128Record=record
+{$IFDEF BIG_ENDIAN}
+    Hi: TPasMPUInt64;
+    Lo: TPasMPUInt64;
+{$ELSE}
+    Lo: TPasMPUInt64;
+    Hi: TPasMPUInt64;
+{$ENDIF}
+  end;
 
-     PPasMPInt64Record=^TPasMPInt64Record;
-     TPasMPInt64Record=record
-      case boolean of
-       false:(
-{$ifdef BIG_ENDIAN}
-        Hi,Lo:TPasMPUInt32;
-{$else}
-        Lo,Hi:TPasMPUInt32;
-{$endif}
-       );
-       true:(
+  PPasMPInt64Record = ^TPasMPInt64Record;
+  TPasMPInt64Record = record
+    case Boolean of
+      False: (
+{$IFDEF BIG_ENDIAN}
+        Hi: TPasMPUInt32;
+        Lo: TPasMPUInt32;
+{$ELSE}
+        Lo: TPasMPUInt32;
+        Hi: TPasMPUInt32;
+{$ENDIF}
+      );
+      True: (
         Value:TPasMPInt64;
-       );
-     end;
+      );
+    end;
 
-     PPasMPTaggedPointer=^TPasMPTaggedPointer;
-     TPasMPTaggedPointer=record
-      case TPasMPInt32 of
-       0:(
-        PointerValue:pointer;
+  PPasMPTaggedPointer = ^TPasMPTaggedPointer;
+  TPasMPTaggedPointer = record
+    case TPasMPInt32 of
+      0: (
+        PointerValue:Pointer;
         TagValue:TPasMPPtrUInt;
        );
-       1:(
-        Value:{$ifdef CPU64}TPasMPInt128Record{$else}TPasMPInt64Record{$endif};
+       1: (
+        Value:{$IFDEF CPU64}TPasMPInt128Record{$ELSE}TPasMPInt64Record{$ENDIF};
        );
      end;
 
-{$ifdef Unix}
-     PPasMPTimeSpec=^TPasMPTimeSpec;
-     TPasMPTimeSpec={$if defined(fpc)}TTimeSpec{$elseif declared(timespec)}timespec{$else}record
-      tv_sec:time_t;
-      tv_nsec:suseconds_t;
-     end{$ifend};
+{$IFDEF Unix}
+  PPasMPTimeSpec = ^TPasMPTimeSpec;
+  TPasMPTimeSpec = {$IF DEFINED(fpc)}TTimeSpec{$ELSEIF DECLARED(timespec)}timespec{$ELSE}record
+    tv_sec: time_t;
+    tv_nsec: suseconds_t;
+  end{$IFEND};
 
-     PPasMPTimeZone=^TPasMPTimeZone;
-     TPasMPTimeZone={$ifdef fpc}timezone{$else}record
-      tz_minuteswest:TPasMPInt32;
-      tz_dsttime:TPasMPInt32;
-     end{$endif};
-{$endif}
+  PPasMPTimeZone = ^TPasMPTimeZone;
+  TPasMPTimeZone = {$IFDEF fpc}timezone{$ELSE}record
+    tz_minuteswest: TPasMPInt32;
+    tz_dsttime: TPasMPInt32;
+  end{$ENDIF};
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPMath=class
       public
-       class function PopulationCount32(Value:TPasMPUInt32):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function PopulationCount64(Value:TPasMPUInt64):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function PopulationCount(Value:TPasMPPtrUInt):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function BitScanForward32(Value:TPasMPUInt32):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function BitScanForward64(Value:TPasMPUInt64):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function BitScanForward(Value:TPasMPPtrUInt):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function BitScanReverse32(Value:TPasMPUInt32):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function BitScanReverse64(Value:TPasMPUInt64):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function BitScanReverse(Value:TPasMPPtrUInt):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function CountLeadingZeros32(Value:TPasMPUInt32):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function CountLeadingZeros64(Value:TPasMPUInt64):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function CountLeadingZeros(Value:TPasMPPtrUInt):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function CountTrailingZeros32(Value:TPasMPUInt32):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function CountTrailingZeros64(Value:TPasMPUInt64):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function CountTrailingZeros(Value:TPasMPPtrUInt):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function FindFirstSetBit32(Value:TPasMPUInt32):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function FindFirstSetBit64(Value:TPasMPUInt64):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function FindFirstSetBit(Value:TPasMPPtrUInt):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function RoundUpToPowerOfTwo32(Value:TPasMPUInt32):TPasMPUInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function RoundUpToPowerOfTwo64(Value:TPasMPUInt64):TPasMPUInt64; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function RoundUpToPowerOfTwo(Value:TPasMPPtrUInt):TPasMPPtrUInt; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function RoundUpToMask32(Value,Mask:TPasMPUInt32):TPasMPUInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function RoundUpToMask64(Value,Mask:TPasMPUInt64):TPasMPUInt64; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function RoundUpToMask(Value,Mask:TPasMPPtrUInt):TPasMPPtrUInt; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
+       class function PopulationCount32(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function PopulationCount64(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function PopulationCount(Value:TPasMPPtrUInt):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function BitScanForward32(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function BitScanForward64(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function BitScanForward(Value:TPasMPPtrUInt):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function BitScanReverse32(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function BitScanReverse64(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function BitScanReverse(Value:TPasMPPtrUInt):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function CountLeadingZeros32(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function CountLeadingZeros64(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function CountLeadingZeros(Value:TPasMPPtrUInt):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function CountTrailingZeros32(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function CountTrailingZeros64(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function CountTrailingZeros(Value:TPasMPPtrUInt):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function FindFirstSetBit32(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function FindFirstSetBit64(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function FindFirstSetBit(Value:TPasMPPtrUInt):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function RoundUpToPowerOfTwo32(Value:TPasMPUInt32):TPasMPUInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function RoundUpToPowerOfTwo64(Value:TPasMPUInt64):TPasMPUInt64; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function RoundUpToPowerOfTwo(Value:TPasMPPtrUInt):TPasMPPtrUInt; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function RoundUpToMask32(Value,Mask:TPasMPUInt32):TPasMPUInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function RoundUpToMask64(Value,Mask:TPasMPUInt64):TPasMPUInt64; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function RoundUpToMask(Value,Mask:TPasMPPtrUInt):TPasMPPtrUInt; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPInterlocked=class
       public
-       class function Increment(var Destination:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Increment(var Destination:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function Increment(var Destination:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Increment(var Destination:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function Decrement(var Destination:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Decrement(var Destination:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function Decrement(var Destination:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Decrement(var Destination:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function Add(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Add(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function Add(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Add(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function Sub(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Sub(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function Sub(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Sub(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class procedure BitwiseAnd(var Destination:TPasMPInt32;const Value:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-       class procedure BitwiseAnd(var Destination:TPasMPUInt32;const Value:TPasMPUInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-{$ifdef CPU64}
-       class procedure BitwiseAnd(var Destination:TPasMPInt64;const Value:TPasMPInt64); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-       class procedure BitwiseAnd(var Destination:TPasMPUInt64;const Value:TPasMPUInt64); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-{$endif}
-       class procedure BitwiseOr(var Destination:TPasMPInt32;const Value:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-       class procedure BitwiseOr(var Destination:TPasMPUInt32;const Value:TPasMPUInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-{$ifdef CPU64}
-       class procedure BitwiseOr(var Destination:TPasMPInt64;const Value:TPasMPInt64); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-       class procedure BitwiseOr(var Destination:TPasMPUInt64;const Value:TPasMPUInt64); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-{$endif}
-       class procedure BitwiseXor(var Destination:TPasMPInt32;const Value:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-       class procedure BitwiseXor(var Destination:TPasMPUInt32;const Value:TPasMPUInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-{$ifdef CPU64}
-       class procedure BitwiseXor(var Destination:TPasMPInt64;const Value:TPasMPInt64); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-       class procedure BitwiseXor(var Destination:TPasMPUInt64;const Value:TPasMPUInt64); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(cpux86_64)}register;{$else}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}{$ifend}
-{$endif}
-       class function ExchangeBitwiseAnd(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseAnd(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function ExchangeBitwiseAnd(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseAnd(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function ExchangeBitwiseOr(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseOr(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function ExchangeBitwiseOr(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseOr(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function ExchangeBitwiseAndOr(var Destination:TPasMPInt32;const AndValue,OrValue:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseAndOr(var Destination:TPasMPUInt32;const AndValue,OrValue:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function ExchangeBitwiseAndOr(var Destination:TPasMPInt64;const AndValue,OrValue:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseAndOr(var Destination:TPasMPUInt64;const AndValue,OrValue:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function ExchangeBitwiseXor(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseXor(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function ExchangeBitwiseXor(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function ExchangeBitwiseXor(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function Exchange(var Destination:TPasMPInt32;const Source:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Exchange(var Destination:TPasMPUInt32;const Source:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifdef CPU64}
-       class function Exchange(var Destination:TPasMPInt64;const Source:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Exchange(var Destination:TPasMPUInt64;const Source:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$endif}
-       class function Exchange(var Destination:pointer;const Source:pointer):pointer; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Exchange(var Destination:TObject;const Source:TObject):TObject; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Exchange(var Destination:TPasMPBool32;const Source:TPasMPBool32):TPasMPBool32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function CompareExchange(var Destination:TPasMPInt32;const NewValue,Comperand:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function CompareExchange(var Destination:TPasMPUInt32;const NewValue,Comperand:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$if defined(CPU64) or ((defined(CPU386) or defined(CPUARM)) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
-       class function CompareExchange(var Destination:TPasMPInt64;const NewValue,Comperand:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function CompareExchange(var Destination:TPasMPInt64Record;const NewValue,Comperand:TPasMPInt64Record):TPasMPInt64Record; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function CompareExchange(var Destination:TPasMPUInt64;const NewValue,Comperand:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$ifend}
-{$if defined(CPU64) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
-       class function CompareExchange(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(fpc)}inline;{$ifend}
-{$ifend}
-       class function CompareExchange(var Destination:pointer;const NewValue,Comperand:pointer):pointer; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function CompareExchange(var Destination:TObject;const NewValue,Comperand:TObject):TObject; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function CompareExchange(var Destination:TPasMPBool32;const NewValue,Comperand:TPasMPBool32):TPasMPBool32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Read(var Source:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Read(var Source:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$if defined(CPU64) or ((defined(CPU386) or defined(CPUARM)) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
-       class function Read(var Source:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Read(var Source:TPasMPInt64Record):TPasMPInt64Record; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Read(var Source:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$if defined(CPU64) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
-       class function Read(var Source:TPasMPInt128Record):TPasMPInt128Record; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(fpc)}inline;{$ifend}
-{$ifend}
-{$ifend}
-       class function Read(var Source:pointer):pointer; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Read(var Source:TObject):TObject; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Read(var Source:TPasMPBool32):TPasMPBool32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Write(var Destination:TPasMPInt32;const Source:TPasMPInt32):TPasMPInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Write(var Destination:TPasMPUInt32;const Source:TPasMPUInt32):TPasMPUInt32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$if defined(CPU64) or ((defined(CPU386) or defined(CPUARM)) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
-       class function Write(var Destination:TPasMPInt64;const Source:TPasMPInt64):TPasMPInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Write(var Destination:TPasMPInt64Record;const Source:TPasMPInt64Record):TPasMPInt64Record; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Write(var Destination:TPasMPUInt64;const Source:TPasMPUInt64):TPasMPUInt64; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-{$if defined(CPU64) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
-       class function Write(var Destination:TPasMPInt128Record;const Source:TPasMPInt128Record):TPasMPInt128Record; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(fpc)}inline;{$ifend}
-{$ifend}
-{$ifend}
-       class function Write(var Destination:pointer;const Source:pointer):pointer; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Write(var Destination:TObject;const Source:TObject):TObject; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function Write(var Destination:TPasMPBool32;const Source:TPasMPBool32):TPasMPBool32; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
+       class function Increment(var Destination:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Increment(var Destination:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function Increment(var Destination:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Increment(var Destination:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function Decrement(var Destination:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Decrement(var Destination:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function Decrement(var Destination:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Decrement(var Destination:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function Add(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Add(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function Add(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Add(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function Sub(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Sub(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function Sub(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Sub(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class procedure BitwiseAnd(var Destination:TPasMPInt32;const Value:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+       class procedure BitwiseAnd(var Destination:TPasMPUInt32;const Value:TPasMPUInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+{$IFDEF CPU64}
+       class procedure BitwiseAnd(var Destination:TPasMPInt64;const Value:TPasMPInt64); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+       class procedure BitwiseAnd(var Destination:TPasMPUInt64;const Value:TPasMPUInt64); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+{$ENDIF}
+       class procedure BitwiseOr(var Destination:TPasMPInt32;const Value:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+       class procedure BitwiseOr(var Destination:TPasMPUInt32;const Value:TPasMPUInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+{$IFDEF CPU64}
+       class procedure BitwiseOr(var Destination:TPasMPInt64;const Value:TPasMPInt64); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+       class procedure BitwiseOr(var Destination:TPasMPUInt64;const Value:TPasMPUInt64); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+{$ENDIF}
+       class procedure BitwiseXor(var Destination:TPasMPInt32;const Value:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+       class procedure BitwiseXor(var Destination:TPasMPUInt32;const Value:TPasMPUInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+{$IFDEF CPU64}
+       class procedure BitwiseXor(var Destination:TPasMPInt64;const Value:TPasMPInt64); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+       class procedure BitwiseXor(var Destination:TPasMPUInt64;const Value:TPasMPUInt64); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(cpux86_64)}register;{$ELSE}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}{$IFEND}
+{$ENDIF}
+       class function ExchangeBitwiseAnd(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseAnd(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function ExchangeBitwiseAnd(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseAnd(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function ExchangeBitwiseOr(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseOr(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function ExchangeBitwiseOr(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseOr(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function ExchangeBitwiseAndOr(var Destination:TPasMPInt32;const AndValue,OrValue:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseAndOr(var Destination:TPasMPUInt32;const AndValue,OrValue:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function ExchangeBitwiseAndOr(var Destination:TPasMPInt64;const AndValue,OrValue:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseAndOr(var Destination:TPasMPUInt64;const AndValue,OrValue:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function ExchangeBitwiseXor(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseXor(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function ExchangeBitwiseXor(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function ExchangeBitwiseXor(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function Exchange(var Destination:TPasMPInt32;const Source:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Exchange(var Destination:TPasMPUInt32;const Source:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFDEF CPU64}
+       class function Exchange(var Destination:TPasMPInt64;const Source:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Exchange(var Destination:TPasMPUInt64;const Source:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$ENDIF}
+       class function Exchange(var Destination:Pointer;const Source:Pointer):Pointer; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Exchange(var Destination:TObject;const Source:TObject):TObject; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Exchange(var Destination:TPasMPBool32;const Source:TPasMPBool32):TPasMPBool32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function CompareExchange(var Destination:TPasMPInt32;const NewValue,Comperand:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function CompareExchange(var Destination:TPasMPUInt32;const NewValue,Comperand:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IF DEFINED(CPU64) or ((DEFINED(CPU386) or DEFINED(CPUARM)) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
+       class function CompareExchange(var Destination:TPasMPInt64;const NewValue,Comperand:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function CompareExchange(var Destination:TPasMPInt64Record;const NewValue,Comperand:TPasMPInt64Record):TPasMPInt64Record; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function CompareExchange(var Destination:TPasMPUInt64;const NewValue,Comperand:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IFEND}
+{$IF DEFINED(CPU64) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+       class function CompareExchange(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(fpc)}inline;{$IFEND}
+{$IFEND}
+       class function CompareExchange(var Destination:Pointer;const NewValue,Comperand:Pointer):Pointer; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function CompareExchange(var Destination:TObject;const NewValue,Comperand:TObject):TObject; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function CompareExchange(var Destination:TPasMPBool32;const NewValue,Comperand:TPasMPBool32):TPasMPBool32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Read(var Source:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Read(var Source:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IF DEFINED(CPU64) or ((DEFINED(CPU386) or DEFINED(CPUARM)) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
+       class function Read(var Source:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Read(var Source:TPasMPInt64Record):TPasMPInt64Record; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Read(var Source:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IF DEFINED(CPU64) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+       class function Read(var Source:TPasMPInt128Record):TPasMPInt128Record; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(fpc)}inline;{$IFEND}
+{$IFEND}
+{$IFEND}
+       class function Read(var Source:Pointer):Pointer; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Read(var Source:TObject):TObject; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Read(var Source:TPasMPBool32):TPasMPBool32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Write(var Destination:TPasMPInt32;const Source:TPasMPInt32):TPasMPInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Write(var Destination:TPasMPUInt32;const Source:TPasMPUInt32):TPasMPUInt32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IF DEFINED(CPU64) or ((DEFINED(CPU386) or DEFINED(CPUARM)) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
+       class function Write(var Destination:TPasMPInt64;const Source:TPasMPInt64):TPasMPInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Write(var Destination:TPasMPInt64Record;const Source:TPasMPInt64Record):TPasMPInt64Record; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Write(var Destination:TPasMPUInt64;const Source:TPasMPUInt64):TPasMPUInt64; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+{$IF DEFINED(CPU64) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+       class function Write(var Destination:TPasMPInt128Record;const Source:TPasMPInt128Record):TPasMPInt128Record; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(fpc)}inline;{$IFEND}
+{$IFEND}
+{$IFEND}
+       class function Write(var Destination:Pointer;const Source:Pointer):Pointer; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Write(var Destination:TObject;const Source:TObject):TObject; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function Write(var Destination:TPasMPBool32;const Source:TPasMPBool32):TPasMPBool32; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPAtomic=class(TPasMPInterlocked);
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPMemoryBarrier=class
       public
-       class procedure Read; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class procedure ReadDependency; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class procedure ReadWrite; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class procedure Write; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class procedure Sync; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
+       class procedure Read; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class procedure ReadDependency; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class procedure ReadWrite; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class procedure Write; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class procedure Sync; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPMemory=class
       public
-       class procedure AllocateAlignedMemory(var p;Size:TPasMPInt32;Align:TPasMPInt32=PasMPCPUCacheLineSize); {$ifdef HAS_STATIC}static;{$endif}
-       class procedure FreeAlignedMemory(const p); {$ifdef HAS_STATIC}static;{$endif}
-       class procedure Barrier; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
+       class procedure AllocateAlignedMemory(var p;Size:TPasMPInt32;Align:TPasMPInt32=PasMPCPUCacheLineSize); {$IFDEF HAS_STATIC}static;{$ENDIF}
+       class procedure FreeAlignedMemory(const p); {$IFDEF HAS_STATIC}static;{$ENDIF}
+       class procedure Barrier; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPPasMPHighResolutionTime=^PPasMPHighResolutionTime;
      PPasMPHighResolutionTime=^TPasMPHighResolutionTime;
@@ -932,9 +948,9 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
      TPasMP=class;
 
      PPasMPOnce=^TPasMPOnce;
-     TPasMPOnce={$ifdef Linux}pthread_once_t{$else}TPasMPInt32{$endif};
+     TPasMPOnce={$IFDEF Linux}pthread_once_t{$ELSE}TPasMPInt32{$ENDIF};
 
-     TPasMPOnceInitRoutine={$ifdef fpc}TProcedure{$else}procedure{$endif};
+     TPasMPOnceInitRoutine={$IFDEF fpc}TProcedure{$ELSE}procedure{$ENDIF};
 
      TPasMPEvent=class(TEvent);
 
@@ -943,104 +959,108 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        constructor Create;
      end;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
-{$if defined(fpc)}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
+{$IF DEFINED(fpc)}
      TPasMPCriticalSectionInstance=TRTLCriticalSection;
-{$elseif defined(POSIX)}
+{$ELSEIF DEFINED(POSIX)}
      TPasMPCriticalSectionInstance=TObject;
-{$else}
+{$ELSE}
      TPasMPCriticalSectionInstance=TRTLCriticalSection;
-{$ifend}
+{$IFEND}
      TPasMPCriticalSection=class(TCriticalSection)
       protected
-{$if not defined(Darwin)}
+{$IF not DEFINED(Darwin)}
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPCriticalSectionInstance))-1] of TPasMPUInt8;
-{$ifend}
+{$IFEND}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPMutex=class(TSynchroObject)
-{$if defined(Windows)}
-      private
+{$IF DEFINED(Windows)}
+     private
        fMutex:THandle;
-      protected
+     protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPCriticalSectionInstance))-1] of TPasMPUInt8;
-{$elseif defined(Unix)}
-      private
+{$ELSEIF DEFINED(Unix)}
+     private
        fMutex:pthread_mutex_t;
-      protected
-{$if not defined(Darwin)}
+     protected
+{$IF not DEFINED(Darwin)}
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(pthread_mutex_t))-1] of TPasMPUInt8;
-{$ifend}
-{$else}
-      private
-       fCriticalSection:TPasMPCriticalSection;
-      protected
+{$IFEND}
+{$ELSE}
+     private
+       fCriticalSection: TPasMPCriticalSection;
+     protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPCriticalSection))-1] of TPasMPUInt8;
-{$ifend}
-      public
+{$IFEND}
+     public
        constructor Create; overload;
-{$if defined(Unix)}
-       constructor Create(const lpMutexAttributes:pointer); overload;
-{$elseif defined(Windows)}
-       constructor Create(const lpMutexAttributes:pointer;const bInitialOwner:boolean;const lpName:string); overload;
-       constructor Create(const DesiredAccess:TPasMPUInt32;const bInitialOwner:boolean;const lpName:string); overload;
-{$ifend}
+{$IF DEFINED(Unix)}
+       constructor Create(const lpMutexAttributes:Pointer); overload;
+{$ELSEIF DEFINED(Windows)}
+       constructor Create(const lpMutexAttributes:Pointer;const bInitialOwner:Boolean;const lpName:string); overload;
+       constructor Create(const DesiredAccess:TPasMPUInt32;const bInitialOwner:Boolean;const lpName:string); overload;
+{$IFEND}
        destructor Destroy; override;
        procedure Acquire; override;
        procedure Release; override;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
        property Mutex:THandle read fMutex;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
        property Mutex:pthread_mutex_t read fMutex;
-{$else}
+{$ELSE}
        property CriticalSection:TPasMPCriticalSection read fCriticalSection;
-{$ifend}
+{$IFEND}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)} {$pop} {$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
-     TPasMPConditionVariableLock=class(TSynchroObject)
-{$if defined(Windows)}
-      private
-       fCriticalSection:TRTLCriticalSection;
-      protected
-       fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TRTLCriticalSection))-1] of TPasMPUInt8;
-{$elseif defined(Unix)}
-      private
-       fMutex:pthread_mutex_t;
-      protected
-{$if not defined(Darwin)}
-       fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(pthread_mutex_t))-1] of TPasMPUInt8;
-{$ifend}
-{$else}
-      private
-       fCriticalSection:TPasMPCriticalSection;
-      protected
-       fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPCriticalSection))-1] of TPasMPUInt8;
-{$ifend}
-      public
-       constructor Create;
-       destructor Destroy; override;
-       procedure Acquire; override;
-       procedure Release; override;
-     end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)} {$push} {$optimization noorderfields}{$IFEND}
+  TPasMPConditionVariableLock = class(TSynchroObject)
+{$IF DEFINED(Windows)}
+  private
+  {$IFDEF FPC}
+    FCriticalSection: TCriticalSection;
+  {$ELSE}
+    FCriticalSection: TRTLCriticalSection;
+  {$ENDIF}
+  protected
+    fCacheLineFillUp: array[0..(PasMPCPUCacheLineSize-SizeOf(TRTLCriticalSection))-1] of TPasMPUInt8;
+{$ELSEIF DEFINED(Unix)}
+  private
+    fMutex: pthread_mutex_t;
+  protected
+{$IF not DEFINED(Darwin)}
+    fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(pthread_mutex_t))-1] of TPasMPUInt8;
+{$IFEND}
+{$ELSE}
+  private
+    fCriticalSection:TPasMPCriticalSection;
+  protected
+    fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPCriticalSection))-1] of TPasMPUInt8;
+{$IFEND}
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure Acquire; override;
+    procedure Release; override;
+  end;
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef Windows}
-     PPasMPConditionVariableData=^TPasMPConditionVariableData;
-     TPasMPConditionVariableData=pointer;
-{$endif}
+{$IFDEF Windows}
+     PPasMPConditionVariableData = ^TPasMPConditionVariableData;
+     TPasMPConditionVariableData = Pointer;
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
-     TPasMPConditionVariable=class
-{$if defined(Windows)}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
+     TPasMPConditionVariable = class
+{$IF DEFINED(Windows)}
       private
        fConditionVariable:TPasMPConditionVariableData;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPConditionVariableData))-1] of TPasMPUInt8;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
       private
        fConditionVariable:pthread_cond_t;
        fConditionVariableAttributes:pthread_condattr_t;
@@ -1048,55 +1068,55 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        fClockID:TPasMPInt32;
       protected
        fCacheLineFillUp:array[0..((PasMPCPUCacheLineSize*2)-(SizeOf(pthread_cond_t)+SizeOf(pthread_condattr_t)+SizeOf(TPasMPBool32)+SizeOf(TPasMPInt32)))-1] of TPasMPUInt8;
-{$else}
+{$ELSE}
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fWaitCounter:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fReleaseCounter:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fGenerationCounter:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fWaitCounter:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fReleaseCounter:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fGenerationCounter:TPasMPInt32;
        fCriticalSection:TPasMPCriticalSection;
        fEvent:TPasMPEvent;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*3)+SizeOf(TPasMPCriticalSection)+SizeOf(TPasMPEvent)))-1] of TPasMPUInt8;
-{$ifend}
+{$IFEND}
       public
        constructor Create;
        destructor Destroy; override;
-       procedure Signal; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure Broadcast; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       function Wait(const Lock:TPasMPConditionVariableLock;const dwMilliSeconds:TPasMPUInt32=INFINITE):TWaitResult; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       procedure Signal; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure Broadcast; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       function Wait(const Lock:TPasMPConditionVariableLock;const dwMilliSeconds:TPasMPUInt32=INFINITE):TWaitResult; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPSemaphore=class(TSynchroObject)
       private
        fInitialCount:TPasMPInt32;
        fMaximumCount:TPasMPInt32;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
        fHandle:THandle;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*2)+SizeOf(THandle)))-1] of TPasMPUInt8;
-{$elseif defined(Unix)}
-       fHandle:{$ifdef fpc}TPasMPInt32{$else}sem_t{$endif};
+{$ELSEIF DEFINED(Unix)}
+       fHandle:{$IFDEF fpc}TPasMPInt32{$ELSE}sem_t{$ENDIF};
       protected
-       fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*2)+SizeOf({$ifdef fpc}TPasMPInt32{$else}sem_t{$endif})))-1] of TPasMPUInt8;
-{$else}
-{$define PasMPSemaphoreUseConditionVariable}
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fCurrentCount:TPasMPInt32;
-{$ifdef PasMPSemaphoreUseConditionVariable}
+       fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*2)+SizeOf({$IFDEF fpc}TPasMPInt32{$ELSE}sem_t{$ENDIF})))-1] of TPasMPUInt8;
+{$ELSE}
+{$DEFINE PasMPSemaphoreUseConditionVariable}
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fCurrentCount:TPasMPInt32;
+{$IFDEF PasMPSemaphoreUseConditionVariable}
        fConditionVariableLock:TPasMPConditionVariableLock;
        fConditionVariable:TPasMPConditionVariable;
-{$else}
+{$ELSE}
        fCriticalSection:TPasMPCriticalSection;
        fEvent:TPasMPEvent;
-{$endif}
+{$ENDIF}
       protected
-{$ifdef PasMPSemaphoreUseConditionVariable}
+{$IFDEF PasMPSemaphoreUseConditionVariable}
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*3)+SizeOf(TPasMPConditionVariableLock)+SizeOf(TPasMPConditionVariable)))-1] of TPasMPUInt8;
-{$else}
+{$ELSE}
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*3)+SizeOf(TPasMPCriticalSection)+SizeOf(TPasMPEvent)))-1] of TPasMPUInt8;
-{$endif}
-{$ifend}
+{$ENDIF}
+{$IFEND}
       public
        constructor Create(const InitialCount,MaximumCount:TPasMPInt32);
        destructor Destroy; override;
@@ -1105,14 +1125,14 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        function Acquire(const AcquireCount:TPasMPInt32):TWaitResult; reintroduce; overload;
        function Release(const ReleaseCount:TPasMPInt32):TPasMPInt32; reintroduce; overload;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPInvertedSemaphore=class(TSynchroObject)
       private
        fInitialCount:TPasMPInt32;
        fMaximumCount:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fCurrentCount:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fCurrentCount:TPasMPInt32;
        fConditionVariableLock:TPasMPConditionVariableLock;
        fConditionVariable:TPasMPConditionVariable;
       protected
@@ -1126,151 +1146,151 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        function Release(const ReleaseCount:TPasMPInt32;out Count:TPasMPInt32):TPasMPInt32; reintroduce; overload;
        function Wait(const dwMilliSeconds:TPasMPUInt32=INFINITE):TWaitResult; // Block until the inverted semaphore reaches zero
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef Windows}
+{$IFDEF Windows}
      PPasMPSRWLock=^TPasMPSRWLock;
-     TPasMPSRWLock=pointer;
-{$endif}
+     TPasMPSRWLock=Pointer;
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPMultipleReaderSingleWriterLock=class(TInterfacedObject,IReadWriteSync)
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
       private
        fSRWLock:TPasMPSRWLock;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPSRWLock))-1] of TPasMPUInt8;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
       private
        fReadWriteLock:pthread_rwlock_t;
       protected
-{$if not (defined(CPUAArch64) or defined(Darwin))}
+{$IF not (DEFINED(CPUAArch64) or DEFINED(Darwin))}
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(pthread_rwlock_t))-1] of TPasMPUInt8;
-{$ifend}
-{$else}
+{$IFEND}
+{$ELSE}
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fReaders:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fWriters:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fReaders:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fWriters:TPasMPInt32;
        fConditionVariableLock:TPasMPConditionVariableLock;
        fConditionVariable:TPasMPConditionVariable;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*2)+SizeOf(TPasMPConditionVariableLock)+SizeOf(TPasMPConditionVariable)))-1] of TPasMPUInt8;
-{$ifend}
+{$IFEND}
       public
        constructor Create;
        destructor Destroy; override;
-       procedure AcquireRead; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       function TryAcquireRead:boolean; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure ReleaseRead; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure AcquireWrite; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       function TryAcquireWrite:boolean; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure ReleaseWrite; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure ReadToWrite; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure WriteToRead; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       procedure AcquireRead; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       function TryAcquireRead:Boolean; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure ReleaseRead; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure AcquireWrite; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       function TryAcquireWrite:Boolean; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure ReleaseWrite; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure ReadToWrite; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure WriteToRead; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        procedure BeginRead;
        procedure EndRead;
-       function BeginWrite:boolean;
+       function BeginWrite:Boolean;
        procedure EndWrite;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPMultipleReaderSingleWriterSpinLock=class(TInterfacedObject,IReadWriteSync)
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fState:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fState:TPasMPInt32;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*2)+SizeOf(TPasMPConditionVariableLock)+SizeOf(TPasMPConditionVariable)))-1] of TPasMPUInt8;
       public
        constructor Create;
        destructor Destroy; override;
-       procedure AcquireRead; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       function TryAcquireRead:boolean; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure ReleaseRead; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure AcquireWrite; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       function TryAcquireWrite:boolean; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure ReleaseWrite; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure ReadToWrite; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure WriteToRead; overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       procedure AcquireRead; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       function TryAcquireRead:Boolean; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure ReleaseRead; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure AcquireWrite; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       function TryAcquireWrite:Boolean; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure ReleaseWrite; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure ReadToWrite; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure WriteToRead; overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        procedure BeginRead;
        procedure EndRead;
-       function BeginWrite:boolean;
+       function BeginWrite:Boolean;
        procedure EndWrite;
-       class procedure AcquireRead(var LockState:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function TryAcquireRead(var LockState:TPasMPInt32):boolean; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class procedure ReleaseRead(var LockState:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class procedure AcquireWrite(var LockState:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class function TryAcquireWrite(var LockState:TPasMPInt32):boolean; overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class procedure ReleaseWrite(var LockState:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class procedure ReadToWrite(var LockState:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
-       class procedure WriteToRead(var LockState:TPasMPInt32); overload; {$ifdef HAS_STATIC}static;{$endif}{$if defined(HAS_ATOMICS) or defined(fpc)}inline;{$ifend}
+       class procedure AcquireRead(var LockState:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function TryAcquireRead(var LockState:TPasMPInt32):Boolean; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class procedure ReleaseRead(var LockState:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class procedure AcquireWrite(var LockState:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class function TryAcquireWrite(var LockState:TPasMPInt32):Boolean; overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class procedure ReleaseWrite(var LockState:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class procedure ReadToWrite(var LockState:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
+       class procedure WriteToRead(var LockState:TPasMPInt32); overload; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(HAS_ATOMICS) or DEFINED(fpc)}inline;{$IFEND}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPSlimReaderWriterLock=class(TSynchroObject)
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
       private
        fSRWLock:TPasMPSRWLock;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPSRWLock))-1] of TPasMPUInt8;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
       private
        fReadWriteLock:pthread_rwlock_t;
       protected
-{$if not (defined(CPUAArch64) or defined(Darwin))}
+{$IF not (DEFINED(CPUAArch64) or DEFINED(Darwin))}
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(pthread_rwlock_t))-1] of TPasMPUInt8;
-{$ifend}
-{$else}
+{$IFEND}
+{$ELSE}
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fCount:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fCount:TPasMPInt32;
        fConditionVariableLock:TPasMPConditionVariableLock;
        fConditionVariable:TPasMPConditionVariable;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-(SizeOf(TPasMPInt32)+SizeOf(TPasMPConditionVariableLock)+SizeOf(TPasMPConditionVariable)))-1] of TPasMPUInt8;
-{$ifend}
+{$IFEND}
       public
        constructor Create;
        destructor Destroy; override;
        procedure Acquire; override;
-       function TryAcquire:boolean;
+       function TryAcquire:Boolean;
        procedure Release; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(PasMPPThreadSpinLock)}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(PasMPPThreadSpinLock)}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      PPasMPSpinLockPThreadSpinLock=^TPasMPSpinLockPThreadSpinLock;
-{$ifdef Android}
+{$IFDEF Android}
      TPasMPSpinLockPThreadSpinLock=TPasMPInt32;
-{$else}
+{$ELSE}
      TPasMPSpinLockPThreadSpinLock=pthread_spinlock_t;
-{$endif}
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$ifend}
+{$ENDIF}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPSpinLock=class(TSynchroObject)
-{$if defined(PasMPPThreadSpinLock)}
+{$IF DEFINED(PasMPPThreadSpinLock)}
       private
        fSpinLock:TPasMPSpinLockPThreadSpinLock;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPSpinLockPThreadSpinLock))-1] of TPasMPUInt8;
-{$else}
+{$ELSE}
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fState:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fState:TPasMPInt32;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPInt32))-1] of TPasMPUInt8;
-{$ifend}
+{$IFEND}
       public
        constructor Create;
        destructor Destroy; override;
        procedure Acquire; override;
-       function TryAcquire:longbool; {$if not defined(Unix)}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}{$ifend}{$ifend}
+       function TryAcquire:longbool; {$IF not DEFINED(Unix)}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}{$IFEND}{$IFEND}
        procedure Release; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBenaphore=class(TSynchroObject)
       private
        fSemaphore:TPasMPSemaphore;
@@ -1281,147 +1301,147 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        constructor Create;
        destructor Destroy; override;
        procedure Acquire; override;
-       function TryAcquire:longbool; {$if not defined(Unix)}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}{$ifend}{$ifend}
+       function TryAcquire:longbool; {$IF not DEFINED(Unix)}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}{$IFEND}{$IFEND}
        procedure Release; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      EPasMPRecursiveBenaphore=class(Exception);
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPRecursiveBenaphore=class(TSynchroObject)
       private
        fSemaphore:TPasMPSemaphore;
-       fOwningThreadID:{$ifdef fpc}TThreadID{$else}TPasMPUInt32{$endif};
+       fOwningThreadID:{$IFDEF fpc}TThreadID{$ELSE}TPasMPUInt32{$ENDIF};
        fLockCount:TPasMPUInt32;
        fRecursionCount:TPasMPUInt32;
       protected
-       fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-(SizeOf(TPasMPSemaphore)+SizeOf({$ifdef fpc}TThreadID{$else}TPasMPUInt32{$endif})+(SizeOf(TPasMPUInt32)*2)))-1] of TPasMPUInt8;
+       fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-(SizeOf(TPasMPSemaphore)+SizeOf({$IFDEF fpc}TThreadID{$ELSE}TPasMPUInt32{$ENDIF})+(SizeOf(TPasMPUInt32)*2)))-1] of TPasMPUInt8;
       public
        constructor Create;
        destructor Destroy; override;
        procedure Acquire; override;
-       function TryAcquire:longbool; {$if not defined(Unix)}{$if defined(cpu386) or defined(cpux86_64)}register;{$else}{$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}{$ifend}{$ifend}
+       function TryAcquire:longbool; {$IF not DEFINED(Unix)}{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}register;{$ELSE}{$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}{$IFEND}{$IFEND}
        procedure Release; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(PasMPPThreadBarrier)}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(PasMPPThreadBarrier)}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      PPasMPSpinLockPThreadBarrier=^TPasMPSpinLockPThreadBarrier;
-{$if defined(Android)}
+{$IF DEFINED(Android)}
      PPasMPSpinLockPThreadFastLock=^TPasMPSpinLockPThreadFastLock;
-     TPasMPSpinLockPThreadFastLock={$ifdef fpc}_pthread_fastlock{$else}record
+     TPasMPSpinLockPThreadFastLock={$IFDEF fpc}_pthread_fastlock{$ELSE}record
       __status:TPasMPInt32;
       __spinlock:TPasMPInt32;
-     end{$endif};
+     end{$ENDIF};
      TPasMPSpinLockPThreadBarrier=record
       __ba_lock:TPasMPSpinLockPThreadFastLock;
       __ba_required:TPasMPInt32;
       __ba_present:TPasMPInt32;
-      __ba_waiting:pointer{_pthread_descr};
+      __ba_waiting:Pointer{_pthread_descr};
      end;
-{$else}
+{$ELSE}
      TPasMPSpinLockPThreadBarrier=pthread_barrier_t;
-{$ifend}
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$ifend}
+{$IFEND}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBarrier=class
-{$if defined(PasMPPThreadBarrier)}
+{$IF DEFINED(PasMPPThreadBarrier)}
       private
        fBarrier:TPasMPSpinLockPThreadBarrier;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPSpinLockPThreadBarrier))-1] of TPasMPUInt8;
-{$else}
+{$ELSE}
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fCount:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fTotal:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fCount:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fTotal:TPasMPInt32;
        fConditionVariableLock:TPasMPConditionVariableLock;
        fConditionVariable:TPasMPConditionVariable;
       protected
        fCacheLineFillUp:array[0..(PasMPCPUCacheLineSize-((SizeOf(TPasMPInt32)*2)+SizeOf(TPasMPConditionVariableLock)+SizeOf(TPasMPConditionVariable)))-1] of TPasMPUInt8;
-{$ifend}
+{$IFEND}
       public
        constructor Create(const Count:TPasMPInt32);
        destructor Destroy; override;
-       function Wait:boolean; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       function Wait:Boolean; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPThreadSafeStackEntry=^TPasMPThreadSafeStackEntry;
-     TPasMPThreadSafeStackEntry=pointer;
+     TPasMPThreadSafeStackEntry=Pointer;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      // The lock-free variant is based on the idea behind the concept of the internal workings of the "Interlocked Singly Linked Lists" Windows API, just stripped by the Depth stuff
      // The lock-based variant is based of my head
      TPasMPThreadSafeStack=class // only for PasMP internal usage
       private
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
        fHead:PPasMPTaggedPointer;
-{$else}
+{$ELSE}
        fCriticalSection:TPasMPCriticalSection;
-       fHead:pointer;
-{$endif}
+       fHead:Pointer;
+{$ENDIF}
       public
        constructor Create;
        destructor Destroy; override;
-       procedure Clear; {$ifdef CAN_INLINE}inline;{$endif}
-       function IsEmpty:boolean; {$ifdef CAN_INLINE}inline;{$endif}
-       function Push(const Item:pointer):pointer; {$ifdef CAN_INLINE}inline;{$endif}
-       function Pop:pointer; {$ifdef CAN_INLINE}inline;{$endif}
+       procedure Clear; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+       function IsEmpty:Boolean; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+       function Push(const Item:Pointer):Pointer; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+       function Pop:Pointer; {$IFDEF CAN_INLINE}inline;{$ENDIF}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPThreadSafeQueueNode=^TPasMPThreadSafeQueueNode;
      TPasMPThreadSafeQueueNode=record
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
       Previous:TPasMPTaggedPointer;
       Next:TPasMPTaggedPointer;
-{$else}
-      Next:pointer;
-{$endif}
+{$ELSE}
+      Next:Pointer;
+{$ENDIF}
       Data:record
        // Empty
       end;
      end;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
-{$define PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
-{$ifdef PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
+{$DEFINE PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
+{$IFDEF PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
      // The lock-free variant is based on http://people.csail.mit.edu/edya/publications/OptimisticFIFOQueue-journal.pdf
-{$else}
-     // The lock-free variant is based on M. M. Michael and M. L. Scott "Simple, fast, and practical non-blocking and blocking concurrent queue algorithms" together with tagged pointer counters
-{$endif}
+{$ELSE}
+     // The lock-free variant is based on M. M. Michael and M. L. Scott "Simple, fast, and practical non-blocking and blocking concurrent queue algorithms" together with tagged Pointer counters
+{$ENDIF}
      // The lock-based variant is based on the two-lock concurrent queue
      TPasMPThreadSafeQueue=class // only for PasMP internal usage
       private
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
        fHead:PPasMPTaggedPointer;
        fTail:PPasMPTaggedPointer;
-{$else}
+{$ELSE}
        fHeadCriticalSection:TPasMPCriticalSection;
        fTailCriticalSection:TPasMPCriticalSection;
        fHead:PPasMPThreadSafeQueueNode;
        fTail:PPasMPThreadSafeQueueNode;
-{$endif}
+{$ENDIF}
        fItemSize:TPasMPInt32;
        fInternalNodeSize:TPasMPInt32;
-       fAddCPUCacheLinePaddingToInternalItemDataStructure:boolean;
+       fAddCPUCacheLinePaddingToInternalItemDataStructure:Boolean;
       protected
-       procedure InitializeItem(const Data:pointer); virtual;
-       procedure FinalizeItem(const Data:pointer); virtual;
-       procedure CopyItem(const Source,Destination:pointer); virtual;
+       procedure InitializeItem(const Data:Pointer); virtual;
+       procedure FinalizeItem(const Data:Pointer); virtual;
+       procedure CopyItem(const Source,Destination:Pointer); virtual;
       public
-       constructor Create(ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       procedure Clear; {$ifndef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       function IsEmpty:boolean; {$ifdef CAN_INLINE}inline;{$endif}
-       procedure Enqueue(const Item); {$ifndef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       function Dequeue(out Item):boolean; {$ifndef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       procedure Clear; {$IFNDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       function IsEmpty:Boolean; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+       procedure Enqueue(const Item); {$IFNDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       function Dequeue(out Item):Boolean; {$IFNDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPThreadSafeBoundedArrayBasedQueueItemNode=^TPasMPThreadSafeBoundedArrayBasedQueueItemNode;
      TPasMPThreadSafeBoundedArrayBasedQueueItemNode=record
@@ -1433,34 +1453,34 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
 
      EPasMPThreadSafeBoundedArrayBasedQueue=class(Exception);
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPThreadSafeBoundedArrayBasedQueue=class // only for TPasMP internal usage
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fData:pointer;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fData:Pointer;
        fMaximalCount:TPasMPUInt32;
        fMask:TPasMPUInt32;
        fItemSize:TPasMPUInt32;
        fInternalItemSize:TPasMPUInt32;
       protected
-       fCacheLineFillUp0:array[0..(PasMPCPUCacheLineSize-(SizeOf(pointer)+(SizeOf(TPasMPUInt32)*4)))-1] of TPasMPUInt8; // for to force fields to different CPU cache lines
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fHeadSequence:TPasMPUInt32;
+       fCacheLineFillUp0:array[0..(PasMPCPUCacheLineSize-(SizeOf(Pointer)+(SizeOf(TPasMPUInt32)*4)))-1] of TPasMPUInt8; // for to force fields to different CPU cache lines
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fHeadSequence:TPasMPUInt32;
        fCacheLineFillUp1:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPUInt32))-1] of TPasMPUInt8; // for to force fields to different CPU cache lines
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fTailSequence:TPasMPUInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fTailSequence:TPasMPUInt32;
        fCacheLineFillUp2:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPUInt32))-1] of TPasMPUInt8; // for to force fields to different CPU cache lines
       protected
-       procedure InitializeItem(const Data:pointer); virtual;
-       procedure FinalizeItem(const Data:pointer); virtual;
-       procedure CopyItem(const Source,Destination:pointer); virtual;
+       procedure InitializeItem(const Data:Pointer); virtual;
+       procedure FinalizeItem(const Data:Pointer); virtual;
+       procedure CopyItem(const Source,Destination:Pointer); virtual;
       public
-       constructor Create(const MaximalCount,ItemSize:TPasMPUInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const MaximalCount,ItemSize:TPasMPUInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
        procedure Clear;
-       function IsEmpty:boolean;
-       function IsFull:boolean;
-       function Enqueue(const Item):boolean;
-       function Dequeue(out Item):boolean;
+       function IsEmpty:Boolean;
+       function IsFull:Boolean;
+       function Enqueue(const Item):Boolean;
+       function Dequeue(out Item):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      TPasMPThreadSafeHashTableHash=TPasMPUInt32;
 
@@ -1492,14 +1512,14 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
         Mask:TPasMPInt32;
         LogSize:TPasMPInt32;
         Count:TPasMPInt32;
-        Items:pointer;
+        Items:Pointer;
        );
        1:(
         FillUp:array[0..(PasMPCPUCacheLineSize*(SizeOf(TPasMPPtrUInt) div SizeOf(TPasMPUInt32)))-1] of TPasMPUInt8;
        );
      end;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      // A thread-safe hash table with open addressing and double-hashing-like probing (two values from one single hash value)
      // The read operation is almost lock-free until the read-acquisition of the multiple-reader-single-writer-lock of a hash item,
      // since a item value can larger than one and two native maschine words
@@ -1521,135 +1541,135 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        procedure SetGrowLoadFactor(const NewGrowLoadFactor:single);
        function CreateState:PPasMPThreadSafeHashTableState;
        procedure FreeState(const State:PPasMPThreadSafeHashTableState);
-       function AcquireState:PPasMPThreadSafeHashTableState; {$ifdef CAN_INLINE}inline;{$endif}
-       procedure ReleaseState(const State:PPasMPThreadSafeHashTableState); {$ifdef CAN_INLINE}inline;{$endif}
+       function AcquireState:PPasMPThreadSafeHashTableState; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+       procedure ReleaseState(const State:PPasMPThreadSafeHashTableState); {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure Clear;
-       function SetKeyValueOnState(const CurrentState:PPasMPThreadSafeHashTableState;const Key,Value:pointer):boolean;
-       function UnderGrowLoadFactor(const CurrentState:PPasMPThreadSafeHashTableState):boolean; {$ifdef CAN_INLINE}inline;{$endif}
+       function SetKeyValueOnState(const CurrentState:PPasMPThreadSafeHashTableState;const Key,Value:Pointer):Boolean;
+       function UnderGrowLoadFactor(const CurrentState:PPasMPThreadSafeHashTableState):Boolean; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure Grow;
       protected
-       procedure InitializeItem(const Data:pointer); virtual;
-       procedure FinalizeItem(const Data:pointer); virtual;
-       procedure CopyItem(const Source,Destination:pointer); virtual;
-       procedure GetKey(const Data,Key:pointer); virtual;
-       procedure SetKey(const Data,Key:pointer); virtual;
-       procedure GetValue(const Data,Value:pointer); virtual;
-       procedure SetValue(const Data,Value:pointer); virtual;
-       function HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash; virtual;
-       function CompareKey(const Data,Key:pointer):boolean; virtual;
-       function GetKeyValue(const Key,Value:pointer):boolean;
-       function SetKeyValue(const Key,Value:pointer):boolean;
-       function DeleteKey(const Key:pointer):boolean;
+       procedure InitializeItem(const Data:Pointer); virtual;
+       procedure FinalizeItem(const Data:Pointer); virtual;
+       procedure CopyItem(const Source,Destination:Pointer); virtual;
+       procedure GetKey(const Data,Key:Pointer); virtual;
+       procedure SetKey(const Data,Key:Pointer); virtual;
+       procedure GetValue(const Data,Value:Pointer); virtual;
+       procedure SetValue(const Data,Value:Pointer); virtual;
+       function HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash; virtual;
+       function CompareKey(const Data,Key:Pointer):Boolean; virtual;
+       function GetKeyValue(const Key,Value:Pointer):Boolean;
+       function SetKeyValue(const Key,Value:Pointer):Boolean;
+       function DeleteKey(const Key:Pointer):Boolean;
       public
-       constructor Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
        property GrowLoadFactor:single read GetGrowLoadFactor write SetGrowLoadFactor;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPThreadSafeDynamicArrayBuckets=^TPasMPThreadSafeDynamicArrayBuckets;
-     TPasMPThreadSafeDynamicArrayBuckets=array[0..PasMPThreadSafeDynamicArrayNumberOfBuckets-1] of pointer;
+     TPasMPThreadSafeDynamicArrayBuckets=array[0..PasMPThreadSafeDynamicArrayNumberOfBuckets-1] of Pointer;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPThreadSafeDynamicArray=class // only for PasMP internal usage
       private
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fSize:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fItemSize:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fItemLockOffset:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fInternalItemSize:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fAllocated:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fCountBuckets:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fSize:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fItemSize:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fItemLockOffset:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fInternalItemSize:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fAllocated:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fCountBuckets:TPasMPInt32;
        fLock:TPasMPMultipleReaderSingleWriterSpinLock;
        fBuckets:TPasMPThreadSafeDynamicArrayBuckets;
       protected
-       procedure InitializeItem(const ItemData:pointer); virtual;
-       procedure FinalizeItem(const ItemData:pointer); virtual;
-       procedure CopyItem(const Source,Destination:pointer); virtual;
+       procedure InitializeItem(const ItemData:Pointer); virtual;
+       procedure FinalizeItem(const ItemData:Pointer); virtual;
+       procedure CopyItem(const Source,Destination:Pointer); virtual;
        procedure SetSize(const NewSize:TPasMPInt32);
-       function GetItem(const ItemIndex:TPasMPInt32;const ItemData:pointer):boolean;
-       function SetItem(const ItemIndex:TPasMPInt32;const ItemData:pointer):boolean;
-       function Push(const ItemData:pointer):TPasMPInt32;
-       function Pop(const ItemData:pointer):boolean;
+       function GetItem(const ItemIndex:TPasMPInt32;const ItemData:Pointer):Boolean;
+       function SetItem(const ItemIndex:TPasMPInt32;const ItemData:Pointer):Boolean;
+       function Push(const ItemData:Pointer):TPasMPInt32;
+       function Pop(const ItemData:Pointer):Boolean;
       public
-       constructor Create(const aItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const aItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
        procedure Clear; virtual;
        property Size:TPasMPInt32 read fSize write SetSize;
        property ItemSize:TPasMPInt32 read fItemSize;
        property Allocated:TPasMPInt32 read fAllocated;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPSingleProducerSingleConsumerRingBuffer=class
       protected
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fReadIndex:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fReadIndex:TPasMPInt32;
        fCacheLineFillUp0:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPInt32))-1] of TPasMPUInt8; // for to force fReadIndex and fWriteIndex to different CPU cache lines
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fWriteIndex:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fWriteIndex:TPasMPInt32;
        fCacheLineFillUp1:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPInt32))-1] of TPasMPUInt8; // for to force fWriteIndex and fData to different CPU cache lines
        fData:array of TPasMPUInt8;
        fSize:TPasMPInt32;
        fLockState:TPasMPInt32;
-       fCacheLineFillUp2:array[0..(PasMPCPUCacheLineSize-(SizeOf(pointer)+SizeOf(TPasMPInt32)+SizeOf(TPasMPInt32)))-1] of TPasMPUInt8; // as CPU cache line alignment
+       fCacheLineFillUp2:array[0..(PasMPCPUCacheLineSize-(SizeOf(Pointer)+SizeOf(TPasMPInt32)+SizeOf(TPasMPInt32)))-1] of TPasMPUInt8; // as CPU cache line alignment
       public
        constructor Create(const Size:TPasMPInt32);
        destructor Destroy; override;
        procedure Clear;
-       function Read(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
-       function TryRead(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
-       function ReadAsMuchAsPossible(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
-       function Write(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
-       function TryWrite(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
-       function WriteAsMuchAsPossible(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
+       function Read(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
+       function TryRead(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
+       function ReadAsMuchAsPossible(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
+       function Write(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
+       function TryWrite(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
+       function WriteAsMuchAsPossible(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
        function AvailableForRead:TPasMPInt32;
        function AvailableForWrite:TPasMPInt32;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPSingleProducerSingleConsumerBoundedQueue=class
       protected
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fReadIndex:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fReadIndex:TPasMPInt32;
        fCacheLineFillUp0:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPInt32))-1] of TPasMPUInt8; // for to force fReadIndex and fWriteIndex to different CPU cache lines
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fWriteIndex:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fWriteIndex:TPasMPInt32;
        fCacheLineFillUp1:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPInt32))-1] of TPasMPUInt8; // for to force fWriteIndex and fData to different CPU cache lines
        fData:array of TPasMPUInt8;
        fMaximalCount:TPasMPInt32;
        fItemSize:TPasMPInt32;
-       fCacheLineFillUp2:array[0..(PasMPCPUCacheLineSize-(SizeOf(pointer)+SizeOf(TPasMPInt32)))-1] of TPasMPUInt8; // as CPU cache line alignment
+       fCacheLineFillUp2:array[0..(PasMPCPUCacheLineSize-(SizeOf(Pointer)+SizeOf(TPasMPInt32)))-1] of TPasMPUInt8; // as CPU cache line alignment
       public
        constructor Create(const MaximalCount,ItemSize:TPasMPInt32);
        destructor Destroy; override;
-       function Enqueue(const Item):boolean;
-       function Dequeue(out Item):boolean;
+       function Enqueue(const Item):Boolean;
+       function Dequeue(out Item):Boolean;
        function AvailableForEnqueue:TPasMPInt32;
        function AvailableForDequeue:TPasMPInt32;
-       function IsFull:boolean;
+       function IsFull:Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPSingleProducerSingleConsumerBoundedQueue<T>=class
       protected
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fReadIndex:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fReadIndex:TPasMPInt32;
        fCacheLineFillUp0:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPInt32))-1] of TPasMPUInt8; // for to force fReadIndex and fWriteIndex to different CPU cache lines
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fWriteIndex:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fWriteIndex:TPasMPInt32;
        fCacheLineFillUp1:array[0..(PasMPCPUCacheLineSize-SizeOf(TPasMPInt32))-1] of TPasMPUInt8; // for to force fWriteIndex and fData to different CPU cache lines
        fData:array of T;
        fMaximalCount:TPasMPInt32;
-       fCacheLineFillUp2:array[0..(PasMPCPUCacheLineSize-(SizeOf(pointer)+SizeOf(TPasMPInt32)))-1] of TPasMPUInt8; // as CPU cache line alignment
+       fCacheLineFillUp2:array[0..(PasMPCPUCacheLineSize-(SizeOf(Pointer)+SizeOf(TPasMPInt32)))-1] of TPasMPUInt8; // as CPU cache line alignment
       public
        constructor Create(const MaximalCount:TPasMPInt32);
        destructor Destroy; override;
-       function Enqueue(const Item:T):boolean;
-       function Dequeue(out Item:T):boolean;
+       function Enqueue(const Item:T):Boolean;
+       function Dequeue(out Item:T):Boolean;
        function AvailableForEnqueue:TPasMPInt32;
        function AvailableForDequeue:TPasMPInt32;
-       function IsFull:boolean;
+       function IsFull:Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
      PPasMPBoundedStackItem=^TPasMPBoundedStackItem;
      TPasMPBoundedStackItem=record
@@ -1659,27 +1679,27 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
       end;
      end;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBoundedStack=class
       private
        fStack:TPasMPThreadSafeStack;
        fFree:TPasMPThreadSafeStack;
-       fData:pointer;
+       fData:Pointer;
        fMaximalCount:TPasMPInt32;
        fItemSize:TPasMPInt32;
        fInternalItemSize:TPasMPInt32;
       public
-       constructor Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function IsEmpty:boolean;
-       function IsFull:boolean;
-       function Push(const Item):boolean;
-       function Pop(out Item):boolean;
+       function IsEmpty:Boolean;
+       function IsFull:Boolean;
+       function Push(const Item):Boolean;
+       function Pop(out Item):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBoundedStack<T>=class
       private
        type PPasMPBoundedTypedStackItem=^TPasMPBoundedTypedStackItem;
@@ -1690,19 +1710,19 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
       private
        fStack:TPasMPThreadSafeStack;
        fFree:TPasMPThreadSafeStack;
-       fData:pointer;
+       fData:Pointer;
        fMaximalCount:TPasMPInt32;
        fInternalItemSize:TPasMPInt32;
       public
-       constructor Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function IsEmpty:boolean;
-       function IsFull:boolean;
-       function Push(const Item:T):boolean;
-       function Pop(out Item:T):boolean;
+       function IsEmpty:Boolean;
+       function IsFull:Boolean;
+       function Push(const Item:T):Boolean;
+       function Pop(out Item:T):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
      PPasMPUnboundedStackItem=^TPasMPUnboundedStackItem;
      TPasMPUnboundedStackItem=record
@@ -1712,23 +1732,23 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
       end;
      end;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPUnboundedStack=class
       private
        fStack:TPasMPThreadSafeStack;
        fItemSize:TPasMPInt32;
-       fAddCPUCacheLinePaddingToInternalItemDataStructure:boolean;
+       fAddCPUCacheLinePaddingToInternalItemDataStructure:Boolean;
       public
-       constructor Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function IsEmpty:boolean;
-       function Push(const Item):boolean;
-       function Pop(out Item):boolean;
+       function IsEmpty:Boolean;
+       function Push(const Item):Boolean;
+       function Pop(out Item):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPUnboundedStack<T>=class
       private
        type PPasMPUnboundedTypedStackItem=^TPasMPUnboundedTypedStackItem;
@@ -1739,16 +1759,16 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
       private
        fStack:TPasMPThreadSafeStack;
        fItemSize:TPasMPInt32;
-       fAddCPUCacheLinePaddingToInternalItemDataStructure:boolean;
+       fAddCPUCacheLinePaddingToInternalItemDataStructure:Boolean;
       public
-       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function IsEmpty:boolean;
-       function Push(const Item:T):boolean;
-       function Pop(out Item:T):boolean;
+       function IsEmpty:Boolean;
+       function Push(const Item:T):Boolean;
+       function Pop(out Item:T):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
      PPasMPBoundedQueueItem=^TPasMPBoundedQueueItem;
      TPasMPBoundedQueueItem=record
@@ -1758,27 +1778,27 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
       end;
      end;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBoundedQueue=class
       private
        fQueue:TPasMPThreadSafeQueue;
        fFree:TPasMPThreadSafeStack;
-       fData:pointer;
+       fData:Pointer;
        fMaximalCount:TPasMPInt32;
        fItemSize:TPasMPInt32;
        fInternalItemSize:TPasMPInt32;
       public
-       constructor Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function IsEmpty:boolean;
-       function IsFull:boolean;
-       function Enqueue(const Item):boolean;
-       function Dequeue(out Item):boolean;
+       function IsEmpty:Boolean;
+       function IsFull:Boolean;
+       function Enqueue(const Item):Boolean;
+       function Dequeue(out Item):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBoundedQueue<T>=class
       private
        type PPasMPBoundedTypedQueueItem=^TPasMPBoundedTypedQueueItem;
@@ -1789,70 +1809,70 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
       private
        fQueue:TPasMPThreadSafeQueue;
        fFree:TPasMPThreadSafeStack;
-       fData:pointer;
+       fData:Pointer;
        fMaximalCount:TPasMPInt32;
        fInternalItemSize:TPasMPInt32;
       public
-       constructor Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function IsEmpty:boolean;
-       function IsFull:boolean;
-       function Enqueue(const Item:T):boolean;
-       function Dequeue(out Item:T):boolean;
+       function IsEmpty:Boolean;
+       function IsFull:Boolean;
+       function Enqueue(const Item:T):Boolean;
+       function Dequeue(out Item:T):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBoundedArrayBasedQueue=class(TPasMPThreadSafeBoundedArrayBasedQueue)
       public
-       constructor Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true); reintroduce;
+       constructor Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true); reintroduce;
        destructor Destroy; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPBoundedArrayBasedQueue<T>=class(TPasMPThreadSafeBoundedArrayBasedQueue)
       protected
-       procedure InitializeItem(const Data:pointer); override;
-       procedure FinalizeItem(const Data:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
+       procedure InitializeItem(const Data:Pointer); override;
+       procedure FinalizeItem(const Data:Pointer); override;
+       procedure CopyItem(const Source,Destination:Pointer); override;
       public
-       constructor Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true); reintroduce;
+       constructor Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true); reintroduce;
        destructor Destroy; override;
-       function Enqueue(const Item:T):boolean; reintroduce;
-       function Dequeue(out Item:T):boolean; reintroduce;
+       function Enqueue(const Item:T):Boolean; reintroduce;
+       function Dequeue(out Item:T):Boolean; reintroduce;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPUnboundedQueue=class(TPasMPThreadSafeQueue)
       public
-       constructor Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true); reintroduce;
+       constructor Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true); reintroduce;
        destructor Destroy; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPUnboundedQueue<T>=class(TPasMPThreadSafeQueue)
       protected
-       procedure InitializeItem(const Data:pointer); override;
-       procedure FinalizeItem(const Data:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
+       procedure InitializeItem(const Data:Pointer); override;
+       procedure FinalizeItem(const Data:Pointer); override;
+       procedure CopyItem(const Source,Destination:Pointer); override;
       public
-       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true); reintroduce;
+       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true); reintroduce;
        destructor Destroy; override;
        procedure Enqueue(const Item:T); reintroduce;
-       function Dequeue(out Item:T):boolean; reintroduce;
+       function Dequeue(out Item:T):Boolean; reintroduce;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPMultipleProducerMultipleConsumerQueue<T>=class
       public
        type TSlot=record
@@ -1882,170 +1902,170 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        function Size:TPasMPSizeUIntEx;
        function Empty:Boolean; inline;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPHashTable=class(TPasMPThreadSafeHashTable)
       private
-       fKeySize:TPasMPInt32;
-       fValueSize:TPasMPInt32;
-       fItemSize:TPasMPInt32;
-      protected
-       procedure InitializeItem(const Data:pointer); override;
-       procedure FinalizeItem(const Data:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
-       procedure GetKey(const Data,Key:pointer); override;
-       procedure SetKey(const Data,Key:pointer); override;
-       procedure GetValue(const Data,Value:pointer); override;
-       procedure SetValue(const Data,Value:pointer); override;
-       function HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash; override;
-       function CompareKey(const Data,Key:pointer):boolean; override;
-      public
-       constructor Create(const KeySize,ValueSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
-       destructor Destroy; override;
-       function GetKeyValue(const Key;out Value):boolean;
-       function SetKeyValue(const Key,Value):boolean;
-       function DeleteKey(const Key):boolean;
-     end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+     fKeySize: TPasMPInt32;
+     fValueSize: TPasMPInt32;
+     fItemSize: TPasMPInt32;
+   protected
+     procedure InitializeItem(const Data: Pointer); override;
+     procedure FinalizeItem(const Data: Pointer); override;
+     procedure CopyItem(const Source, Destination: Pointer); override;
+     procedure GetKey(const Data, Key: Pointer); override;
+     procedure SetKey(const Data, Key: Pointer); override;
+     procedure GetValue(const Data, Value: Pointer); override;
+     procedure SetValue(const Data, Value: Pointer); override;
+     function HashKey(const Key: Pointer): TPasMPThreadSafeHashTableHash; override;
+     function CompareKey(const Data, Key: Pointer): Boolean; override;
+   public
+     constructor Create(const KeySize, ValueSize: TPasMPInt32; const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
+     destructor Destroy; override;
+     function GetKeyValue(const Key;out Value): Boolean;
+     function SetKeyValue(const Key,Value): Boolean;
+     function DeleteKey(const Key): Boolean;
+   end;
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
-     TPasMPStringHashTable=class(TPasMPThreadSafeHashTable)
-      private
-       fKeySize:TPasMPInt32;
-       fValueSize:TPasMPInt32;
-       fItemSize:TPasMPInt32;
-      protected
-       procedure InitializeItem(const Data:pointer); override;
-       procedure FinalizeItem(const Data:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
-       procedure GetKey(const Data,Key:pointer); override;
-       procedure SetKey(const Data,Key:pointer); override;
-       procedure GetValue(const Data,Value:pointer); override;
-       procedure SetValue(const Data,Value:pointer); override;
-       function HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash; override;
-       function CompareKey(const Data,Key:pointer):boolean; override;
-      public
-       constructor Create(const ValueSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
-       destructor Destroy; override;
-       function GetKeyValue(const Key:string;out Value):boolean;
-       function SetKeyValue(const Key:string;const Value):boolean;
-       function DeleteKey(const Key:string):boolean;
-     end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
+  TPasMPStringHashTable=class(TPasMPThreadSafeHashTable)
+  private
+    fKeySize:TPasMPInt32;
+    fValueSize:TPasMPInt32;
+    fItemSize:TPasMPInt32;
+  protected
+    procedure InitializeItem(const Data:Pointer); override;
+    procedure FinalizeItem(const Data:Pointer); override;
+    procedure CopyItem(const Source,Destination:Pointer); override;
+    procedure GetKey(const Data,Key:Pointer); override;
+    procedure SetKey(const Data,Key:Pointer); override;
+    procedure GetValue(const Data,Value:Pointer); override;
+    procedure SetValue(const Data,Value:Pointer); override;
+    function HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash; override;
+    function CompareKey(const Data,Key:Pointer):Boolean; override;
+  public
+    constructor Create(const ValueSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
+    destructor Destroy; override;
+    function GetKeyValue(const Key:string;out Value):Boolean;
+    function SetKeyValue(const Key:string;const Value):Boolean;
+    function DeleteKey(const Key:string):Boolean;
+  end;
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPStringStringHashTable=class(TPasMPThreadSafeHashTable)
       private
        fKeySize:TPasMPInt32;
        fValueSize:TPasMPInt32;
        fItemSize:TPasMPInt32;
       protected
-       procedure InitializeItem(const Data:pointer); override;
-       procedure FinalizeItem(const Data:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
-       procedure GetKey(const Data,Key:pointer); override;
-       procedure SetKey(const Data,Key:pointer); override;
-       procedure GetValue(const Data,Value:pointer); override;
-       procedure SetValue(const Data,Value:pointer); override;
-       function HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash; override;
-       function CompareKey(const Data,Key:pointer):boolean; override;
+       procedure InitializeItem(const Data:Pointer); override;
+       procedure FinalizeItem(const Data:Pointer); override;
+       procedure CopyItem(const Source,Destination:Pointer); override;
+       procedure GetKey(const Data,Key:Pointer); override;
+       procedure SetKey(const Data,Key:Pointer); override;
+       procedure GetValue(const Data,Value:Pointer); override;
+       procedure SetValue(const Data,Value:Pointer); override;
+       function HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash; override;
+       function CompareKey(const Data,Key:Pointer):Boolean; override;
       public
-       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function GetKeyValue(const Key:string;out Value:string):boolean;
-       function SetKeyValue(const Key,Value:string):boolean;
-       function DeleteKey(const Key:string):boolean;
+       function GetKeyValue(const Key:string;out Value:string):Boolean;
+       function SetKeyValue(const Key,Value:string):Boolean;
+       function DeleteKey(const Key:string):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HasGenericsCollections}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HasGenericsCollections}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPHashTable<KeyType,ValueType>=class(TPasMPThreadSafeHashTable)
       private
        fKeySize:TPasMPInt32;
        fValueSize:TPasMPInt32;
        fItemSize:TPasMPInt32;
        fComparer:IEqualityComparer<KeyType>;
-{$ifdef fpc}
+{$IFDEF fpc}
        procedure Dummy(out Value:ValueType); inline;
-{$endif}
+{$ENDIF}
       protected
-       procedure InitializeItem(const Data:pointer); override;
-       procedure FinalizeItem(const Data:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
-       procedure GetKey(const Data,Key:pointer); override;
-       procedure SetKey(const Data,Key:pointer); override;
-       procedure GetValue(const Data,Value:pointer); override;
-       procedure SetValue(const Data,Value:pointer); override;
-       function HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash; override;
-       function CompareKey(const Data,Key:pointer):boolean; override;
+       procedure InitializeItem(const Data:Pointer); override;
+       procedure FinalizeItem(const Data:Pointer); override;
+       procedure CopyItem(const Source,Destination:Pointer); override;
+       procedure GetKey(const Data,Key:Pointer); override;
+       procedure SetKey(const Data,Key:Pointer); override;
+       procedure GetValue(const Data,Value:Pointer); override;
+       procedure SetValue(const Data,Value:Pointer); override;
+       function HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash; override;
+       function CompareKey(const Data,Key:Pointer):Boolean; override;
       public
-       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function GetKeyValue(const Key:KeyType;out Value:ValueType):boolean;
-       function SetKeyValue(const Key:KeyType;const Value:ValueType):boolean;
-       function DeleteKey(const Key:KeyType):boolean;
+       function GetKeyValue(const Key:KeyType;out Value:ValueType):Boolean;
+       function SetKeyValue(const Key:KeyType;const Value:ValueType):Boolean;
+       function DeleteKey(const Key:KeyType):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      EPasMPDynamicArrayOutOfBounds=class(Exception);
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPDynamicArray=class(TPasMPThreadSafeDynamicArray)
       protected
-       procedure InitializeItem(const ItemData:pointer); override;
-       procedure FinalizeItem(const ItemData:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
+       procedure InitializeItem(const ItemData:Pointer); override;
+       procedure FinalizeItem(const ItemData:Pointer); override;
+       procedure CopyItem(const Source,Destination:Pointer); override;
       public
-       constructor Create(const aItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const aItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function GetItem(const ItemIndex:TPasMPInt32;out ItemData):boolean;
-       function SetItem(const ItemIndex:TPasMPInt32;const ItemData):boolean;
+       function GetItem(const ItemIndex:TPasMPInt32;out ItemData):Boolean;
+       function SetItem(const ItemIndex:TPasMPInt32;const ItemData):Boolean;
        function Push(const ItemData):TPasMPInt32;
-       function Pop(out ItemData):boolean;
+       function Pop(out ItemData):Boolean;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPDynamicArray<T>=class(TPasMPThreadSafeDynamicArray)
       private
        type PPasMPDynamicArrayDataType=^TPasMPDynamicArrayDataType;
             TPasMPDynamicArrayDataType=T;
       protected
-       procedure InitializeItem(const ItemData:pointer); override;
-       procedure FinalizeItem(const ItemData:pointer); override;
-       procedure CopyItem(const Source,Destination:pointer); override;
+       procedure InitializeItem(const ItemData:Pointer); override;
+       procedure FinalizeItem(const ItemData:Pointer); override;
+       procedure CopyItem(const Source,Destination:Pointer); override;
        function GetPropertyItem(const ItemIndex:TPasMPInt32):T;
        procedure SetPropertyItem(const ItemIndex:TPasMPInt32;const ItemData:T);
       public
-       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+       constructor Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
        destructor Destroy; override;
-       function GetItem(const ItemIndex:TPasMPInt32;out ItemData:T):boolean;
-       function SetItem(const ItemIndex:TPasMPInt32;const ItemData:T):boolean;
+       function GetItem(const ItemIndex:TPasMPInt32;out ItemData:T):Boolean;
+       function SetItem(const ItemIndex:TPasMPInt32;const ItemData:T):Boolean;
        function Push(const ItemData:T):TPasMPInt32;
-       function Pop(out ItemData:T):boolean;
+       function Pop(out ItemData:T):Boolean;
        property Items[const ItemIndex:TPasMPInt32]:T read GetPropertyItem write SetPropertyItem; default;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
-{$endif}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
+{$ENDIF}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPThread=class(TThread)
-{$if defined(fpc) and (defined(Linux) or defined(Android)) and declared(TThreadPriority)}
+{$IF DEFINED(fpc) and (DEFINED(Linux) or DEFINED(Android)) and DECLARED(TThreadPriority)}
       private
        function GetPriority:TThreadPriority; reintroduce;
        procedure SetPriority(Value:TThreadPriority); reintroduce;
       public
        property Priority:TThreadPriority read GetPriority write SetPriority;
-{$ifend}
+{$IFEND}
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPJobPriority=^TPasMPJobPriority;
      TPasMPJobPriority=
@@ -2058,23 +2078,23 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
 
      PPasMPJob=^TPasMPJob;
 
-{$ifdef HAS_ANONYMOUS_METHODS}
+{$IFDEF HAS_ANONYMOUS_METHODS}
      TPasMPJobReferenceProcedure=reference to procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
-{$endif}
+{$ENDIF}
 
      TPasMPJobProcedure=procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
 
      TPasMPJobMethod=procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32) of object;
 
-{$ifdef HAS_ANONYMOUS_METHODS}
-     TPasMPParallelForReferenceProcedure=reference to procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32;const Data:pointer;const FromIndex,ToIndex:TPasMPNativeInt);
-{$endif}
+{$IFDEF HAS_ANONYMOUS_METHODS}
+     TPasMPParallelForReferenceProcedure=reference to procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32;const Data:Pointer;const FromIndex,ToIndex:TPasMPNativeInt);
+{$ENDIF}
 
-     TPasMPParallelForProcedure=procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32;const Data:pointer;const FromIndex,ToIndex:TPasMPNativeInt);
+     TPasMPParallelForProcedure=procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32;const Data:Pointer;const FromIndex,ToIndex:TPasMPNativeInt);
 
-     TPasMPParallelForMethod=procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32;const Data:pointer;const FromIndex,ToIndex:TPasMPNativeInt) of object;
+     TPasMPParallelForMethod=procedure(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32;const Data:Pointer;const FromIndex,ToIndex:TPasMPNativeInt) of object;
 
-     TPasMPParallelSortCompareFunction=function(const a,b:pointer):TPasMPInt32;
+     TPasMPParallelSortCompareFunction=function(const a,b:Pointer):TPasMPInt32;
 
      TPasMPJobWorkerThread=class;
 
@@ -2082,12 +2102,12 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
       case TPasMPInt32 of
        0:(                                          // 32 / 64 bit
         Method:TMethod;                             //  8 / 16 => 2x pointers
-        ParentJob:PPasMPJob;                        //  4 /  8 => 1x pointer
+        ParentJob:PPasMPJob;                        //  4 /  8 => 1x Pointer
         ChildrenJobs:TPasMPUInt32;                  //  4 /  4 => 1x 32-bit unsigned integer (children jobs)
         InternalData:TPasMPUInt32;                  //  4 /  4 => 1x 32-bit unsigned integer (owner worker thread index, job priority, task tag, flags, etc. and last high bit = active bit)
         AreaMask:TPasMPUInt32;                      //  4 /  4 => 1x 32-bit unsigned integer (area mask)
         AvoidAreaMask:TPasMPUInt32;                 //  4 /  4 => 1x 32-bit unsigned integer (avoid area mask)
-        Data:pointer;                               // ------- => just a dummy variable as struct field offset anchor
+        Data:Pointer;                               // ------- => just a dummy variable as struct field offset anchor
        );                                           // 28 / 40
        1:(
         Next:TPasMPThreadSafeStackEntry;
@@ -2102,10 +2122,10 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
 
      TPPasMPJobs=array of PPasMPJob;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPJobTask=class
       private
-       fFreeOnRelease:boolean;
+       fFreeOnRelease:Boolean;
        fJob:PPasMPJob;
        fThreadIndex:TPasMPInt32;
        fJobTag:TPasMPUInt32;
@@ -2115,13 +2135,13 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        procedure Run; virtual;
        function Split:TPasMPJobTask; virtual;
        function PartialPop:TPasMPJobTask; virtual;
-       function Spread:boolean; virtual;
-       property FreeOnRelease:boolean read fFreeOnRelease write fFreeOnRelease;
+       function Spread:Boolean; virtual;
+       property FreeOnRelease:Boolean read fFreeOnRelease write fFreeOnRelease;
        property Job:PPasMPJob read fJob;
        property ThreadIndex:TPasMPInt32 read fThreadIndex;
        property JobTag:TPasMPUInt32 read fJobTag write fJobTag;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPJobAllocatorMemoryPoolBucket=^TPasMPJobAllocatorMemoryPoolBucket;
      TPasMPJobAllocatorMemoryPoolBucket=array[0..PasMPAllocatorPoolBucketSize-1] of TPasMPJob;
@@ -2129,7 +2149,7 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
      PPPasMPJobAllocatorMemoryPoolBuckets=^TPPasMPJobAllocatorMemoryPoolBuckets;
      TPPasMPJobAllocatorMemoryPoolBuckets=array of PPasMPJobAllocatorMemoryPoolBucket;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPJobAllocator=class
       private
        fJobWorkerThread:TPasMPJobWorkerThread;
@@ -2138,16 +2158,16 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        fCountMemoryPoolBuckets:TPasMPInt32;
        fCountAllocatedJobs:TPasMPInt32;
        procedure AllocateNewBuckets(const NewCountMemoryPoolBuckets:TPasMPInt32);
-       function AllocateJob:PPasMPJob; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure FreeJobs; {$ifdef CAN_INLINE}inline;{$endif}
+       function AllocateJob:PPasMPJob; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure FreeJobs; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure FreeJob(const Job:PPasMPJob);
       public
        constructor Create(const AJobWorkerThread:TPasMPJobWorkerThread);
        destructor Destroy; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPWorkerSystemThread=class(TPasMPThread)
       private
        fJobWorkerThread:TPasMPJobWorkerThread;
@@ -2157,21 +2177,21 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        constructor Create(const AJobWorkerThread:TPasMPJobWorkerThread);
        destructor Destroy; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      TPasMPJobQueueJobs=array of PPasMPJob;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPJobQueue=class
       private
        fPasMPInstance:TPasMP;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fQueueLockState:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fQueueSize:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fQueueMask:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fQueueBottom:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fQueueTop:TPasMPInt32;
-       {$ifdef HAS_VOLATILE}[volatile]{$endif}fQueueJobs:TPasMPJobQueueJobs;
-       function HasJobs:boolean; {$ifdef CAN_INLINE}inline;{$endif}
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fQueueLockState:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fQueueSize:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fQueueMask:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fQueueBottom:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fQueueTop:TPasMPInt32;
+       {$IFDEF HAS_VOLATILE}[volatile]{$ENDIF}fQueueJobs:TPasMPJobQueueJobs;
+       function HasJobs:Boolean; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure Resize(const QueueBottom,QueueTop:TPasMPInt32);
        procedure PushJob(const pJob:PPasMPJob);
        function PopJob:PPasMPJob;
@@ -2180,12 +2200,12 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        constructor Create(const APasMPInstance:TPasMP);
        destructor Destroy; override;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPJobQueues=^TPasMPJobQueues;
      TPasMPJobQueues=array[PasMPJobQueuePriorityFirst..PasMPJobQueuePriorityLast] of TPasMPJobQueue;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPJobWorkerThread=class
       private
        fPasMPInstance:TPasMP;
@@ -2194,9 +2214,9 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        fCurrentJobPriority:TPasMPUInt32;
        fDepth:TPasMPUInt32;
        fAreaMask:TPasMPUInt32;
-{$ifndef UseThreadLocalStorage}
-       fThreadID:{$ifdef fpc}TThreadID{$else}TPasMPUInt32{$endif};
-{$endif}
+{$IFNDEF UseThreadLocalStorage}
+       fThreadID:{$IFDEF fpc}TThreadID{$ELSE}TPasMPUInt32{$ENDIF};
+{$ENDIF}
        fCPUAffinityMask:TPasMPUInt64; // 64-bit CPU affinity mask for maximum 64 CPU logical cores for now
        fSystemThread:TPasMPWorkerSystemThread;
        fIsReadyEvent:TPasMPEvent;
@@ -2207,7 +2227,7 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        fXorShift32:TPasMPUInt32;
        procedure ThreadInitialization;
        function GetJob:PPasMPJob;
-       function HasJobs:boolean; {$ifdef CAN_INLINE}inline;{$endif}
+       function HasJobs:Boolean; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure ThreadProc;
       public
        constructor Create(const APasMPInstance:TPasMP;const AThreadIndex:TPasMPInt32;const aCPUAffinityMask:TPasMPUInt64=0);
@@ -2216,13 +2236,13 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        property AreaMask:TPasMPUInt32 read fAreaMask write fAreaMask;
        property ThreadIndex:TPasMPInt32 read fThreadIndex;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      TPasMPJobWorkerThreads=array of TPasMPJobWorkerThread;
 
      TPasMPJobWorkerThreadHashTable=array[0..PasMPJobWorkerThreadHashTableSize-1] of TPasMPJobWorkerThread;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPScope=class
       private
        fPasMPInstance:TPasMP;
@@ -2238,9 +2258,9 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        procedure Run(const JobTasks:array of TPasMPJobTask); overload;
        procedure Wait;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      PPasMPProfilerHistoryRingBufferItem=^TPasMPProfilerHistoryRingBufferItem;
      TPasMPProfilerHistoryRingBufferItem=record
       case TPasMPUInt32 of
@@ -2249,18 +2269,18 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
         ThreadIndexStackDepth:TPasMPUInt32;
         StartTime:TPasMPHighResolutionTime;
         EndTime:TPasMPHighResolutionTime;
-        Dummy:pointer;
+        Dummy:Pointer;
        );
        1:(
         CacheLineFillUp:array[0..PasMPCPUCacheLineSize-1] of TPasMPUInt8;
        );
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
      PPasMPProfilerHistory=^TPasMPProfilerHistory;
      TPasMPProfilerHistory=array[0..PasMPProfilerHistoryRingBufferSize-1] of TPasMPProfilerHistoryRingBufferItem;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMPProfiler=class
       private
        fHistory:TPasMPProfilerHistory;
@@ -2271,15 +2291,15 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        fStartTime:TPasMPHighResolutionTime;
        fLastTime:TPasMPHighResolutionTime;
        fOffsetTime:TPasMPHighResolutionTime;
-       function GetHistoryRingBufferItem(const pIndex:TPasMPUInt32):PPasMPProfilerHistoryRingBufferItem; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       function GetHistoryRingBufferItem(const pIndex:TPasMPUInt32):PPasMPProfilerHistoryRingBufferItem; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        procedure Sort;
       public
        constructor Create(const pPasMPInstance:TPasMP);
        destructor Destroy; override;
        procedure Reset;
-       procedure Start(const SuppressGaps:boolean=true);
+       procedure Start(const SuppressGaps:Boolean=true);
        procedure Stop(const MaximalTimePeriodToKeep:TPasMPHighResolutionTime=-1);
-       function Acquire:PPasMPProfilerHistoryRingBufferItem; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       function Acquire:PPasMPProfilerHistoryRingBufferItem; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        property History:PPasMPProfilerHistory read fPointerToHistory;
        property HistoryRingBufferItems[const pIndex:TPasMPUInt32]:PPasMPProfilerHistoryRingBufferItem read GetHistoryRingBufferItem;
        property PasMPInstance:TPasMP read fPasMPInstance;
@@ -2289,12 +2309,12 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        property LastTime:TPasMPHighResolutionTime read fLastTime;
        property OffsetTime:TPasMPHighResolutionTime read fOffsetTime;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
-{$if declared(TThreadPriority)}
-  {$define HasRealTThreadPriority}
-{$else}
-  {$undef HasRealTThreadPriority}
+{$IF DECLARED(TThreadPriority)}
+  {$DEFINE HasRealTThreadPriority}
+{$ELSE}
+  {$UNDEF HasRealTThreadPriority}
      // Workaround for Delphi mobile targets
      TThreadPriority=
       (
@@ -2306,36 +2326,36 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        tpHighest,
        tpTimeCritical
       );
-{$ifend}
+{$IFEND}
 
      TPasMPOnWorkerThreadException=function(const aException:Exception):Boolean of object;
 
      TPasMPOnCheckJobExecution=function(const aPasMPInstance:TPasMP;const aJob:PPasMPJob;const aJobWorkerThread:TPasMPJobWorkerThread):Boolean of object;
 
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
      TPasMP=class
       private
        fAvailableCPUCores:TPasMPAvailableCPUCores;
        fDoCPUCorePinning:longbool;
        fSleepingOnIdle:longbool;
        fAllWorkerThreadsHaveOwnSystemThreads:longbool;
-{$ifdef PasMPHaveFPUControls}
+{$IFDEF PasMPHaveFPUControls}
        fFPUExceptionMask:TFPUExceptionMask;
        fFPUPrecisionMode:TFPUPrecisionMode;
        fFPURoundingMode:TFPURoundingMode;
-{$endif}
+{$ENDIF}
        fJobWorkerThreads:TPasMPJobWorkerThreads;
        fCountJobWorkerThreads:TPasMPInt32;
        fSleepingJobWorkerThreads:TPasMPInt32;
        fWorkingJobWorkerThreads:TPasMPInt32;
        fSystemIsReadyEvent:TPasMPEvent;
-{$ifdef PasMPUseWakeUpConditionVariable}
+{$IFDEF PasMPUseWakeUpConditionVariable}
        fWakeUpCounter:TPasMPInt32;
        fWakeUpConditionVariableLock:TPasMPConditionVariableLock;
        fWakeUpConditionVariable:TPasMPConditionVariable;
-{$else}
+{$ELSE}
        fWakeUpEvent:TPasMPEvent;
-{$endif}
+{$ENDIF}
        fCountCPUThreads:TPasMPInt32;
        fCriticalSection:TPasMPCriticalSection;
        fJobAllocatorCriticalSection:TPasMPCriticalSection;
@@ -2344,10 +2364,10 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        fJobQueuesUsedBitmap:TPasMPUInt32;
        fJobQueuesLock:TPasMPSlimReaderWriterLock;
        fGlobalJobQueuesUsedBitmap:TPasMPUInt32;
-{$ifndef UseThreadLocalStorage}
+{$IFNDEF UseThreadLocalStorage}
        fJobWorkerThreadHashTableCriticalSection:TPasMPCriticalSection;
        fJobWorkerThreadHashTable:TPasMPJobWorkerThreadHashTable;
-{$endif}
+{$ENDIF}
        fProfiler:TPasMPProfiler;
        fWorkerThreadPriority:TThreadPriority;
        fWorkerThreadStackSize:TPasMPSizeUInt;
@@ -2355,26 +2375,26 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        fOnWorkerThreadException:TPasMPOnWorkerThreadException;
        fOnCheckJobExecution:TPasMPOnCheckJobExecution;
        fRespectJobAvoidAreaMasks:TPasMPBool32;
-       class function GetThreadIDHash(ThreadID:{$ifdef fpc}TThreadID{$else}TPasMPUInt32{$endif}):TPasMPUInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       function GetJobWorkerThread:TPasMPJobWorkerThread; {$ifndef UseThreadLocalStorage}{$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}{$endif}
+       class function GetThreadIDHash(ThreadID:{$IFDEF fpc}TThreadID{$ELSE}TPasMPUInt32{$ENDIF}):TPasMPUInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       function GetJobWorkerThread:TPasMPJobWorkerThread; {$IFNDEF UseThreadLocalStorage}{$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}{$ENDIF}
        procedure WaitForWakeUp;
        procedure WakeUpAll;
-       function CanSpread:boolean;
-       function IsFull:boolean;
+       function CanSpread:Boolean;
+       function IsFull:Boolean;
        function GlobalAllocateJob:PPasMPJob;
        procedure GlobalFreeJob(const Job:PPasMPJob);
-       function AllocateJob(const MethodCode,MethodData,Data:pointer;const ParentJob:PPasMPJob;const Flags,AreaMask,AvoidAreaMask:TPasMPUInt32):PPasMPJob; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       function AllocateJob(const MethodCode,MethodData,Data:Pointer;const ParentJob:PPasMPJob;const Flags,AreaMask,AvoidAreaMask:TPasMPUInt32):PPasMPJob; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        procedure WaitOnChildrenJobs(const Job:PPasMPJob);
-       procedure ExecuteJobTask(const Job:PPasMPJob;const JobWorkerThread:TPasMPJobWorkerThread;const ThreadIndex:TPasMPInt32); {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       procedure ExecuteJobTask(const Job:PPasMPJob;const JobWorkerThread:TPasMPJobWorkerThread;const ThreadIndex:TPasMPInt32); {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        function CheckJobExecution(const Job:PPasMPJob;const JobWorkerThread:TPasMPJobWorkerThread):Boolean;
-       procedure ExecuteJob(const Job:PPasMPJob;const JobWorkerThread:TPasMPJobWorkerThread); //{$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       procedure PushJob(const Job:PPasMPJob;const JobWorkerThread:TPasMPJobWorkerThread); {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-{$ifdef HAS_ANONYMOUS_METHODS}
+       procedure ExecuteJob(const Job:PPasMPJob;const JobWorkerThread:TPasMPJobWorkerThread); //{$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       procedure PushJob(const Job:PPasMPJob;const JobWorkerThread:TPasMPJobWorkerThread); {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+{$IFDEF HAS_ANONYMOUS_METHODS}
        procedure JobReferenceProcedureJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
        procedure ParallelForJobReferenceProcedureProcess(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
        procedure ParallelForJobReferenceProcedureFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
        procedure ParallelForStartJobReferenceProcedureFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
-{$endif}
+{$ENDIF}
        procedure ParallelForJobFunctionProcess(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
        procedure ParallelForJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
        procedure ParallelForStartJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
@@ -2385,55 +2405,55 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        procedure ParallelIndirectMergeSortJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
        procedure ParallelIndirectMergeSortRootJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
       public
-       constructor Create(const CountThreads:TPasMPInt32=-1;const MinimumCountThreads:TPasMPInt32=-1;const MaximumCountThreads:TPasMPInt32=-1;const ThreadHeadRoomForForeignTasks:TPasMPInt32=0;const DoCPUCorePinning:boolean=true;const SleepingOnIdle:boolean=true;const AllWorkerThreadsHaveOwnSystemThreads:boolean=false;const Profiling:boolean=false;const WorkerThreadPriority:TThreadPriority=TThreadPriority.tpNormal;const WorkerThreadStackSize:TPasMPSizeUInt=0;const WorkerThreadMaxDepth:TPasMPUInt32=0);
+       constructor Create(const CountThreads:TPasMPInt32=-1;const MinimumCountThreads:TPasMPInt32=-1;const MaximumCountThreads:TPasMPInt32=-1;const ThreadHeadRoomForForeignTasks:TPasMPInt32=0;const DoCPUCorePinning:Boolean=true;const SleepingOnIdle:Boolean=true;const AllWorkerThreadsHaveOwnSystemThreads:Boolean=false;const Profiling:Boolean=false;const WorkerThreadPriority:TThreadPriority=TThreadPriority.tpNormal;const WorkerThreadStackSize:TPasMPSizeUInt=0;const WorkerThreadMaxDepth:TPasMPUInt32=0);
        destructor Destroy; override;
        class function CreateGlobalInstance:TPasMP;
        class procedure DestroyGlobalInstance;
-       class function GetGlobalInstance:TPasMP; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       class function GetCountOfPhysicalCores(out AvailableCPUCores:TPasMPAvailableCPUCores):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}
-       class function GetCountOfHardwareThreads(out AvailableCPUCores:TPasMPAvailableCPUCores):TPasMPInt32; {$ifdef HAS_STATIC}static;{$endif}
-       class procedure Relax; {$ifdef HAS_STATIC}static;{$endif}{$if defined(CPU386) or defined(CPUx86_64)}{$elseif defined(CAN_INLINE)}inline;{$ifend}
-       class procedure Yield; {$ifdef HAS_STATIC}static;{$endif}{$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
-       class function Once(var OnceControl:TPasMPOnce;const InitRoutine:TPasMPOnceInitRoutine):boolean; {$ifdef Linux}{$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}{$endif}
-       class function IsJobCompleted(const Job:PPasMPJob):boolean; {$ifdef CAN_INLINE}inline;{$endif}
-       class function IsJobValid(const Job:PPasMPJob):boolean; {$ifdef CAN_INLINE}inline;{$endif}
-       class function EncodeJobPriorityToJobFlags(const JobPriority:TPasMPJobPriority):TPasMPUInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function DecodeJobPriorityFromJobFlags(const Flags:TPasMPUInt32):TPasMPJobPriority; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function EncodeJobTagToJobFlags(const JobTag:TPasMPUInt32):TPasMPUInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
-       class function DecodeJobTagFromJobFlags(const Flags:TPasMPUInt32):TPasMPUInt32; {$ifdef HAS_STATIC}static;{$endif}{$ifdef CAN_INLINE}inline;{$endif}
+       class function GetGlobalInstance:TPasMP; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       class function GetCountOfPhysicalCores(out AvailableCPUCores:TPasMPAvailableCPUCores):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}
+       class function GetCountOfHardwareThreads(out AvailableCPUCores:TPasMPAvailableCPUCores):TPasMPInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}
+       class procedure Relax; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}{$ELSEIF DEFINED(CAN_INLINE)}inline;{$IFEND}
+       class procedure Yield; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+       class function Once(var OnceControl:TPasMPOnce;const InitRoutine:TPasMPOnceInitRoutine):Boolean; {$IFDEF Linux}{$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}{$ENDIF}
+       class function IsJobCompleted(const Job:PPasMPJob):Boolean; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function IsJobValid(const Job:PPasMPJob):Boolean; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function EncodeJobPriorityToJobFlags(const JobPriority:TPasMPJobPriority):TPasMPUInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function DecodeJobPriorityFromJobFlags(const Flags:TPasMPUInt32):TPasMPJobPriority; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function EncodeJobTagToJobFlags(const JobTag:TPasMPUInt32):TPasMPUInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
+       class function DecodeJobTagFromJobFlags(const Flags:TPasMPUInt32):TPasMPUInt32; {$IFDEF HAS_STATIC}static;{$ENDIF}{$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure Reset;
-       function CreateScope:TPasMPScope; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       function CreateScope:TPasMPScope; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        function GetJobWorkerThreadIndex:TPasMPInt32;
-{$ifdef HAS_ANONYMOUS_METHODS}
-       function Acquire(const JobReferenceProcedure:TPasMPJobReferenceProcedure;const Data:pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
-{$endif}
-       function Acquire(const JobProcedure:TPasMPJobProcedure;const Data:pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
-       function Acquire(const JobMethod:TPasMPJobMethod;const Data:pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
-       function Acquire(const JobTask:TPasMPJobTask;const Data:pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
-       procedure Release(const Job:PPasMPJob); overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+{$IFDEF HAS_ANONYMOUS_METHODS}
+       function Acquire(const JobReferenceProcedure:TPasMPJobReferenceProcedure;const Data:Pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
+{$ENDIF}
+       function Acquire(const JobProcedure:TPasMPJobProcedure;const Data:Pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
+       function Acquire(const JobMethod:TPasMPJobMethod;const Data:Pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
+       function Acquire(const JobTask:TPasMPJobTask;const Data:Pointer=nil;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob; overload;
+       procedure Release(const Job:PPasMPJob); overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        procedure Release(const Jobs:array of PPasMPJob); overload;
-       procedure Run(const Job:PPasMPJob;const GlobalQueue:Boolean=false); overload; {$ifdef fpc}{$ifdef CAN_INLINE}inline;{$endif}{$endif}
+       procedure Run(const Job:PPasMPJob;const GlobalQueue:Boolean=false); overload; {$IFDEF fpc}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
        procedure Run(const Jobs:array of PPasMPJob;const GlobalQueue:Boolean=false); overload;
-       function StealAndExecuteJob:boolean;
+       function StealAndExecuteJob:Boolean;
        procedure Wait(const Job:PPasMPJob); overload;
        procedure Wait(const Jobs:array of PPasMPJob); overload;
-       procedure RunWait(const Job:PPasMPJob); overload; {$ifdef CAN_INLINE}inline;{$endif}
+       procedure RunWait(const Job:PPasMPJob); overload; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure RunWait(const Jobs:array of PPasMPJob); overload;
-       procedure WaitRelease(const Job:PPasMPJob); overload; {$ifdef CAN_INLINE}inline;{$endif}
+       procedure WaitRelease(const Job:PPasMPJob); overload; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure WaitRelease(const Jobs:array of PPasMPJob); overload;
-       procedure Invoke(const Job:PPasMPJob); overload; {$ifdef CAN_INLINE}inline;{$endif}
+       procedure Invoke(const Job:PPasMPJob); overload; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure Invoke(const Jobs:array of PPasMPJob); overload;
-       procedure Invoke(const JobTask:TPasMPJobTask); overload; {$ifdef CAN_INLINE}inline;{$endif}
+       procedure Invoke(const JobTask:TPasMPJobTask); overload; {$IFDEF CAN_INLINE}inline;{$ENDIF}
        procedure Invoke(const JobTasks:array of TPasMPJobTask); overload;
-{$ifdef HAS_ANONYMOUS_METHODS}
-       function ParallelFor(const Data:pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForReferenceProcedure:TPasMPParallelForReferenceProcedure;const Granularity:TPasMPInt32=1;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0;const RecursiveSplit:Boolean=true):PPasMPJob; overload;
-{$endif}
-       function ParallelFor(const Data:pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForProcedure:TPasMPParallelForProcedure;const Granularity:TPasMPInt32=1;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0;const RecursiveSplit:Boolean=true):PPasMPJob; overload;
-       function ParallelFor(const Data:pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForMethod:TPasMPParallelForMethod;const Granularity:TPasMPInt32=1;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0;const RecursiveSplit:Boolean=true):PPasMPJob; overload;
-       function ParallelDirectIntroSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
-       function ParallelIndirectIntroSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
-       function ParallelDirectMergeSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
-       function ParallelIndirectMergeSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
+{$IFDEF HAS_ANONYMOUS_METHODS}
+       function ParallelFor(const Data:Pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForReferenceProcedure:TPasMPParallelForReferenceProcedure;const Granularity:TPasMPInt32=1;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0;const RecursiveSplit:Boolean=true):PPasMPJob; overload;
+{$ENDIF}
+       function ParallelFor(const Data:Pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForProcedure:TPasMPParallelForProcedure;const Granularity:TPasMPInt32=1;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0;const RecursiveSplit:Boolean=true):PPasMPJob; overload;
+       function ParallelFor(const Data:Pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForMethod:TPasMPParallelForMethod;const Granularity:TPasMPInt32=1;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0;const RecursiveSplit:Boolean=true):PPasMPJob; overload;
+       function ParallelDirectIntroSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
+       function ParallelIndirectIntroSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
+       function ParallelDirectMergeSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
+       function ParallelIndirectMergeSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32=16;const Depth:TPasMPInt32=PasMPDefaultDepth;const ParentJob:PPasMPJob=nil;const Flags:TPasMPUInt32=0;const AreaMask:TPasMPUInt32=0;const AvoidAreaMask:TPasMPUInt32=0):PPasMPJob;
        property JobWorkerThread:TPasMPJobWorkerThread read GetJobWorkerThread;
        property JobWorkerThreads:TPasMPJobWorkerThreads read fJobWorkerThreads;
        property CountJobWorkerThreads:TPasMPInt32 read fCountJobWorkerThreads;
@@ -2443,7 +2463,7 @@ type TPasMPAvailableCPUCores=array of TPasMPInt32;
        property OnCheckJobExecution:TPasMPOnCheckJobExecution read fOnCheckJobExecution write fOnCheckJobExecution;
        property RespectJobAvoidAreaMasks:TPasMPBool32 read fRespectJobAvoidAreaMasks write fRespectJobAvoidAreaMasks;
      end;
-{$if defined(fpc) and (fpc_version>=3)}{$pop}{$ifend}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$pop}{$IFEND}
 
 var GlobalPasMP:TPasMP=nil; // "Optional" singleton-like global PasMP instance
 
@@ -2451,61 +2471,61 @@ var GlobalPasMP:TPasMP=nil; // "Optional" singleton-like global PasMP instance
     GlobalPasMPMinimumCountThreads:TPasMPInt32=-1;
     GlobalPasMPMaximumCountThreads:TPasMPInt32=-1;
     GlobalPasMPThreadHeadRoomForForeignTasks:TPasMPInt32=0;
-    GlobalPasMPDoCPUCorePinning:boolean=true;
-    GlobalPasMPSleepingOnIdle:boolean=true;
-    GlobalPasMPAllWorkerThreadsHaveOwnSystemThreads:boolean=false;
-    GlobalPasMPProfiling:boolean=false;
+    GlobalPasMPDoCPUCorePinning:Boolean=true;
+    GlobalPasMPSleepingOnIdle:Boolean=true;
+    GlobalPasMPAllWorkerThreadsHaveOwnSystemThreads:Boolean=false;
+    GlobalPasMPProfiling:Boolean=false;
     GlobalPasMPWorkerThreadPriority:TThreadPriority=TThreadPriority.tpNormal;
-    GlobalPasMPOverrideThreadPriorityFunctions:boolean=false;
+    GlobalPasMPOverrideThreadPriorityFunctions:Boolean=false;
     GlobalPasMPWorkerThreadStackSize:TPasMPSizeUInt=0;
     GlobalPasMPWorkerThreadMaxDepth:TPasMPUInt32=0;
 
     GPasMP:TPasMP absolute GlobalPasMP; // A shorter name for lazy peoples
 
-{$if defined(fpc)}
-{$elseif CompilerVersion>=25}
-{$elseif defined(fpc)}
-procedure FallbackMemoryBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-{$elseif CompilerVersion>=25}
-procedure FallbackReadBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackMemoryBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-{$elseif defined(CPU386)}
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-{$elseif defined(CPUx86)}
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-{$elseif defined(CPUAARCH64)}
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-{$elseif defined(CPUARM)}
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
-{$else}
-procedure FallbackReadBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackReadWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-procedure FallbackMemoryBarrier; {$ifdef CAN_INLINE}inline;{$endif}
-{$ifend}
+{$IF DEFINED(fpc)}
+{$ELSEIF CompilerVersion>=25}
+{$ELSEIF DEFINED(fpc)}
+procedure FallbackMemoryBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+{$ELSEIF CompilerVersion>=25}
+procedure FallbackReadBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackMemoryBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+{$ELSEIF DEFINED(CPU386)}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+{$ELSEIF DEFINED(CPUx86)}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+{$ELSEIF DEFINED(CPUAARCH64)}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+{$ELSEIF DEFINED(CPUARM)}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
+{$ELSE}
+procedure FallbackReadBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackReadWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+procedure FallbackMemoryBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+{$IFEND}
 
-{$if defined(cpu386)}
-{$ifndef fpc}
+{$IF DEFINED(cpu386)}
+{$IFNDEF fpc}
 function BSFDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register;
 function BSRDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register;
 function BSFQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall;
@@ -2516,89 +2536,91 @@ function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall;
 function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall;
 function POPCNTDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register;
 function POPCNTQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall;
-{$endif}
-{$elseif defined(cpux86_64)}
-{$ifndef fpc}
-function BSFDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function BSRDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function BSFQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function BSRQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function POPCNTDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-function POPCNTQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
-{$endif}
-{$elseif not defined(fpc)}
-function UInt64Mul(a,b:TPasMPUInt64):TPasMPUInt64;{$ifdef cpu386}assembler; stdcall;{$else}{$ifdef cpu64}{$ifdef CAN_INLINE}inline;{$endif}{$endif}{$endif}
-function BSFDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function BSFQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function BSRDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function BSRQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function CLZDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function CLZQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function CTZDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function CTZQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function POPCNTDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function POPCNTQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
-{$ifend}
+{$ENDIF}
+{$ELSEIF DEFINED(cpux86_64)}
+{$IFNDEF fpc}
+function BSFDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function BSRDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function BSFQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function BSRQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function POPCNTDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+function POPCNTQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
+{$ENDIF}
+{$ELSEIF not DEFINED(fpc)}
+function UInt64Mul(a,b:TPasMPUInt64):TPasMPUInt64;{$IFDEF cpu386}assembler; stdcall;{$ELSE}{$IFDEF cpu64}{$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}{$ENDIF}
+function BSFDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function BSFQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function BSRDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function BSRQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function CLZDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function CLZQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function CTZDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function CTZQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function POPCNTDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function POPCNTQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+{$IFEND}
 
-{$ifdef fpc}
-function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
-function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
-{$endif}
+{$IFDEF fpc}
+function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
+{$ENDIF}
 
 implementation
 
 const PasMPBarrierFlag=TPasMPInt32(1) shl 30;
 
-{$ifdef UseThreadLocalStorage}
-{$if defined(UseThreadLocalStorageX8632) or defined(UseThreadLocalStorageX8664)}
+{$IFDEF UseThreadLocalStorage}
+{$IF DEFINED(UseThreadLocalStorageX8632) or DEFINED(UseThreadLocalStorageX8664)}
 var CurrentJobWorkerThreadTLSIndex,CurrentJobWorkerThreadTLSOffset:TPasMPInt32;
-{$else}
+{$ELSE}
 threadvar CurrentJobWorkerThread:TPasMPJobWorkerThread;
-{$ifend}
-{$endif}
+{$IFEND}
+{$ENDIF}
 
 var GlobalPasMPCriticalSection:TPasMPCriticalSection=nil;
 
-{$ifdef PasMPUseGlobalPasMPCountOfHardwareThreads}
+{$IFDEF PasMPUseGlobalPasMPCountOfHardwareThreads}
     GlobalPasMPCountOfHardwareThreads:TPasMPInt32=-1;
 
     GlobalPasMPAvailableCPUCores:TPasMPAvailableCPUCores;
-{$endif}
+{$ENDIF}
 
-{$ifdef fpc}
- {$undef OldDelphi}
-{$else}
- {$ifdef conditionalexpressions}
-  {$if CompilerVersion>=23.0}
-   {$undef OldDelphi}
+{$IFDEF fpc}
+ {$UNDEF OldDelphi}
+{$ELSE}
+ {$IFDEF conditionalexpressions}
+  {$IF CompilerVersion>=23.0}
+   {$UNDEF OldDelphi}
 type qword=uint64;
      ptruint=NativeUInt;
      ptrint=NativeInt;
-  {$else}
-   {$define OldDelphi}
-  {$ifend}
- {$else}
-  {$define OldDelphi}
- {$endif}
-{$endif}
-{$ifdef OldDelphi}
+  {$ELSE}
+   {$DEFINE OldDelphi}
+  {$IFEND}
+ {$ELSE}
+  {$DEFINE OldDelphi}
+ {$ENDIF}
+{$ENDIF}
+{$IFDEF OldDelphi}
 type qword=TPasMPInt64;
-{$ifdef CPU64}
+{$IFDEF CPU64}
      ptruint=qword;
      ptrint=TPasMPInt64;
-{$else}
+{$ELSE}
      ptruint=TPasMPUInt32;
      ptrint=TPasMPInt32;
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
+type
+  Bool = Boolean;
 
 function SwitchToThread:BOOL; external 'kernel32.dll' name 'SwitchToThread';
 
@@ -2617,23 +2639,23 @@ procedure AcquireSRWLockExclusive(SRWLock:PPasMPSRWLock); stdcall; external 'ker
 function TryAcquireSRWLockExclusive(SRWLock:PPasMPSRWLock):bool; stdcall; external 'kernel32.dll' name 'TryAcquireSRWLockExclusive';
 procedure ReleaseSRWLockExclusive(SRWLock:PPasMPSRWLock); stdcall; external 'kernel32.dll' name 'ReleaseSRWLockExclusive';
 
-{$elseif defined(Linux) or defined(Android)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)}
+{$IFDEF fpc}
 const _SC_UIO_MAXIOV=60;
       _SC_NPROCESSORS_CONF=(_SC_UIO_MAXIOV)+23;
 
-{$if defined(PasMPPThreadBarrier)}
+{$IF DEFINED(PasMPPThreadBarrier)}
       PTHREAD_BARRIER_SERIAL_THREAD=-1;
-{$ifend}
+{$IFEND}
 
 type cpu_set_p=^cpu_set_t;
      cpu_set_t=TPasMPInt64;
 
-{$ifdef fpc}
+{$IFDEF fpc}
 {$linklib c}
-{$endif}
+{$ENDIF}
 
-{$if defined(Android) or not defined(fpc)}
+{$IF DEFINED(Android) or not DEFINED(fpc)}
 type ppthread_mutex_t=^pthread_mutex_t;
      ppthread_mutexattr_t=^pthread_mutexattr_t;
 
@@ -2645,14 +2667,14 @@ type ppthread_mutex_t=^pthread_mutex_t;
 
      Psem_t=^sem_t;
 
-{$if defined(PasMPPThreadSpinLock)}
+{$IF DEFINED(PasMPPThreadSpinLock)}
      pthread_spinlock_t=TPasMPSpinLockPThreadSpinLock;
      ppthread_spinlock_t=^pthread_spinlock_t;
      TPthreadSpinlock=pthread_spinlock_t;
      PTPthreadSpinlock=^TPthreadSpinlock;
-{$ifend}
+{$IFEND}
 
-{$if defined(PasMPPThreadBarrier)}
+{$IF DEFINED(PasMPPThreadBarrier)}
      Ppthread_barrier_t=^pthread_barrier_t;
      pthread_barrier_t=TPasMPSpinLockPThreadBarrier;
 
@@ -2662,19 +2684,19 @@ type ppthread_mutex_t=^pthread_mutex_t;
      ppthread_barrierattr_t=^pthread_barrierattr_t;
      TPthreadBarrierAttribute=pthread_barrierattr_t;
      PPthreadBarrierAttribute=^TPthreadBarrierAttribute;
-{$ifend}
+{$IFEND}
 
-{$ifend}
+{$IFEND}
 
 function sysconf(__name:TPasMPInt32):TPasMPInt32; cdecl; external 'c' name 'sysconf';
 
-function sched_getaffinity(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:pointer):TPasMPInt32; cdecl; external 'c' name 'sched_getaffinity';
-function sched_setaffinity(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:pointer):TPasMPInt32; cdecl; external 'c' name 'sched_setaffinity';
+function sched_getaffinity(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:Pointer):TPasMPInt32; cdecl; external 'c' name 'sched_getaffinity';
+function sched_setaffinity(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:Pointer):TPasMPInt32; cdecl; external 'c' name 'sched_setaffinity';
 
-function pthread_setaffinity_np(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:pointer):TPasMPInt32; cdecl; external 'c' name 'pthread_setaffinity_np';
-function pthread_getaffinity_np(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:pointer):TPasMPInt32; cdecl; external 'c' name 'pthread_getaffinity_np';
+function pthread_setaffinity_np(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:Pointer):TPasMPInt32; cdecl; external 'c' name 'pthread_setaffinity_np';
+function pthread_getaffinity_np(pid:ptruint;cpusetsize:TPasMPInt32;cpuset:Pointer):TPasMPInt32; cdecl; external 'c' name 'pthread_getaffinity_np';
 
-{$if defined(Android) or not defined(fpc)}
+{$IF DEFINED(Android) or not DEFINED(fpc)}
 function pthread_mutex_init(__mutex:ppthread_mutex_t;__mutex_attr:ppthread_mutexattr_t):TPasMPInt32; cdecl; external 'c' name 'pthread_mutex_init';
 function pthread_mutex_destroy(__mutex:ppthread_mutex_t):TPasMPInt32; cdecl; external 'c' name 'pthread_mutex_destroy';
 function pthread_mutex_trylock(__mutex:ppthread_mutex_t):TPasMPInt32; cdecl; external 'c' name 'pthread_mutex_trylock';
@@ -2698,19 +2720,19 @@ function pthread_rwlock_trywrlock(__rwlock:Ppthread_rwlock_t):TPasMPInt32; cdecl
 function pthread_rwlock_timedwrlock(__rwlock:Ppthread_rwlock_t;__abstime:PPasMPTimeSpec):TPasMPInt32; cdecl; external 'c' name 'pthread_rwlock_timedwrlock';
 function pthread_rwlock_unlock(__rwlock:Ppthread_rwlock_t):TPasMPInt32; cdecl; external 'c' name 'pthread_rwlock_unlock';
 
-{$if defined(PasMPPThreadSpinLock)}
+{$IF DEFINED(PasMPPThreadSpinLock)}
 function pthread_spin_init(__lock:Ppthread_spinlock_t;__pshared:TPasMPInt32):TPasMPInt32; cdecl; external 'c' name 'pthread_spin_init';
 function pthread_spin_destroy(__lock:Ppthread_spinlock_t):TPasMPInt32; cdecl; external 'c' name 'pthread_spin_destroy';
 function pthread_spin_lock(__lock:Ppthread_spinlock_t):TPasMPInt32; cdecl; external 'c' name 'pthread_spin_lock';
 function pthread_spin_trylock(__lock:Ppthread_spinlock_t):TPasMPInt32; cdecl; external 'c' name 'pthread_spin_trylock';
 function pthread_spin_unlock(__lock:Ppthread_spinlock_t):TPasMPInt32; cdecl; external 'c' name 'pthread_spin_unlock';
-{$ifend}
+{$IFEND}
 
-{$if defined(PasMPPThreadBarrier)}
+{$IF DEFINED(PasMPPThreadBarrier)}
 function pthread_barrier_init(__barrier:Ppthread_barrier_t;__attr:Ppthread_barrierattr_t;__count:TPasMPUInt32):TPasMPInt32; cdecl; external 'c' name 'pthread_barrier_init';
 function pthread_barrier_destroy(__barrier:Ppthread_barrier_t):TPasMPInt32; cdecl; external 'c' name 'pthread_barrier_destroy';
 function pthread_barrier_wait(__barrier:Ppthread_barrier_t):TPasMPInt32; cdecl; external 'c' name 'pthread_barrier_wait';
-{$ifend}
+{$IFEND}
 
 function sem_init(__sem:Psem_t;__pshared:TPasMPInt32;__value:TPasMPUInt32):TPasMPInt32; cdecl; external 'c' name 'sem_init';
 function sem_destroy(__sem:Psem_t):TPasMPInt32; cdecl; external 'c' name 'sem_destroy';
@@ -2721,11 +2743,11 @@ function sem_trywait(__sem:Psem_t):TPasMPInt32; cdecl; external 'c' name 'sem_tr
 function sem_post(__sem:Psem_t):TPasMPInt32; cdecl; external 'c' name 'sem_post';
 function sem_getvalue(__sem:Psem_t;__sval:PPasMPInt32):TPasMPInt32; cdecl; external 'c' name 'sem_getvalue';
 function sem_timedwait(__sem:Psem_t;__abstime:PPasMPTimeSpec):TPasMPInt32; cdecl; external 'c' name 'sem_timedwait';
-{$ifend}
+{$IFEND}
 
-{$else}
+{$ELSE}
 
-{$if defined(PasMPPThreadSpinLock)}
+{$IF DEFINED(PasMPPThreadSpinLock)}
 type pthread_spinlock_t=TPasMPSpinLockPThreadSpinLock;
      ppthread_spinlock_t=^pthread_spinlock_t;
      TPthreadSpinlock=pthread_spinlock_t;
@@ -2738,9 +2760,9 @@ function pthread_spin_trylock(__lock:Ppthread_spinlock_t):TPasMPInt32; cdecl; ex
 function pthread_spin_unlock(__lock:Ppthread_spinlock_t):TPasMPInt32; cdecl; external libpthread name _PU+'pthread_spin_unlock';
 
 
-{$ifend}
+{$IFEND}
 
-{$if defined(PasMPPThreadBarrier)}
+{$IF DEFINED(PasMPPThreadBarrier)}
 const PTHREAD_BARRIER_SERIAL_THREAD=-1;
 
 type Ppthread_barrier_t=^pthread_barrier_t;
@@ -2757,25 +2779,25 @@ function pthread_barrier_init(__barrier:Ppthread_barrier_t;__attr:Ppthread_barri
 function pthread_barrier_destroy(__barrier:Ppthread_barrier_t):TPasMPInt32; cdecl; external libpthread name _PU+'pthread_barrier_destroy';
 function pthread_barrier_wait(__barrier:Ppthread_barrier_t):TPasMPInt32; cdecl; external libpthread name _PU+'pthread_barrier_wait';
 
-{$ifend}
+{$IFEND}
 
-{$endif}
+{$ENDIF}
 
-{$ifend}
+{$IFEND}
 
-{$ifdef fpc}
-{$if defined(Linux) and not (defined(Android) or declared(pthread_condattr_setclock))}
+{$IFDEF fpc}
+{$IF DEFINED(Linux) and not (DEFINED(Android) or DECLARED(pthread_condattr_setclock))}
 function pthread_condattr_setclock(Attr:ppthread_condattr_t;clockid:TPasMPInt32):TPasMPInt32; cdecl; external 'c' name 'pthread_condattr_setclock';
-{$ifend}
-{$else}
-{$if defined(Linux) and not defined(Android)}
+{$IFEND}
+{$ELSE}
+{$IF DEFINED(Linux) and not DEFINED(Android)}
 function pthread_condattr_setclock(var Attr:pthread_condattr_t;clockid:TPasMPInt32):TPasMPInt32; cdecl; external 'c' name 'pthread_condattr_setclock';
-{$ifend}
-{$endif}
+{$IFEND}
+{$ENDIF}
 
-{$if defined(cpu386)}
-{$ifndef fpc}
-function BSFDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+{$IF DEFINED(cpu386)}
+{$IFNDEF fpc}
+function BSFDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsf eax,eax
  jnz @Done
@@ -2783,7 +2805,7 @@ asm
 @Done:
 end;
 
-function BSRDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function BSRDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsr eax,eax
  jnz @Done
@@ -2791,7 +2813,7 @@ asm
 @Done:
 end;
 
-function BSFQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$ifdef fpc}nostackframe;{$endif}
+function BSFQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsf eax,dword ptr [Value+0]
  jnz @Done
@@ -2804,7 +2826,7 @@ asm
 @Done:
 end;
 
-function BSRQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$ifdef fpc}nostackframe;{$endif}
+function BSRQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsr eax,dword ptr [Value+4]
  jz @LowPart
@@ -2818,7 +2840,7 @@ asm
 @Done:
 end;
 
-function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsf eax,eax
  jnz @Done
@@ -2826,7 +2848,7 @@ asm
 @Done:
 end;
 
-function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsr edx,eax
  jnz @Done
@@ -2837,7 +2859,7 @@ asm
  sub eax,edx
 end;
 
-function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$ifdef fpc}nostackframe;{$endif}
+function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsf eax,dword ptr [Value+0]
  jnz @Done
@@ -2851,7 +2873,7 @@ asm
 @Done:
 end;
 
-function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$ifdef fpc}nostackframe;{$endif}
+function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; stdcall; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
  bsr edx,dword ptr [Value+4]
  jz @LowPart
@@ -2975,92 +2997,92 @@ asm
 
  add eax,ecx
 end;
-{$endif}
+{$ENDIF}
 
-{$elseif defined(cpux86_64)}
+{$ELSEIF DEFINED(cpux86_64)}
 
-{$ifndef fpc}
-function BSFDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+{$IFNDEF fpc}
+function BSFDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsf eax,ecx
-{$else}
+{$ELSE}
  bsf eax,edi
-{$endif}
+{$ENDIF}
  jnz @Done
  mov eax,255
 @Done:
 end;
 
-function BSRDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function BSRDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsr eax,ecx
-{$else}
+{$ELSE}
  bsr eax,edi
-{$endif}
+{$ENDIF}
  jnz @Done
  mov eax,255
 @Done:
 end;
 
-function BSFQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function BSFQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsf rax,rcx
-{$else}
+{$ELSE}
  bsf rax,rdi
-{$endif}
+{$ENDIF}
  jnz @Done
  mov eax,255
 @Done:
 end;
 
-function BSRQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function BSRQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsr rax,rcx
-{$else}
+{$ELSE}
  bsr rax,rdi
-{$endif}
+{$ENDIF}
  jnz @Done
  mov eax,255
 @Done:
 end;
 
-function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsf eax,ecx
-{$else}
+{$ELSE}
  bsf eax,edi
-{$endif}
+{$ENDIF}
  jnz @Done
  mov eax,32
 @Done:
 end;
 
-function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsr ecx,ecx
  jnz @Done
  xor ecx,ecx
@@ -3068,7 +3090,7 @@ asm
 @Done:
  mov eax,31
  sub eax,ecx
-{$else}
+{$ELSE}
  bsr edi,edi
  jnz @Done
  xor edi,edi
@@ -3076,30 +3098,30 @@ asm
 @Done:
  mov eax,31
  sub eax,edi
-{$endif}
+{$ENDIF}
 end;
 
-function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsf rax,rcx
-{$else}
+{$ELSE}
  bsf rax,rdi
-{$endif}
+{$ENDIF}
  jnz @Done
  mov eax,64
 @Done:
 end;
 
-function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  bsr rcx,rcx
  jnz @Done
  xor rcx,rcx
@@ -3107,7 +3129,7 @@ asm
 @Done:
  mov rax,63
  sub rax,rcx
-{$else}
+{$ELSE}
  bsr rdi,rdi
  jnz @Done
  xor rdi,rdi
@@ -3115,19 +3137,19 @@ asm
 @Done:
  mov rax,63
  sub rax,rdi
-{$endif}
+{$ENDIF}
 end;
 
-function POPCNTDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function POPCNTDWord(Value:TPasMPUInt32):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  mov eax,ecx
-{$else}
+{$ELSE}
  mov eax,edi
-{$endif}
+{$ENDIF}
 
  // result:=Value-((Value shr 1) and $55555555);
  mov edx,eax
@@ -3162,16 +3184,16 @@ asm
  and eax,$3f
 end;
 
-function POPCNTQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$ifdef fpc}nostackframe;{$endif}
+function POPCNTQWord(Value:TPasMPUInt64):TPasMPUInt32; assembler; register; {$IFDEF fpc}nostackframe;{$ENDIF}
 asm
-{$ifndef fpc}
+{$IFNDEF fpc}
  .NOFRAME
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  mov rax,rcx
-{$else}
+{$ELSE}
  mov rax,rdi
-{$endif}
+{$ENDIF}
 
  // result:=Value-((Value shr 1) and $5555555555555555);
  mov rdx,rax
@@ -3213,11 +3235,11 @@ asm
  // result:=result and $7f;
  and rax,$7f
 end;
-{$endif}
+{$ENDIF}
 
-{$elseif not defined(fpc)}
+{$ELSEIF not DEFINED(fpc)}
 
-function UInt64Mul(a,b:TPasMPUInt64):TPasMPUInt64;{$ifdef cpu386}assembler; stdcall;
+function UInt64Mul(a,b:TPasMPUInt64):TPasMPUInt64;{$IFDEF cpu386}assembler; stdcall;
 asm
  push ebx
  push esi
@@ -3239,12 +3261,12 @@ asm
  pop esi
  pop ebx
 end;
-{$else}
-{$ifdef cpu64}{$ifdef CAN_INLINE}inline;{$endif}
+{$ELSE}
+{$IFDEF cpu64}{$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  result:=a*b;
 end;
-{$else}
+{$ELSE}
 var al,ah,bl,bh,zl,zh:TPasMPUInt32;
 begin
  al:=a and $ffffffff;
@@ -3255,10 +3277,10 @@ begin
  zh:=(al*bh)+(ah*bl)+(((al shr 1)*(bl shr 1)) shr 30);
  result:=(uint64(zh) shl 32) or uint64(zl);
 end;
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 
-function BSFDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function BSFDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=255;
@@ -3267,7 +3289,7 @@ begin
  end;
 end;
 
-function BSFQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function BSFQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=255;
@@ -3276,7 +3298,7 @@ begin
  end;
 end;
 
-function BSRDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function BSRDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=255;
@@ -3290,7 +3312,7 @@ begin
  end;
 end;
 
-function BSRQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function BSRQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=255;
@@ -3305,7 +3327,7 @@ begin
  end;
 end;
 
-function CLZDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function CLZDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=32;
@@ -3319,7 +3341,7 @@ begin
  end;
 end;
 
-function CLZQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function CLZQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=64;
@@ -3334,7 +3356,7 @@ begin
  end;
 end;
 
-function CTZDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function CTZDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=32;
@@ -3343,7 +3365,7 @@ begin
  end;
 end;
 
-function CTZQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function CTZQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=64;
@@ -3352,7 +3374,7 @@ begin
  end;
 end;
 
-function POPCNTDWord(Value:TPasMPUInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function POPCNTDWord(Value:TPasMPUInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  Value:=Value-((Value shr 1) and longword($55555555));
  Value:=(Value and longword($33333333))+((Value shr 2) and longword($33333333));
@@ -3362,7 +3384,7 @@ begin
  result:=Value and $3f;
 end;
 
-function POPCNTQWord(Value:TPasMPUInt64):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function POPCNTQWord(Value:TPasMPUInt64):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  Value:=Value-((Value shr 1) and uint64($5555555555555555));
  Value:=(Value and uint64($3333333333333333))+((Value shr 2) and uint64($3333333333333333));
@@ -3372,10 +3394,10 @@ begin
  inc(Value,Value shr 32);
  result:=Value and $7f;
 end;
-{$ifend}
+{$IFEND}
 
-{$ifdef fpc}
-function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
+{$IFDEF fpc}
+function CTZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=32;
@@ -3384,7 +3406,7 @@ begin
  end;
 end;
 
-function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function CLZDWord(Value:TPasMPUInt32):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=0;
@@ -3393,7 +3415,7 @@ begin
  end;
 end;
 
-function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function CTZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=64;
@@ -3402,7 +3424,7 @@ begin
  end;
 end;
 
-function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function CLZQWord(Value:TPasMPUInt64):TPasMPUInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  if Value=0 then begin
   result:=0;
@@ -3410,9 +3432,9 @@ begin
   result:=63-BSRQWord(Value);
  end;
 end;
-{$endif}
+{$ENDIF}
 
-{$if defined(FPC) and defined(CPUAArch64) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+{$IF DEFINED(FPC) and DEFINED(CPUAArch64) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
 (*function IsCASPInstructionSupported:Boolean; assembler;
 asm
  .pushnv
@@ -3433,7 +3455,7 @@ asm
  .popnv
 end;*)
 
-{$if defined(Darwin)}
+{$IF DEFINED(Darwin)}
 // Using casp instruction (recommended for ARMv8.1-A and later)
 (*function _InterlockedCompareExchange128_(Dest:PPasMPInt64;XChgHigh,XChgLow:TPasMPInt64;Compare:PPasMPInt64):TPasMPUInt8; assembler; nostackframe;
 asm
@@ -3517,7 +3539,7 @@ asm
  str q0, [x8]
  add sp, sp, #48
 end;
-{$else}
+{$ELSE}
 // Using ldxp and stxp instructions (for broader compatibility, including ARMv8-A)
 (*function _InterlockedCompareExchange128_(Dest:PPasMPInt64;XChgHigh,XChgLow:TPasMPInt64;Compare:PPasMPInt64):TPasMPUInt8; assembler; nostackframe;
 label LBB0_1,LBB0_2,LBB0_3,LBB0_4;
@@ -3619,16 +3641,16 @@ LBB1_4:
  str q0, [x8]
  add sp, sp, #48
 end;
-{$ifend}
+{$IFEND}
 
 function InterlockedCompareExchange128(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record;
 begin
  _InterlockedCompareExchange128(PPasMPInt64(@Destination),NewValue.Hi,NewValue.Lo,PPasMPInt64(@Comperand),PPasMPInt64(@result));
 end;
 
-{$elseif defined(FPC) and defined(CPUARM) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
-{$if defined(CPUARM_HAS_LDREX)}
-function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+{$ELSEIF DEFINED(FPC) and DEFINED(CPUARM) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+{$IF DEFINED(CPUARM_HAS_LDREX)}
+function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 label Loop;
 asm
  // LDREXD and STREXD were introduced in ARM 11, so the LDREXD and STREXD instructions in
@@ -3636,7 +3658,7 @@ asm
  // the LDREXD and STREXD instructions demands that Rm be an even numbered register
  // This routine is for non-thumb code
  // Input:
- // r0 = pointer to Destination
+ // r0 = Pointer to Destination
  // r1 = NewValue.Lo
  // r2 = NewValue.Hi
  // r3 = Comperand.Lo
@@ -3646,70 +3668,70 @@ asm
  ldr r5,[sp,#16] // r5 = Comperand.Hi ([sp+16])
  mov r6,r1 // r6 = NewValue.Lo (r1)
  mov r7,r2 // r7 = NewValue.Hi (r2)
- mov r2,r0 // r2 = pointer to Destination (r0)
-{$if defined(CPUARM_HAS_DMB)} // >= CPUARMV7A
+ mov r2,r0 // r2 = Pointer to Destination (r0)
+{$IF DEFINED(CPUARM_HAS_DMB)} // >= CPUARMV7A
  .long 0xf57ff05f // dmb sy
-{$elseif defined(CPUARMV6K)} // = CPUARMV6K
+{$ELSEIF DEFINED(CPUARMV6K)} // = CPUARMV6K
  .long 0xee072fba // mcr p15,0,r2,c7,c10,5
-{$elseif defined(Linux) or defined(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
  // r0 = kuser_memory_barrier at 0xffff0fa0 (see https://www.kernel.org/doc/Documentation/arm/kernel_user_helpers.txt)
  stmfd r13!,{lr}
  mvn r0,#0x0000f000
  sub r0,r0,#0x5f
-{$if defined(CPUARM_HAS_BLX)}
+{$IF DEFINED(CPUARM_HAS_BLX)}
  blx r0
-{$elseif defined(CPUARM_HAS_BLX)}
+{$ELSEIF DEFINED(CPUARM_HAS_BLX)}
  mov lr,pc
-{$if defined(CPUARM_HAS_BX)}
+{$IF DEFINED(CPUARM_HAS_BX)}
  bx r0
-{$else}
+{$ELSE}
  mov pc,r0
-{$ifend}
+{$IFEND}
  ldmfd r13!,{pc}
-{$ifend}
-{$else} // Otherwise give up
+{$IFEND}
+{$ELSE} // Otherwise give up
  {$error Non-supported target platform configuration}
-{$ifend}
+{$IFEND}
 Loop:
- ldrexd	r0,r1,[r2] // loads r0 and r1 from pointer to Destination (r2), so r0 = Destination.Lo, r1 = Destination.Hi
+ ldrexd	r0,r1,[r2] // loads r0 and r1 from Pointer to Destination (r2), so r0 = Destination.Lo, r1 = Destination.Hi
  eors r3,r0,r4 // compare Destination.Lo (r0) with Comperand.Lo (r4)
  eoreqs r3,r1,r5 // compare Destination.Hi (r1) with Comperand.Hi (r5)
  strexdeq r3,r6,r7,[r2]  // [r2]=r6 and [r2+4]=r7 and r3=result (0 for success or 1 for failure)
  teqeq r3,#1 // 1 for failure and 0 for success
  beq Loop // try again if failed
-{$if defined(CPUARM_HAS_DMB)} // >= CPUARMV7A
+{$IF DEFINED(CPUARM_HAS_DMB)} // >= CPUARMV7A
  .long 0xf57ff05f // dmb sy
-{$elseif defined(CPUARMV6K)} // = CPUARMV6K
+{$ELSEIF DEFINED(CPUARMV6K)} // = CPUARMV6K
  .long 0xee072fba // mcr p15,0,r2,c7,c10,5
-{$elseif defined(Linux) or defined(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
  // r0 = kuser_memory_barrier at 0xffff0fa0 (see https://www.kernel.org/doc/Documentation/arm/kernel_user_helpers.txt)
  stmfd r13!,{lr}
  mvn r0,#0x0000f000
  sub r0,r0,#0x5f
-{$if defined(CPUARM_HAS_BLX)}
+{$IF DEFINED(CPUARM_HAS_BLX)}
  blx r0
-{$elseif defined(CPUARM_HAS_BLX)}
+{$ELSEIF DEFINED(CPUARM_HAS_BLX)}
  mov lr,pc
-{$if defined(CPUARM_HAS_BX)}
+{$IF DEFINED(CPUARM_HAS_BX)}
  bx r0
-{$else}
+{$ELSE}
  mov pc,r0
-{$ifend}
+{$IFEND}
  ldmfd r13!,{pc}
-{$ifend}
-{$else} // Otherwise give up
+{$IFEND}
+{$ELSE} // Otherwise give up
  {$error Non-supported target platform configuration}
-{$ifend}
- // r0 and r1 should contain here now the old Lo and Hi values from pointer to Destination (r2) as
+{$IFEND}
+ // r0 and r1 should contain here now the old Lo and Hi values from Pointer to Destination (r2) as
  // result value registers
  ldmfd sp!,{r4,r5,r6,r7}
 end;
-{$elseif defined(FPC) and defined(CPUAARCH64)}
-function InterlockedCompareExchange128(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+{$ELSEIF DEFINED(FPC) and DEFINED(CPUAARCH64)}
+function InterlockedCompareExchange128(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 label Loop,Fail;
 asm
  // Input:
- // x0 = pointer to Destination
+ // x0 = Pointer to Destination
  // x1 = NewValue.Lo
  // x2 = NewValue.Hi
  // x3 = Comperand.Lo
@@ -3727,10 +3749,10 @@ Loop:
  cbnz w7,Loop
 Fail:
  mov x0,x5
- // x0 and x1 should contain here now the old Lo and Hi values from pointer to Destination (x0) as
+ // x0 and x1 should contain here now the old Lo and Hi values from Pointer to Destination (x0) as
  // result value registers
 end;
-{$elseif defined(Linux) or defined(Android)} // Linux and Android with a kernel version >= 3.1 respectively _kuser_helper_version >= 5
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)} // Linux and Android with a kernel version >= 3.1 respectively _kuser_helper_version >= 5
 function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64;
 type Tkuser__cmpxchg64=function(Comperand,NewValue,Destination:PPasMPInt64):TPasMPInt32;
 begin
@@ -3749,11 +3771,11 @@ begin
   result:=not Comperand;
  end;
 end;
-{$else} // Otherwise give up
+{$ELSE} // Otherwise give up
  {$error Non-supported target platform configuration}
-{$ifend}
+{$IFEND}
 
-{$elseif defined(CPU386)}
+{$ELSEIF DEFINED(CPU386)}
 
 function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64; assembler;
 asm
@@ -3769,12 +3791,12 @@ asm
  pop ebx
 end;
 
-{$elseif defined(CPUx86_64)}
+{$ELSEIF DEFINED(CPUx86_64)}
 
-function InterlockedCompareExchange128(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedCompareExchange128(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
  push rbx
-{$ifdef Windows}
+{$IFDEF Windows}
  push rcx
  mov rbx,qword ptr [r8]
  mov rcx,qword ptr [r8+8]
@@ -3785,21 +3807,21 @@ asm
  pop rcx
  mov qword ptr [rcx],rax
  mov qword ptr [rcx+8],rdx
-{$else}
+{$ELSE}
  mov rbx,rsi
  mov rax,rcx
  mov rcx,rdx
  mov rdx,r8
  lock cmpxchg16b [rdi]
-{$endif}
+{$ENDIF}
  pop rbx
 end;
 
-{$ifend}
+{$IFEND}
 
-{$ifndef fpc}
-{$ifdef CPU386}
-function InterlockedDecrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+{$IFNDEF fpc}
+{$IFDEF CPU386}
+function InterlockedDecrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
  mov edx,$ffffffff
  xchg eax,edx
@@ -3807,7 +3829,7 @@ asm
  dec eax
 end;
 
-function InterlockedIncrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedIncrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
  mov edx,1
  xchg eax,edx
@@ -3815,497 +3837,497 @@ asm
  inc eax
 end;
 
-function InterlockedExchange(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchange(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
  lock xchg dword ptr [eax],edx
  mov eax,edx
 end;
 
-function InterlockedExchangePointer(var Destination:pointer;Source:pointer):pointer; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchangePointer(var Destination:Pointer;Source:Pointer):Pointer; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
  lock xchg dword ptr [eax],edx
  mov eax,edx
 end;
 
-function InterlockedExchangeAdd(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchangeAdd(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
  xchg edx,eax
  lock xadd dword ptr [edx],eax
 end;
 
-function InterlockedCompareExchange(var Destination:TPasMPInt32;NewValue,Comperand:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedCompareExchange(var Destination:TPasMPInt32;NewValue,Comperand:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
  xchg ecx,eax
  lock cmpxchg dword ptr [ecx],edx
 end;
-{$else}
-{$ifdef CPUx86_64}
-function InterlockedDecrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+{$ELSE}
+{$IFDEF CPUx86_64}
+function InterlockedDecrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  mov rax,rcx
-{$else}
+{$ELSE}
  mov rax,rdi
-{$endif}
+{$ENDIF}
  mov edx,$ffffffff
  xchg rdx,rax
  lock xadd dword ptr [rdx],eax
  dec eax
 end;
 
-function InterlockedDecrement64(var Destination:TPasMPInt64):TPasMPInt64; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedDecrement64(var Destination:TPasMPInt64):TPasMPInt64; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  mov rax,rcx
-{$else}
+{$ELSE}
  mov rax,rdi
-{$endif}
+{$ENDIF}
  mov rdx,$ffffffffffffffff
  xchg rdx,rax
  lock xadd qword ptr [rdx],rax
  dec rax
 end;
 
-function InterlockedIncrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedIncrement(var Destination:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  mov rax,rcx
-{$else}
+{$ELSE}
  mov rax,rdi
-{$endif}
+{$ENDIF}
  mov edx,1
  xchg rdx,rax
  lock xadd dword ptr [rdx],eax
  inc eax
 end;
 
-function InterlockedIncrement64(var Destination:TPasMPInt64):TPasMPInt64; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedIncrement64(var Destination:TPasMPInt64):TPasMPInt64; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  mov rax,rcx
-{$else}
+{$ELSE}
  mov rax,rdi
-{$endif}
+{$ENDIF}
  mov rdx,1
  xchg rdx,rax
  lock xadd qword ptr [rdx],rax
  inc rax
 end;
 
-function InterlockedExchange(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchange(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  lock xchg dword ptr [rcx],edx
  mov eax,edx
-{$else}
+{$ELSE}
  lock xchg dword ptr [rdi],esi
  mov eax,esi
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedExchange64(var Destination:TPasMPInt64;NewValue:TPasMPInt64;Comperand:TPasMPInt64):TPasMPInt64; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchange64(var Destination:TPasMPInt64;NewValue:TPasMPInt64;Comperand:TPasMPInt64):TPasMPInt64; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  lock xchg rdx,qword ptr [rcx]
  mov rax,rdx
-{$else}
+{$ELSE}
  lock xchg rsi,qword ptr [rdi]
  mov rax,rsi
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedExchangePointer(var Destination:pointer;Source:pointer):pointer; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchangePointer(var Destination:Pointer;Source:Pointer):Pointer; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  lock xchg rdx,qword ptr [rcx]
  mov rax,rdx
-{$else}
+{$ELSE}
  lock xchg rsi,qword ptr [rdi]
  mov rax,rsi
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedExchangeAdd(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchangeAdd(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  xchg rdx,rcx
  lock xadd dword ptr [rdx],ecx
  mov eax,ecx
-{$else}
+{$ELSE}
  xchg rsi,rdi
  lock xadd dword ptr [rsi],edi
  mov eax,edi
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedExchangeAdd64(var Destination:TPasMPInt64;NewValue:TPasMPInt64;Comperand:TPasMPInt64):TPasMPInt64; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedExchangeAdd64(var Destination:TPasMPInt64;NewValue:TPasMPInt64;Comperand:TPasMPInt64):TPasMPInt64; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  xchg rdx,rcx
  lock xadd qword ptr [rdx],rcx
  mov rax,rcx
-{$else}
+{$ELSE}
  xchg rsi,rdi
  lock xadd qword ptr [rsi],rdi
  mov rax,rdi
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedCompareExchange(var Destination:TPasMPInt32;NewValue,Comperand:TPasMPInt32):TPasMPInt32; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedCompareExchange(var Destination:TPasMPInt32;NewValue,Comperand:TPasMPInt32):TPasMPInt32; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  mov eax,r8d
  lock cmpxchg dword ptr [rcx],edx
-{$else}
+{$ELSE}
  mov eax,edx
  lock cmpxchg dword ptr [rdi],esi
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64; assembler; {$ifdef fpc}nostackframe;{$else}register;{$endif}
+function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64; assembler; {$IFDEF fpc}nostackframe;{$ELSE}register;{$ENDIF}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  mov rax,r8
  lock cmpxchg qword ptr [rcx],rdx
-{$else}
+{$ELSE}
  mov rax,rdx
  lock cmpxchg qword ptr [rdi],rsi
-{$endif}
+{$ENDIF}
 end;
-{$else}
-{$ifndef HAS_ATOMICS}
-function InterlockedDecrement(var Destination:TPasMPInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+{$ELSE}
+{$IFNDEF HAS_ATOMICS}
+function InterlockedDecrement(var Destination:TPasMPInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicDecrement(Destination);
-{$else}
+{$ELSE}
  result:=Windows.InterlockedDecrement(Destination);
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedIncrement(var Destination:TPasMPInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function InterlockedIncrement(var Destination:TPasMPInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicIncrement(Destination);
-{$else}
+{$ELSE}
  result:=Windows.InterlockedIncrement(Destination);
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedExchange(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function InterlockedExchange(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
+{$ELSE}
  result:=Windows.InterlockedExchange(Destination,Source);
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedExchangePointer(var Destination:pointer;Source:pointer):pointer; {$ifdef CAN_INLINE}inline;{$endif}
+function InterlockedExchangePointer(var Destination:Pointer;Source:Pointer):Pointer; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
+{$ELSE}
  result:=Windows.InterlockedExchangePointer(Destination,Source);
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedExchangeAdd(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function InterlockedExchangeAdd(var Destination:TPasMPInt32;Source:TPasMPInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  repeat
   result:=Destination;
  until AtomicCmpExchange(Destination,Destination+Source,Destination)=result;
-{$else}
+{$ELSE}
  result:=Windows.InterlockedExchangeAdd(Destination,Source);
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedCompareExchange(var Destination:TPasMPInt32;NewValue,Comperand:TPasMPInt32):TPasMPInt32; {$ifdef CAN_INLINE}inline;{$endif}
+function InterlockedCompareExchange(var Destination:TPasMPInt32;NewValue,Comperand:TPasMPInt32):TPasMPInt32; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Destination,NewValue,Comperand);
-{$else}
+{$ELSE}
  result:=Windows.InterlockedCompareExchange(Destination,NewValue,Comperand);
-{$endif}
+{$ENDIF}
 end;
 
-function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64; {$ifdef CAN_INLINE}inline;{$endif}
+function InterlockedCompareExchange64(var Destination:TPasMPInt64;NewValue,Comperand:TPasMPInt64):TPasMPInt64; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Destination,NewValue,Comperand);
-{$else}
+{$ELSE}
  result:=Windows.InterlockedCompareExchange64(Destination,NewValue,Comperand);
-{$endif}
+{$ENDIF}
 end;
-{$endif}
-{$endif}
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
 
-{$if defined(fpc)}
+{$IF DEFINED(fpc)}
 
-procedure FallbackMemoryBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackMemoryBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  ReadWriteBarrier;
 end;
 
-{$elseif CompilerVersion>=25}
+{$ELSEIF CompilerVersion>=25}
 
-procedure FallbackReadBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  MemoryBarrier;
 end;
 
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  // reads imply barrier on earlier reads depended on
 end;
 
-procedure FallbackReadWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  MemoryBarrier;
 end;
 
-procedure FallbackWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  MemoryBarrier;
 end;
 
-procedure FallbackMemoryBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackMemoryBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  MemoryBarrier;
 end;
 
-{$elseif defined(CPU386)}
+{$ELSEIF DEFINED(CPU386)}
 
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  lfence
 end;
 
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  // reads imply barrier on earlier reads depended on
 end;
 
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  mfence
 end;
 
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  sfence
 end;
 
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  mfence
 end;
 
-{$elseif defined(CPUx64)}
+{$ELSEIF DEFINED(CPUx64)}
 
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  lfence
 end;
 
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  // reads imply barrier on earlier reads depended on
 end;
 
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  mfence
 end;
 
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  sfence
 end;
 
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  mfence
 end;
 
-{$elseif defined(CPUAARCH64)}
+{$ELSEIF DEFINED(CPUAARCH64)}
 
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  .long 0xd50339bf // dmb ishld (or #9)
 end;
 
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  // reads imply barrier on earlier reads depended on
 end;
 
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  .long 0xd5033bbf // dmb ish (or #11)
 end;
 
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  .long 0xd5033abf // dmb ishst or (#10)
 end;
 
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
  .long 0xd5033bbf // dmb ish (or #11)
 end;
 
-{$elseif defined(CPUARM)}
+{$ELSEIF DEFINED(CPUARM)}
 
-procedure FallbackReadBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
-{$if defined(CPUARM_HAS_DMB)} // >= CPUARMV7A
+{$IF DEFINED(CPUARM_HAS_DMB)} // >= CPUARMV7A
  .long 0xf57ff05f // dmb sy
-{$elseif defined(CPUARMV6K)} // = CPUARMV6K
+{$ELSEIF DEFINED(CPUARMV6K)} // = CPUARMV6K
  mov r0,#0
  .long 0xee070fba // mcr p15,0,r2,c7,c10,5
-{$elseif defined(Linux) or defined(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
  // r0 = kuser_memory_barrier at 0xffff0fa0 (see https://www.kernel.org/doc/Documentation/arm/kernel_user_helpers.txt)
  stmfd r13!,{lr}
  mvn r0,#0x0000f000
  sub r0,r0,#0x5f
-{$if defined(CPUARM_HAS_BLX)}
+{$IF DEFINED(CPUARM_HAS_BLX)}
  blx r0
-{$elseif defined(CPUARM_HAS_BLX)}
+{$ELSEIF DEFINED(CPUARM_HAS_BLX)}
  mov lr,pc
-{$if defined(CPUARM_HAS_BX)}
+{$IF DEFINED(CPUARM_HAS_BX)}
  bx r0
-{$else}
+{$ELSE}
  mov pc,r0
-{$ifend}
+{$IFEND}
  ldmfd r13!,{pc}
-{$ifend}
-{$else} // Otherwise give up
+{$IFEND}
+{$ELSE} // Otherwise give up
  {$error Non-supported target platform configuration}
-{$ifend}
+{$IFEND}
 end;
 
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  // reads imply barrier on earlier reads depended on
 end;
 
-procedure FallbackReadWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackReadWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
-{$if defined(CPUARM_HAS_DMB)} // >= CPUARMV7A
+{$IF DEFINED(CPUARM_HAS_DMB)} // >= CPUARMV7A
  .long 0xf57ff05f // dmb sy
-{$elseif defined(CPUARMV6K)} // = CPUARMV6K
+{$ELSEIF DEFINED(CPUARMV6K)} // = CPUARMV6K
  mov r0,#0
  .long 0xee070fba // mcr p15,0,r2,c7,c10,5
-{$elseif defined(Linux) or defined(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
  // r0 = kuser_memory_barrier at 0xffff0fa0 (see https://www.kernel.org/doc/Documentation/arm/kernel_user_helpers.txt)
  stmfd r13!,{lr}
  mvn r0,#0x0000f000
  sub r0,r0,#0x5f
-{$if defined(CPUARM_HAS_BLX)}
+{$IF DEFINED(CPUARM_HAS_BLX)}
  blx r0
-{$elseif defined(CPUARM_HAS_BLX)}
+{$ELSEIF DEFINED(CPUARM_HAS_BLX)}
  mov lr,pc
-{$if defined(CPUARM_HAS_BX)}
+{$IF DEFINED(CPUARM_HAS_BX)}
  bx r0
-{$else}
+{$ELSE}
  mov pc,r0
-{$ifend}
+{$IFEND}
  ldmfd r13!,{pc}
-{$ifend}
-{$else} // Otherwise give up
+{$IFEND}
+{$ELSE} // Otherwise give up
  {$error Non-supported target platform configuration}
-{$ifend}
+{$IFEND}
 end;
 
-procedure FallbackWriteBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackWriteBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
-{$if defined(CPUARM_HAS_DMB)} // >= CPUARMV7A
+{$IF DEFINED(CPUARM_HAS_DMB)} // >= CPUARMV7A
  .long 0xf57ff05e // dmb st
-{$elseif defined(CPUARMV6K)} // = CPUARMV6K
+{$ELSEIF DEFINED(CPUARMV6K)} // = CPUARMV6K
  mov r0,#0
  .long 0xee070fba // mcr p15,0,r2,c7,c10,5
-{$elseif defined(Linux) or defined(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
  // r0 = kuser_memory_barrier at 0xffff0fa0 (see https://www.kernel.org/doc/Documentation/arm/kernel_user_helpers.txt)
  stmfd r13!,{lr}
  mvn r0,#0x0000f000
  sub r0,r0,#0x5f
-{$if defined(CPUARM_HAS_BLX)}
+{$IF DEFINED(CPUARM_HAS_BLX)}
  blx r0
-{$elseif defined(CPUARM_HAS_BLX)}
+{$ELSEIF DEFINED(CPUARM_HAS_BLX)}
  mov lr,pc
-{$if defined(CPUARM_HAS_BX)}
+{$IF DEFINED(CPUARM_HAS_BX)}
  bx r0
-{$else}
+{$ELSE}
  mov pc,r0
-{$ifend}
+{$IFEND}
  ldmfd r13!,{pc}
-{$ifend}
-{$else} // Otherwise give up
+{$IFEND}
+{$ELSE} // Otherwise give up
  {$error Non-supported target platform configuration}
-{$ifend}
+{$IFEND}
 end;
 
-procedure FallbackMemoryBarrier; assembler; {$ifdef fpc}nostackframe; {$ifdef CAN_INLINE}inline;{$endif}{$endif}
+procedure FallbackMemoryBarrier; assembler; {$IFDEF fpc}nostackframe; {$IFDEF CAN_INLINE}inline;{$ENDIF}{$ENDIF}
 asm
-{$if defined(CPUARM_HAS_DMB)} // >= CPUARMV7A
+{$IF DEFINED(CPUARM_HAS_DMB)} // >= CPUARMV7A
  .long 0xf57ff05f // dmb sy
-{$elseif defined(CPUARMV6K)} // = CPUARMV6K
+{$ELSEIF DEFINED(CPUARMV6K)} // = CPUARMV6K
  mov r0,#0
  .long 0xee070fba // mcr p15,0,r2,c7,c10,5
-{$elseif defined(Linux) or defined(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)} // Linux and Android with a kernel version >= 2.6.15 respectively _kuser_helper_version >= 3
  // r0 = kuser_memory_barrier at 0xffff0fa0 (see https://www.kernel.org/doc/Documentation/arm/kernel_user_helpers.txt)
  stmfd r13!,{lr}
  mvn r0,#0x0000f000
  sub r0,r0,#0x5f
-{$if defined(CPUARM_HAS_BLX)}
+{$IF DEFINED(CPUARM_HAS_BLX)}
  blx r0
-{$elseif defined(CPUARM_HAS_BLX)}
+{$ELSEIF DEFINED(CPUARM_HAS_BLX)}
  mov lr,pc
-{$if defined(CPUARM_HAS_BX)}
+{$IF DEFINED(CPUARM_HAS_BX)}
  bx r0
-{$else}
+{$ELSE}
  mov pc,r0
-{$ifend}
+{$IFEND}
  ldmfd r13!,{pc}
-{$ifend}
-{$else} // Otherwise give up
+{$IFEND}
+{$ELSE} // Otherwise give up
  {$error Non-supported target platform configuration}
-{$ifend}
+{$IFEND}
 end;
 
-{$else}
-procedure FallbackReadBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+{$ELSE}
+procedure FallbackReadBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
 end;
 
-procedure FallbackReadDependencyBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadDependencyBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
  // reads imply barrier on earlier reads depended on
 end;
 
-procedure FallbackReadWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackReadWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
 end;
 
-procedure FallbackWriteBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackWriteBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
 end;
 
-procedure FallbackMemoryBarrier; {$ifdef CAN_INLINE}inline;{$endif}
+procedure FallbackMemoryBarrier; {$IFDEF CAN_INLINE}inline;{$ENDIF}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  ReadWriteBarrier;
-{$else}
+{$ELSE}
  FallBackReadWriteBarrier;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
-procedure MemorySwap(a,b:pointer;Size:TPasMPInt32);
+procedure MemorySwap(a,b:Pointer;Size:TPasMPInt32);
 var Temp:TPasMPUInt32;
 begin
  while Size>=SizeOf(TPasMPUInt32) do begin
@@ -4328,33 +4350,33 @@ end;
 
 class function TPasMPMath.PopulationCount32(Value:TPasMPUInt32):TPasMPInt32;
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  result:=PopCnt(Value);
-{$else}
+{$ELSE}
  result:=POPCNTDWord(Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPMath.PopulationCount64(Value:TPasMPUInt64):TPasMPInt32;
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  result:=PopCnt(Value);
-{$else}
+{$ELSE}
  result:=POPCNTQWord(Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPMath.PopulationCount(Value:TPasMPPtrUInt):TPasMPInt32;
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  result:=PopCnt(Value);
-{$else}
-{$ifdef CPU64}
+{$ELSE}
+{$IFDEF CPU64}
  result:=POPCNTQWord(Value);
-{$else}
+{$ELSE}
  result:=POPCNTDWord(Value);
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPMath.BitScanForward32(Value:TPasMPUInt32):TPasMPInt32;
@@ -4369,11 +4391,11 @@ end;
 
 class function TPasMPMath.BitScanForward(Value:TPasMPPtrUInt):TPasMPInt32;
 begin
-{$ifdef CPU64}
+{$IFDEF CPU64}
  result:=BSFQWord(Value);
-{$else}
+{$ELSE}
  result:=BSFDWord(Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPMath.BitScanReverse32(Value:TPasMPUInt32):TPasMPInt32;
@@ -4388,11 +4410,11 @@ end;
 
 class function TPasMPMath.BitScanReverse(Value:TPasMPPtrUInt):TPasMPInt32;
 begin
-{$ifdef CPU64}
+{$IFDEF CPU64}
  result:=BSRQWord(Value);
-{$else}
+{$ELSE}
  result:=BSRDWord(Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPMath.CountLeadingZeros32(Value:TPasMPUInt32):TPasMPInt32;
@@ -4407,11 +4429,11 @@ end;
 
 class function TPasMPMath.CountLeadingZeros(Value:TPasMPPtrUInt):TPasMPInt32;
 begin
-{$ifdef CPU64}
+{$IFDEF CPU64}
  result:=CLZQWord(Value);
-{$else}
+{$ELSE}
  result:=CLZDWord(Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPMath.CountTrailingZeros32(Value:TPasMPUInt32):TPasMPInt32;
@@ -4426,11 +4448,11 @@ end;
 
 class function TPasMPMath.CountTrailingZeros(Value:TPasMPPtrUInt):TPasMPInt32;
 begin
-{$ifdef CPU64}
+{$IFDEF CPU64}
  result:=CTZQWord(Value);
-{$else}
+{$ELSE}
  result:=CTZDWord(Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPMath.FindFirstSetBit32(Value:TPasMPUInt32):TPasMPInt32;
@@ -4456,11 +4478,11 @@ begin
  if Value=0 then begin
   result:=-1;
  end else begin
-{$ifdef CPU64}
+{$IFDEF CPU64}
   result:=BSFQWord(Value);
-{$else}
+{$ELSE}
   result:=BSFDWord(Value);
-{$endif}
+{$ENDIF}
  end;
 end;
 
@@ -4495,9 +4517,9 @@ begin
  Value:=Value or (Value shr 4);
  Value:=Value or (Value shr 8);
  Value:=Value or (Value shr 16);
-{$ifdef CPU64}
+{$IFDEF CPU64}
  Value:=Value or (Value shr 32);
-{$endif}
+{$ENDIF}
  result:=Value+1;
 end;
 
@@ -4528,16 +4550,16 @@ begin
  end;
 end;
 
-class function TPasMP.GetThreadIDHash(ThreadID:{$ifdef fpc}TThreadID{$else}TPasMPUInt32{$endif}):TPasMPUInt32;
-{$if defined(Darwin)}
+class function TPasMP.GetThreadIDHash(ThreadID:{$IFDEF fpc}TThreadID{$ELSE}TPasMPUInt32{$ENDIF}):TPasMPUInt32;
+{$IF DEFINED(Darwin)}
 var ThreadIDCasted:TPasMPUInt32 absolute ThreadID;
-{$ifend}
+{$IFEND}
 begin
-{$if defined(Darwin)}
+{$IF DEFINED(Darwin)}
  result:=(ThreadIDCasted*83492791) xor ((ThreadIDCasted shr 24)*19349669) xor ((ThreadIDCasted shr 16)*73856093) xor ((ThreadIDCasted shr 8)*50331653);
-{$else}
+{$ELSE}
  result:=(ThreadID*83492791) xor ((ThreadID shr 24)*19349669) xor ((ThreadID shr 16)*73856093) xor ((ThreadID shr 8)*50331653);
-{$ifend}
+{$IFEND}
 end;
 
 class function TPasMP.EncodeJobPriorityToJobFlags(const JobPriority:TPasMPJobPriority):TPasMPUInt32;
@@ -4586,717 +4608,717 @@ begin
  result:=(Flags shr PasMPJobTagShift) and PasMPJobTagMask;
 end;
 
-class procedure TPasMP.Relax;{$if defined(CPU386)}assembler;
+class procedure TPasMP.Relax;{$IF DEFINED(CPU386)}assembler;
 asm
  db $f3,$90 // pause (rep nop)
 end;
-{$elseif defined(CPUx86_64)}assembler;
+{$ELSEIF DEFINED(CPUx86_64)}assembler;
 asm
  pause
 end;
-{$else}
+{$ELSE}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  TPasMP.Yield;
-{$else}
+{$ELSE}
  YieldProcessor;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
 class procedure TPasMP.Yield;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  SwitchToThread;
 end;
-{$elseif defined(Unix)}
-{$if defined(fpc) and defined(usecthreads)}
+{$ELSEIF DEFINED(Unix)}
+{$IF DEFINED(fpc) and DEFINED(usecthreads)}
 begin
  sched_yield;
 end;
-{$elseif defined(fpc)}
+{$ELSEIF DEFINED(fpc)}
 var timeout:timeval;
 begin
  timeout.tv_sec:=0;
  timeout.tv_usec:=0;
  fpselect(0,nil,nil,nil,@timeout);
 end;
-{$else}
+{$ELSE}
 begin
  TThread.Yield;
 end;
-{$ifend}
-{$elseif defined(fpc)}
+{$IFEND}
+{$ELSEIF DEFINED(fpc)}
 begin
  ThreadSwitch;
 end;
-{$else}
+{$ELSE}
 begin
  TThread.Yield;
 end;
-{$ifend}
+{$IFEND}
 
 class function TPasMPInterlocked.Increment(var Destination:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicIncrement(Destination);
-{$else}
+{$ELSE}
  result:=InterlockedIncrement(Destination);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Increment(var Destination:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt32(TPasMPInt32(AtomicIncrement(TPasMPInt32(Destination))));
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(TPasMPInt32(InterlockedIncrement(TPasMPInt32(Destination))));
-{$endif}
+{$ENDIF}
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.Increment(var Destination:TPasMPInt64):TPasMPInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicIncrement(Destination);
-{$else}
+{$ELSE}
  result:=InterlockedIncrement64(Destination);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Increment(var Destination:TPasMPUInt64):TPasMPUInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt64(TPasMPInt64(AtomicIncrement(TPasMPInt64(Destination))));
-{$else}
+{$ELSE}
  result:=TPasMPUInt64(TPasMPInt64(InterlockedIncrement64(TPasMPInt64(Destination))));
-{$endif}
+{$ENDIF}
 end;
-{$endif}
+{$ENDIF}
 
 class function TPasMPInterlocked.Decrement(var Destination:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicDecrement(Destination);
-{$else}
+{$ELSE}
  result:=InterlockedDecrement(Destination);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Decrement(var Destination:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt32(TPasMPInt32(AtomicDecrement(TPasMPInt32(Destination))));
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(TPasMPInt32(InterlockedDecrement(TPasMPInt32(Destination))));
-{$endif}
+{$ENDIF}
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.Decrement(var Destination:TPasMPInt64):TPasMPInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicDecrement(Destination);
-{$else}
+{$ELSE}
  result:=InterlockedDecrement64(Destination);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Decrement(var Destination:TPasMPUInt64):TPasMPUInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt64(TPasMPInt64(AtomicDecrement(TPasMPInt64(Destination))));
-{$else}
+{$ELSE}
  result:=TPasMPUInt64(TPasMPInt64(InterlockedDecrement64(TPasMPInt64(Destination))));
-{$endif}
+{$ENDIF}
 end;
-{$endif}
+{$ENDIF}
 
 class function TPasMPInterlocked.Add(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicIncrement(Destination,Value)-Value;
-{$else}
+{$ELSE}
  result:=InterlockedExchangeAdd(Destination,Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Add(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt32(TPasMPInt32(AtomicIncrement(TPasMPInt32(Destination),TPasMPInt32(Value))-TPasMPInt32(Value)));
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(TPasMPInt32(InterlockedExchangeAdd(TPasMPInt32(Destination),TPasMPInt32(Value))));
-{$endif}
+{$ENDIF}
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.Add(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicIncrement(Destination,Value)-Value;
-{$else}
+{$ELSE}
  result:=InterlockedExchangeAdd64(Destination,Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Add(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt64(TPasMPInt64(AtomicIncrement(TPasMPInt64(Destination),TPasMPInt64(Value))-TPasMPInt64(Value)));
-{$else}
+{$ELSE}
  result:=TPasMPUInt64(TPasMPInt64(InterlockedExchangeAdd64(TPasMPInt64(Destination),TPasMPInt64(Value))));
-{$endif}
+{$ENDIF}
 end;
-{$endif}
+{$ENDIF}
 
 class function TPasMPInterlocked.Sub(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicIncrement(Destination,-Value)+Value;
-{$else}
+{$ELSE}
  result:=InterlockedExchangeAdd(Destination,-Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Sub(var Destination:TPasMPUInt32;const Value:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt32(TPasMPInt32(AtomicIncrement(TPasMPInt32(Destination),-TPasMPInt32(Value))+TPasMPInt32(Value)));
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(TPasMPInt32(InterlockedExchangeAdd(TPasMPInt32(Destination),-TPasMPInt32(Value))));
-{$endif}
+{$ENDIF}
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.Sub(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicIncrement(Destination,-Value)+Value;
-{$else}
+{$ELSE}
  result:=InterlockedExchangeAdd64(Destination,-Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Sub(var Destination:TPasMPUInt64;const Value:TPasMPUInt64):TPasMPUInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt64(TPasMPInt64(AtomicIncrement(TPasMPInt64(Destination),-TPasMPInt64(Value))+TPasMPInt64(Value)));
-{$else}
+{$ELSE}
  result:=TPasMPUInt64(TPasMPInt64(InterlockedExchangeAdd64(TPasMPInt64(Destination),-TPasMPInt64(Value))));
-{$endif}
+{$ENDIF}
 end;
-{$endif}
+{$ENDIF}
 
 class procedure TPasMPInterlocked.BitwiseAnd(var Destination:TPasMPInt32;const Value:TPasMPInt32);
-{$if defined(cpu386)}
+{$IF DEFINED(cpu386)}
 asm
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and dword ptr [eax],edx
-{$else}
+{$ELSE}
  lock and dword ptr [edx],ecx
-{$endif}
+{$ENDIF}
 end;
-{$elseif defined(cpux86_64)}
+{$ELSEIF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and dword ptr [rcx],edx
-{$else}
+{$ELSE}
  lock and dword ptr [rdx],r8d
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and dword ptr [rdi],esi
-{$else}
+{$ELSE}
  lock and dword ptr [rsi],edx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt32;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until AtomicCmpExchange(Destination,OldValue and Value,OldValue)=OldValue;
-{$else}
+{$ELSE}
  until InterlockedCompareExchange(Destination,OldValue and Value,OldValue)=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
 class procedure TPasMPInterlocked.BitwiseAnd(var Destination:TPasMPUInt32;const Value:TPasMPUInt32);
-{$if defined(cpu386)}
+{$IF DEFINED(cpu386)}
 asm
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and dword ptr [eax],edx
-{$else}
+{$ELSE}
  lock and dword ptr [edx],ecx
-{$endif}
+{$ENDIF}
 end;
-{$elseif defined(cpux86_64)}
+{$ELSEIF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and dword ptr [rcx],edx
-{$else}
+{$ELSE}
  lock and dword ptr [rdx],r8d
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and dword ptr [rdi],esi
-{$else}
+{$ELSE}
  lock and dword ptr [rsi],edx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPUInt32;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(OldValue and Value),TPasMPInt32(OldValue))))=OldValue;
-{$else}
+{$ELSE}
  until TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(OldValue and Value),TPasMPInt32(OldValue))))=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class procedure TPasMPInterlocked.BitwiseAnd(var Destination:TPasMPInt64;const Value:TPasMPInt64);
-{$if defined(cpux86_64)}
+{$IF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and qword ptr [rcx],rdx
-{$else}
+{$ELSE}
  lock and qword ptr [rdx],r8
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and qword ptr [rdi],rsi
-{$else}
+{$ELSE}
  lock and qword ptr [rsi],rdx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until AtomicCmpExchange(Destination,OldValue and Value,OldValue)=OldValue;
-{$else}
+{$ELSE}
  until InterlockedCompareExchange64(Destination,OldValue and Value,OldValue)=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
 class procedure TPasMPInterlocked.BitwiseAnd(var Destination:TPasMPUInt64;const Value:TPasMPUInt64);
-{$if defined(cpux86_64)}
+{$IF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and qword ptr [rcx],rdx
-{$else}
+{$ELSE}
  lock and qword ptr [rdx],r8
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock and qword ptr [rdi],rsi
-{$else}
+{$ELSE}
  lock and qword ptr [rsi],rdx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(OldValue and Value),TPasMPInt64(OldValue))))=OldValue;
-{$else}
+{$ELSE}
  until TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(OldValue and Value),TPasMPInt64(OldValue))))=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
-{$endif}
+{$IFEND}
+{$ENDIF}
 
 class procedure TPasMPInterlocked.BitwiseOr(var Destination:TPasMPInt32;const Value:TPasMPInt32);
-{$if defined(cpu386)}
+{$IF DEFINED(cpu386)}
 asm
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or dword ptr [eax],edx
-{$else}
+{$ELSE}
  lock or dword ptr [edx],ecx
-{$endif}
+{$ENDIF}
 end;
-{$elseif defined(cpux86_64)}
+{$ELSEIF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or dword ptr [rcx],edx
-{$else}
+{$ELSE}
  lock or dword ptr [rdx],r8d
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or dword ptr [rdi],esi
-{$else}
+{$ELSE}
  lock or dword ptr [rsi],edx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt32;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until AtomicCmpExchange(Destination,OldValue or Value,OldValue)=OldValue;
-{$else}
+{$ELSE}
  until InterlockedCompareExchange(Destination,OldValue or Value,OldValue)=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
 class procedure TPasMPInterlocked.BitwiseOr(var Destination:TPasMPUInt32;const Value:TPasMPUInt32);
-{$if defined(cpu386)}
+{$IF DEFINED(cpu386)}
 asm
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or dword ptr [eax],edx
-{$else}
+{$ELSE}
  lock or dword ptr [edx],ecx
-{$endif}
+{$ENDIF}
 end;
-{$elseif defined(cpux86_64)}
+{$ELSEIF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or dword ptr [rcx],edx
-{$else}
+{$ELSE}
  lock or dword ptr [rdx],r8d
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or dword ptr [rdi],esi
-{$else}
+{$ELSE}
  lock or dword ptr [rsi],edx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPUInt32;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(OldValue or Value),TPasMPInt32(OldValue))))=OldValue;
-{$else}
+{$ELSE}
  until TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(OldValue or Value),TPasMPInt32(OldValue))))=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class procedure TPasMPInterlocked.BitwiseOr(var Destination:TPasMPInt64;const Value:TPasMPInt64);
-{$if defined(cpux86_64)}
+{$IF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or qword ptr [rcx],rdx
-{$else}
+{$ELSE}
  lock or qword ptr [rdx],r8
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or qword ptr [rdi],rsi
-{$else}
+{$ELSE}
  lock or qword ptr [rsi],rdx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until AtomicCmpExchange(Destination,OldValue or Value,OldValue)=OldValue;
-{$else}
+{$ELSE}
  until InterlockedCompareExchange64(Destination,OldValue or Value,OldValue)=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
 class procedure TPasMPInterlocked.BitwiseOr(var Destination:TPasMPUInt64;const Value:TPasMPUInt64);
-{$if defined(cpux86_64)}
+{$IF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or qword ptr [rcx],rdx
-{$else}
+{$ELSE}
  lock or qword ptr [rdx],r8
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock or qword ptr [rdi],rsi
-{$else}
+{$ELSE}
  lock or qword ptr [rsi],rdx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(OldValue or Value),TPasMPInt64(OldValue))))=OldValue;
-{$else}
+{$ELSE}
  until TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(OldValue or Value),TPasMPInt64(OldValue))))=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
-{$endif}
+{$IFEND}
+{$ENDIF}
 
 class procedure TPasMPInterlocked.BitwiseXor(var Destination:TPasMPInt32;const Value:TPasMPInt32);
-{$if defined(cpu386)}
+{$IF DEFINED(cpu386)}
 asm
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor dword ptr [eax],edx
-{$else}
+{$ELSE}
  lock xor dword ptr [edx],ecx
-{$endif}
+{$ENDIF}
 end;
-{$elseif defined(cpux86_64)}
+{$ELSEIF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor dword ptr [rcx],edx
-{$else}
+{$ELSE}
  lock xor dword ptr [rdx],r8d
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor dword ptr [rdi],esi
-{$else}
+{$ELSE}
  lock xor dword ptr [rsi],edx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt32;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until AtomicCmpExchange(Destination,OldValue xor Value,OldValue)=OldValue;
-{$else}
+{$ELSE}
  until InterlockedCompareExchange(Destination,OldValue xor Value,OldValue)=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
 class procedure TPasMPInterlocked.BitwiseXor(var Destination:TPasMPUInt32;const Value:TPasMPUInt32);
-{$if defined(cpu386)}
+{$IF DEFINED(cpu386)}
 asm
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor dword ptr [eax],edx
-{$else}
+{$ELSE}
  lock xor dword ptr [edx],ecx
-{$endif}
+{$ENDIF}
 end;
-{$elseif defined(cpux86_64)}
+{$ELSEIF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor dword ptr [rcx],edx
-{$else}
+{$ELSE}
  lock xor dword ptr [rdx],r8d
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor dword ptr [rdi],esi
-{$else}
+{$ELSE}
  lock xor dword ptr [rsi],edx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPUInt32;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(OldValue xor Value),TPasMPInt32(OldValue))))=OldValue;
-{$else}
+{$ELSE}
  until TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(OldValue xor Value),TPasMPInt32(OldValue))))=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class procedure TPasMPInterlocked.BitwiseXor(var Destination:TPasMPInt64;const Value:TPasMPInt64);
-{$if defined(cpux86_64)}
+{$IF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor qword ptr [rcx],rdx
-{$else}
+{$ELSE}
  lock xor qword ptr [rdx],r8
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor qword ptr [rdi],rsi
-{$else}
+{$ELSE}
  lock xor qword ptr [rsi],rdx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until AtomicCmpExchange(Destination,OldValue xor Value,OldValue)=OldValue;
-{$else}
+{$ELSE}
  until InterlockedCompareExchange64(Destination,OldValue xor Value,OldValue)=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
 class procedure TPasMPInterlocked.BitwiseXor(var Destination:TPasMPUInt64;const Value:TPasMPUInt64);
-{$if defined(cpux86_64)}
+{$IF DEFINED(cpux86_64)}
 asm
-{$ifdef Windows}
+{$IFDEF Windows}
  // Win64 ABI
  // rcx = Parameter 1
  // rdx = Parameter 2
  // r8 = Parameter 3
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor qword ptr [rcx],rdx
-{$else}
+{$ELSE}
  lock xor qword ptr [rdx],r8
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  // System V ABI
  // rdi = self
  // rsi = Job
  // rdx = Temporary
-{$ifdef HAS_STATIC}
+{$IFDEF HAS_STATIC}
  lock xor qword ptr [rdi],rsi
-{$else}
+{$ELSE}
  lock xor qword ptr [rsi],rdx
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var OldValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  until TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(OldValue xor Value),TPasMPInt64(OldValue))))=OldValue;
-{$else}
+{$ELSE}
  until TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(OldValue xor Value),TPasMPInt64(OldValue))))=OldValue;
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
-{$endif}
+{$IFEND}
+{$ENDIF}
 
 class function TPasMPInterlocked.ExchangeBitwiseAnd(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32;
 var OldValue,NewValue:TPasMPInt32;
@@ -5304,11 +5326,11 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue and Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5318,26 +5340,26 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue and Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.ExchangeBitwiseAnd(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64;
 var OldValue,NewValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue and Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange64(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5347,14 +5369,14 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue and Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
-{$endif}
+{$ENDIF}
 
 class function TPasMPInterlocked.ExchangeBitwiseOr(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32;
 var OldValue,NewValue:TPasMPInt32;
@@ -5362,11 +5384,11 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue or Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5376,26 +5398,26 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue or Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.ExchangeBitwiseOr(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64;
 var OldValue,NewValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue or Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange64(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5405,14 +5427,14 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue or Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
-{$endif}
+{$ENDIF}
 
 class function TPasMPInterlocked.ExchangeBitwiseAndOr(var Destination:TPasMPInt32;const AndValue,OrValue:TPasMPInt32):TPasMPInt32;
 var OldValue,NewValue:TPasMPInt32;
@@ -5420,11 +5442,11 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=(OldValue and AndValue) or OrValue;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5434,26 +5456,26 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=(OldValue and AndValue) or OrValue;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.ExchangeBitwiseAndOr(var Destination:TPasMPInt64;const AndValue,OrValue:TPasMPInt64):TPasMPInt64;
 var OldValue,NewValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
   NewValue:=(OldValue and AndValue) or OrValue;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange64(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5463,14 +5485,14 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=(OldValue and AndValue) or OrValue;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
-{$endif}
+{$ENDIF}
 
 class function TPasMPInterlocked.ExchangeBitwiseXor(var Destination:TPasMPInt32;const Value:TPasMPInt32):TPasMPInt32;
 var OldValue,NewValue:TPasMPInt32;
@@ -5478,11 +5500,11 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue xor Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5492,26 +5514,26 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue xor Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.ExchangeBitwiseXor(var Destination:TPasMPInt64;const Value:TPasMPInt64):TPasMPInt64;
 var OldValue,NewValue:TPasMPInt64;
 begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue xor Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=AtomicCmpExchange(Destination,NewValue,OldValue);
-{$else}
+{$ELSE}
   result:=InterlockedCompareExchange64(Destination,NewValue,OldValue);
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
 
@@ -5521,228 +5543,228 @@ begin
  repeat
   OldValue:=Destination;
   NewValue:=OldValue xor Value;
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
   result:=TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$else}
+{$ELSE}
   result:=TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(OldValue))));
-{$endif}
+{$ENDIF}
  until result=OldValue;
 end;
-{$endif}
+{$ENDIF}
 
 class function TPasMPInterlocked.Exchange(var Destination:TPasMPInt32;const Source:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
+{$ELSE}
  result:=InterlockedExchange(Destination,Source);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Exchange(var Destination:TPasMPUInt32;const Source:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(InterlockedExchange(TPasMPInt32(Destination),TPasMPInt32(Source)));
-{$endif}
+{$ENDIF}
 end;
 
-{$ifdef CPU64}
+{$IFDEF CPU64}
 class function TPasMPInterlocked.Exchange(var Destination:TPasMPInt64;const Source:TPasMPInt64):TPasMPInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
+{$ELSE}
  result:=InterlockedExchange64(Destination,Source);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Exchange(var Destination:TPasMPUInt64;const Source:TPasMPUInt64):TPasMPUInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
+{$ELSE}
  result:=TPasMPUInt64(InterlockedExchange64(TPasMPInt64(Destination),TPasMPInt64(Source)));
-{$endif}
+{$ENDIF}
 end;
-{$endif}
+{$ENDIF}
 
-class function TPasMPInterlocked.Exchange(var Destination:pointer;const Source:pointer):pointer;
+class function TPasMPInterlocked.Exchange(var Destination:Pointer;const Source:Pointer):Pointer;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
-{$endif}
-{$endif}
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Exchange(var Destination:TObject;const Source:TObject):TObject;
 begin
-{$ifdef HAS_ATOMICS}
- result:=AtomicExchange(pointer(Destination),pointer(Source));
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
-{$endif}
-{$endif}
+{$IFDEF HAS_ATOMICS}
+ result:=AtomicExchange(Pointer(Destination),Pointer(Source));
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Exchange(var Destination:TPasMPBool32;const Source:TPasMPBool32):TPasMPBool32;
 begin
-{$ifdef HAS_ATOMICS}
-{$if defined(cpu64bits) and defined(nextgen)}
+{$IFDEF HAS_ATOMICS}
+{$IF DEFINED(cpu64bits) and DEFINED(nextgen)}
  result:=TPasMPBool32(TPasMPInt64(AtomicExchange(TPasMPInt32(Destination),TPasMPInt32(Source))));
-{$else}
+{$ELSE}
  result:=TPasMPBool32(TPasMPInt32(AtomicExchange(TPasMPInt32(Destination),TPasMPInt32(Source))));
-{$ifend}
-{$else}
+{$IFEND}
+{$ELSE}
  result:=TPasMPBool32(TPasMPInt32(InterlockedExchange(TPasMPInt32(Destination),TPasMPInt32(Source))));
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.CompareExchange(var Destination:TPasMPInt32;const NewValue,Comperand:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Destination,NewValue,Comperand);
-{$else}
+{$ELSE}
  result:=InterlockedCompareExchange(Destination,NewValue,Comperand);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.CompareExchange(var Destination:TPasMPUInt32;const NewValue,Comperand:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Destination,NewValue,Comperand);
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(Comperand)));
-{$endif}
+{$ENDIF}
 end;
 
-{$if defined(CPU64) or ((defined(CPU386) or defined(CPUARM)) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
+{$IF DEFINED(CPU64) or ((DEFINED(CPU386) or DEFINED(CPUARM)) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
 class function TPasMPInterlocked.CompareExchange(var Destination:TPasMPInt64;const NewValue,Comperand:TPasMPInt64):TPasMPInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Destination,NewValue,Comperand);
-{$else}
+{$ELSE}
  result:=InterlockedCompareExchange64(Destination,NewValue,Comperand);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.CompareExchange(var Destination:TPasMPInt64Record;const NewValue,Comperand:TPasMPInt64Record):TPasMPInt64Record;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result.Value:=AtomicCmpExchange(Destination.Value,NewValue.Value,Comperand.Value);
-{$else}
+{$ELSE}
  result.Value:=InterlockedCompareExchange64(Destination.Value,NewValue.Value,Comperand.Value);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.CompareExchange(var Destination:TPasMPUInt64;const NewValue,Comperand:TPasMPUInt64):TPasMPUInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Destination,NewValue,Comperand);
-{$else}
+{$ELSE}
  result:=TPasMPUInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(NewValue),TPasMPInt64(Comperand)));
-{$endif}
+{$ENDIF}
 end;
-{$ifend}
+{$IFEND}
 
-{$if defined(CPU64) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+{$IF DEFINED(CPU64) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
 class function TPasMPInterlocked.CompareExchange(var Destination:TPasMPInt128Record;const NewValue,Comperand:TPasMPInt128Record):TPasMPInt128Record;
 begin
  result:=InterlockedCompareExchange128(Destination,NewValue,Comperand);
 end;
-{$ifend}
+{$IFEND}
 
-class function TPasMPInterlocked.CompareExchange(var Destination:pointer;const NewValue,Comperand:pointer):pointer;
+class function TPasMPInterlocked.CompareExchange(var Destination:Pointer;const NewValue,Comperand:Pointer):Pointer;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Destination,NewValue,Comperand);
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(NewValue)),TPasMPInt64(TPasMPPtrInt(Comperand)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(NewValue)),TPasMPInt32(TPasMPPtrInt(Comperand)))));
-{$endif}
-{$endif}
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(NewValue)),TPasMPInt64(TPasMPPtrInt(Comperand)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(NewValue)),TPasMPInt32(TPasMPPtrInt(Comperand)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.CompareExchange(var Destination:TObject;const NewValue,Comperand:TObject):TObject;
 begin
-{$ifdef HAS_ATOMICS}
- result:=AtomicCmpExchange(pointer(Destination),pointer(NewValue),pointer(Comperand));
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(NewValue)),TPasMPInt64(TPasMPPtrInt(Comperand)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(NewValue)),TPasMPInt32(TPasMPPtrInt(Comperand)))));
-{$endif}
-{$endif}
+{$IFDEF HAS_ATOMICS}
+ result:=AtomicCmpExchange(Pointer(Destination),Pointer(NewValue),Pointer(Comperand));
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(NewValue)),TPasMPInt64(TPasMPPtrInt(Comperand)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(NewValue)),TPasMPInt32(TPasMPPtrInt(Comperand)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.CompareExchange(var Destination:TPasMPBool32;const NewValue,Comperand:TPasMPBool32):TPasMPBool32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPBool32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(Comperand))));
-{$else}
+{$ELSE}
  result:=TPasMPBool32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Destination),TPasMPInt32(NewValue),TPasMPInt32(Comperand))));
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Read(var Source:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Source,0,0);
-{$else}
+{$ELSE}
  result:=InterlockedCompareExchange(Source,0,0);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Read(var Source:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Source),0,0)));
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Source),0,0)));
-{$endif}
+{$ENDIF}
 end;
 
-{$if defined(CPU64) or ((defined(CPU386) or defined(CPUARM)) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
+{$IF DEFINED(CPU64) or ((DEFINED(CPU386) or DEFINED(CPUARM)) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
 class function TPasMPInterlocked.Read(var Source:TPasMPInt64):TPasMPInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Source,0,0);
-{$else}
+{$ELSE}
  result:=InterlockedCompareExchange64(Source,0,0);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Read(var Source:TPasMPInt64Record):TPasMPInt64Record;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result.Value:=AtomicCmpExchange(Source.Value,0,0);
-{$else}
+{$ELSE}
  result.Value:=InterlockedCompareExchange64(Source.Value,0,0);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Read(var Source:TPasMPUInt64):TPasMPUInt64;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Source),0,0)));
-{$else}
+{$ELSE}
  result:=TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Source),0,0)));
-{$endif}
+{$ENDIF}
 end;
 
-{$if defined(CPU64) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+{$IF DEFINED(CPU64) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
 class function TPasMPInterlocked.Read(var Source:TPasMPInt128Record):TPasMPInt128Record;
 var Temp:TPasMPInt128Record;
 begin
@@ -5750,76 +5772,76 @@ begin
  Temp.Hi:=0;
  result:=InterlockedCompareExchange128(Source,Temp,Temp);
 end;
-{$ifend}
-{$ifend}
+{$IFEND}
+{$IFEND}
 
-class function TPasMPInterlocked.Read(var Source:pointer):pointer;
+class function TPasMPInterlocked.Read(var Source:Pointer):Pointer;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicCmpExchange(Source,nil,nil);
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Source)),TPasMPInt64(TPasMPPtrInt(0)),TPasMPInt64(TPasMPPtrInt(0)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Source)),TPasMPInt32(TPasMPPtrInt(0)),TPasMPInt32(TPasMPPtrInt(0)))));
-{$endif}
-{$endif}
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Source)),TPasMPInt64(TPasMPPtrInt(0)),TPasMPInt64(TPasMPPtrInt(0)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Source)),TPasMPInt32(TPasMPPtrInt(0)),TPasMPInt32(TPasMPPtrInt(0)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Read(var Source:TObject):TObject;
 begin
-{$ifdef HAS_ATOMICS}
- result:=AtomicCmpExchange(pointer(Source),nil,nil);
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Source)),TPasMPInt64(TPasMPPtrInt(0)),TPasMPInt64(TPasMPPtrInt(0)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Source)),TPasMPInt32(TPasMPPtrInt(0)),TPasMPInt32(TPasMPPtrInt(0)))));
-{$endif}
-{$endif}
+{$IFDEF HAS_ATOMICS}
+ result:=AtomicCmpExchange(Pointer(Source),nil,nil);
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange64(TPasMPInt64(TPasMPPtrInt(Source)),TPasMPInt64(TPasMPPtrInt(0)),TPasMPInt64(TPasMPPtrInt(0)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedCompareExchange(TPasMPInt32(TPasMPPtrInt(Source)),TPasMPInt32(TPasMPPtrInt(0)),TPasMPInt32(TPasMPPtrInt(0)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Read(var Source:TPasMPBool32):TPasMPBool32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPBool32(TPasMPInt32(AtomicCmpExchange(TPasMPInt32(Source),TPasMPInt32(0),TPasMPInt32(0))));
-{$else}
+{$ELSE}
  result:=TPasMPBool32(TPasMPInt32(InterlockedCompareExchange(TPasMPInt32(Source),TPasMPInt32(0),TPasMPInt32(0))));
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Write(var Destination:TPasMPInt32;const Source:TPasMPInt32):TPasMPInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
+{$ELSE}
  result:=InterlockedExchange(Destination,Source);
-{$endif}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Write(var Destination:TPasMPUInt32;const Source:TPasMPUInt32):TPasMPUInt32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPUInt32(TPasMPInt32(AtomicExchange(TPasMPInt32(Destination),TPasMPInt32(Source))));
-{$else}
+{$ELSE}
  result:=TPasMPUInt32(TPasMPInt32(InterlockedExchange(TPasMPInt32(Destination),TPasMPInt32(Source))));
-{$endif}
+{$ENDIF}
 end;
 
-{$if defined(CPU64) or ((defined(CPU386) or defined(CPUARM)) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
+{$IF DEFINED(CPU64) or ((DEFINED(CPU386) or DEFINED(CPUARM)) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE))}
 class function TPasMPInterlocked.Write(var Destination:TPasMPInt64;const Source:TPasMPInt64):TPasMPInt64;
-{$ifdef CPU64}
-{$ifdef HAS_ATOMICS}
+{$IFDEF CPU64}
+{$IFDEF HAS_ATOMICS}
 begin
  result:=AtomicExchange(Destination,Source);
 end;
-{$else}
+{$ELSE}
 begin
  result:=InterlockedExchange64(Destination,Source);
 end;
-{$endif}
-{$else}
-{$ifdef HAS_ATOMICS}
+{$ENDIF}
+{$ELSE}
+{$IFDEF HAS_ATOMICS}
 var Old:TPasMPInt64;
 begin
  repeat
@@ -5827,7 +5849,7 @@ begin
   result:=AtomicCmpExchange(Destination,Source,Old);
  until result=Old;
 end;
-{$else}
+{$ELSE}
 var Old:TPasMPInt64;
 begin
  repeat
@@ -5835,22 +5857,22 @@ begin
   result:=InterlockedCompareExchange64(Destination,Source,Old);
  until result=Old;
 end;
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 
 class function TPasMPInterlocked.Write(var Destination:TPasMPInt64Record;const Source:TPasMPInt64Record):TPasMPInt64Record;
-{$ifdef CPU64}
-{$ifdef HAS_ATOMICS}
+{$IFDEF CPU64}
+{$IFDEF HAS_ATOMICS}
 begin
  result.Value:=AtomicExchange(Destination.Value,Source.Value);
 end;
-{$else}
+{$ELSE}
 begin
  result.Value:=InterlockedExchange64(Destination.Value,Source.Value);
 end;
-{$endif}
-{$else}
-{$ifdef HAS_ATOMICS}
+{$ENDIF}
+{$ELSE}
+{$IFDEF HAS_ATOMICS}
 var Old:TPasMPInt64;
 begin
  repeat
@@ -5858,7 +5880,7 @@ begin
   result.Value:=AtomicCmpExchange(Destination.Value,Source.Value,Old);
  until result.Value=Old;
 end;
-{$else}
+{$ELSE}
 var Old:TPasMPInt64;
 begin
  repeat
@@ -5866,10 +5888,10 @@ begin
   result.Value:=InterlockedCompareExchange64(Destination.Value,Source.Value,Old);
  until result.Value=Old;
 end;
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 
-{$if defined(CPU64) and defined(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
+{$IF DEFINED(CPU64) and DEFINED(PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE)}
 class function TPasMPInterlocked.Write(var Destination:TPasMPInt128Record;const Source:TPasMPInt128Record):TPasMPInt128Record;
 var Old:TPasMPInt128Record;
 begin
@@ -5878,21 +5900,21 @@ begin
   result:=InterlockedCompareExchange128(Destination,Source,Old);
  until (result.Lo=Old.Lo) and (result.Hi=Old.Hi);
 end;
-{$ifend}
+{$IFEND}
 
 class function TPasMPInterlocked.Write(var Destination:TPasMPUInt64;const Source:TPasMPUInt64):TPasMPUInt64;
-{$ifdef CPU64}
-{$ifdef HAS_ATOMICS}
+{$IFDEF CPU64}
+{$IFDEF HAS_ATOMICS}
 begin
  result:=TPasMPUInt64(TPasMPInt64(AtomicExchange(TPasMPInt64(Destination),TPasMPInt64(Source))));
 end;
-{$else}
+{$ELSE}
 begin
  result:=TPasMPUInt64(TPasMPInt64(InterlockedExchange64(TPasMPInt64(Destination),TPasMPInt64(Source))));
 end;
-{$endif}
-{$else}
-{$ifdef HAS_ATOMICS}
+{$ENDIF}
+{$ELSE}
+{$IFDEF HAS_ATOMICS}
 var Old:TPasMPUInt64;
 begin
  repeat
@@ -5900,7 +5922,7 @@ begin
   result:=TPasMPUInt64(TPasMPInt64(AtomicCmpExchange(TPasMPInt64(Destination),TPasMPInt64(Source),TPasMPInt64(Old))));
  until result=Old;
 end;
-{$else}
+{$ELSE}
 var Old:TPasMPUInt64;
 begin
  repeat
@@ -5908,55 +5930,55 @@ begin
   result:=TPasMPUInt64(TPasMPInt64(InterlockedCompareExchange64(TPasMPInt64(Destination),TPasMPInt64(Source),TPasMPInt64(Old))));
  until result=Old;
 end;
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 
-{$ifend}
+{$IFEND}
 
-class function TPasMPInterlocked.Write(var Destination:pointer;const Source:pointer):pointer;
+class function TPasMPInterlocked.Write(var Destination:Pointer;const Source:Pointer):Pointer;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=AtomicExchange(Destination,Source);
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
-{$endif}
-{$endif}
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Write(var Destination:TObject;const Source:TObject):TObject;
 begin
-{$ifdef HAS_ATOMICS}
- result:=AtomicExchange(pointer(Destination),pointer(Source));
-{$else}
-{$ifdef CPU64}
- result:=pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
-{$else}
- result:=pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
-{$endif}
-{$endif}
+{$IFDEF HAS_ATOMICS}
+ result:=AtomicExchange(Pointer(Destination),Pointer(Source));
+{$ELSE}
+{$IFDEF CPU64}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange64(TPasMPInt64(TPasMPPtrInt(Destination)),TPasMPInt64(TPasMPPtrInt(Source)))));
+{$ELSE}
+ result:=Pointer(TPasMPPtrInt(InterlockedExchange(TPasMPInt32(TPasMPPtrInt(Destination)),TPasMPInt32(TPasMPPtrInt(Source)))));
+{$ENDIF}
+{$ENDIF}
 end;
 
 class function TPasMPInterlocked.Write(var Destination:TPasMPBool32;const Source:TPasMPBool32):TPasMPBool32;
 begin
-{$ifdef HAS_ATOMICS}
+{$IFDEF HAS_ATOMICS}
  result:=TPasMPBool32(TPasMPInt32(AtomicExchange(TPasMPInt32(Destination),TPasMPInt32(Source))));
-{$else}
+{$ELSE}
  result:=TPasMPBool32(TPasMPInt32(InterlockedExchange(TPasMPInt32(Destination),TPasMPInt32(Source))));
-{$endif}
+{$ENDIF}
 end;
 
 class procedure TPasMPMemoryBarrier.Read;
 begin
-{$if defined(fpc)}
+{$IF DEFINED(fpc)}
  ReadBarrier;
-{$elseif CompilerVersion>=25}
+{$ELSEIF CompilerVersion>=25}
  MemoryBarrier;
-{$else}
+{$ELSE}
  FallbackReadBarrier;
-{$ifend}
+{$IFEND}
 end;
 
 class procedure TPasMPMemoryBarrier.ReadDependency;
@@ -5966,105 +5988,109 @@ end;
 
 class procedure TPasMPMemoryBarrier.ReadWrite;
 begin
-{$if defined(fpc)}
+{$IF DEFINED(fpc)}
  ReadWriteBarrier;
-{$elseif CompilerVersion>=25}
+{$ELSEIF CompilerVersion>=25}
  MemoryBarrier;
-{$else}
+{$ELSE}
  FallbackReadWriteBarrier;
-{$ifend}
+{$IFEND}
 end;
 
 class procedure TPasMPMemoryBarrier.Write;
 begin
-{$if defined(fpc)}
+{$IF DEFINED(fpc)}
  WriteBarrier;
-{$elseif CompilerVersion>=25}
+{$ELSEIF CompilerVersion>=25}
  MemoryBarrier;
-{$else}
+{$ELSE}
  FallbackWriteBarrier;
-{$ifend}
+{$IFEND}
 end;
 
 class procedure TPasMPMemoryBarrier.Sync;
 begin
-{$if defined(fpc)}
+{$IF DEFINED(fpc)}
  ReadWriteBarrier;
-{$elseif CompilerVersion>=25}
+{$ELSEIF CompilerVersion>=25}
  MemoryBarrier;
-{$else}
+{$ELSE}
  FallbackReadWriteBarrier;
-{$ifend}
+{$IFEND}
 end;
 
 class procedure TPasMPMemory.AllocateAlignedMemory(var p;Size:TPasMPInt32;Align:TPasMPInt32=PasMPCPUCacheLineSize);
-var Original,Aligned:pointer;
+var Original,Aligned:Pointer;
     Mask:ptruint;
 begin
  if (Align and (Align-1))<>0 then begin
   Align:=TPasMPMath.RoundUpToPowerOfTwo(Align);
  end;
  Mask:=Align-1;
- inc(Size,((Align shl 1)+SizeOf(pointer)));
+ inc(Size,((Align shl 1)+SizeOf(Pointer)));
  GetMem(Original,Size);
  FillChar(Original^,Size,#0);
- Aligned:=pointer(ptruint(ptruint(Original)+SizeOf(pointer)));
+ Aligned:=Pointer(ptruint(ptruint(Original)+SizeOf(Pointer)));
  if (Align>1) and ((ptruint(Aligned) and Mask)<>0) then begin
   inc(ptruint(Aligned),ptruint(ptruint(Align)-(ptruint(Aligned) and Mask)));
  end;
- pointer(pointer(ptruint(ptruint(Aligned)-SizeOf(pointer)))^):=Original;
- pointer(pointer(@p)^):=Aligned;
+ Pointer(Pointer(ptruint(ptruint(Aligned)-SizeOf(Pointer)))^):=Original;
+ Pointer(Pointer(@p)^):=Aligned;
 end;
 
 class procedure TPasMPMemory.FreeAlignedMemory(const p);
-var pp:pointer;
+var pp:Pointer;
 begin
- pp:=pointer(pointer(@p)^);
+ pp:=Pointer(Pointer(@p)^);
  if assigned(pp) then begin
-  pp:=pointer(pointer(ptruint(ptruint(pp)-SizeOf(pointer)))^);
+  pp:=Pointer(Pointer(ptruint(ptruint(pp)-SizeOf(Pointer)))^);
   FreeMem(pp);
  end;
 end;
 
 class procedure TPasMPMemory.Barrier;
 begin
-{$ifdef fpc}
- ReadWriteBarrier;
-{$else}
-{$if CompilerVersion>=25}
- MemoryBarrier;
-{$else}
- FallbackReadWriteBarrier;
-{$ifend}
-{$endif}
+{$IFDEF fpc}
+  ReadWriteBarrier;
+{$ELSE}
+  {$IF CompilerVersion>=25}
+  MemoryBarrier;
+  {$ELSE}
+  FallbackReadWriteBarrier;
+  {$IFEND}
+{$ENDIF}
 end;
 
 constructor TPasMPHighResolutionTimer.Create;
 begin
- inherited Create;
- fFrequencyShift:=0;
-{$if defined(Windows)}
- if QueryPerformanceFrequency(fFrequency) then begin
-  while (fFrequency and $ffffffffe0000000)<>0 do begin
-   fFrequency:=fFrequency shr 1;
-   inc(fFrequencyShift);
+  inherited Create;
+  fFrequencyShift := 0;
+{$IF DEFINED(Windows)}
+  if QueryPerformanceFrequency(fFrequency) then
+  begin
+    while (fFrequency and $ffffffffe0000000) <> 0 do
+    begin
+      fFrequency := fFrequency shr 1;
+      inc(fFrequencyShift);
+    end;
+  end
+  else
+  begin
+    fFrequency := 1000;
   end;
- end else begin
-  fFrequency:=1000;
- end;
-{$elseif defined(Linux)}
- fFrequency:=1000000000;
-{$elseif defined(Unix)}
- fFrequency:=1000000;
-{$else}
- fFrequency:=1000;
-{$ifend}
- fMillisecondInterval:=(fFrequency+500) div 1000;
- fTwoMillisecondsInterval:=(fFrequency+250) div 500;
- fFourMillisecondsInterval:=(fFrequency+125) div 250;
- fQuarterSecondInterval:=(fFrequency+2) div 4;
- fMinuteInterval:=fFrequency*60;
- fHourInterval:=fFrequency*3600;
+{$ELSEIF DEFINED(Linux)}
+  fFrequency := 1000000000;
+{$ELSEIF DEFINED(Unix)}
+  fFrequency := 1000000;
+{$ELSE}
+  fFrequency := 1000;
+{$IFEND}
+  fMillisecondInterval := (fFrequency+500) div 1000;
+  fTwoMillisecondsInterval := (fFrequency+250) div 500;
+  fFourMillisecondsInterval := (fFrequency+125) div 250;
+  fQuarterSecondInterval := (fFrequency+2) div 4;
+  fMinuteInterval := fFrequency*60;
+  fHourInterval := fFrequency*3600;
 end;
 
 destructor TPasMPHighResolutionTimer.Destroy;
@@ -6073,7 +6099,7 @@ begin
 end;
 
 function TPasMPHighResolutionTimer.GetTime:TPasMPInt64;
-{$if defined(Linux)}
+{$IF DEFINED(Linux)}
 var NowTimeSpec:TPasMPTimeSpec;
     tv:timeval;
     tz:TPasMPTimeZone;
@@ -6086,53 +6112,53 @@ begin
  end else begin
   tz.tz_minuteswest:=0;
   tz.tz_dsttime:=0;
-{$ifdef fpc}
+{$IFDEF fpc}
   fpgettimeofday(@tv,@tz);
-{$else}
+{$ELSE}
   gettimeofday(tv,@tz);
-{$endif}
+{$ENDIF}
   ia:=TPasMPInt64(tv.tv_sec)*TPasMPInt64(1000000);
   ib:=tv.tv_usec;
   result:=((ia+ib)*1000) shr fFrequencyShift;
  end;
 end;
-{$elseif defined(unix)}
+{$ELSEIF DEFINED(unix)}
 var tv:timeval;
     tz:TPasMPTimeZone;
     ia,ib:TPasMPInt64;
 begin
  tz.tz_minuteswest:=0;
  tz.tz_dsttime:=0;
-{$ifdef fpc}
+{$IFDEF fpc}
  fpgettimeofday(@tv,@tz);
-{$else}
+{$ELSE}
  gettimeofday(tv,@tz);
-{$endif}
+{$ENDIF}
  ia:=TPasMPInt64(tv.tv_sec)*TPasMPInt64(1000000);
  ib:=tv.tv_usec;
  result:=(ia+ib) shr fFrequencyShift;
 end;
-{$elseif defined(Windows)}
+{$ELSEIF DEFINED(Windows)}
 begin
  if not QueryPerformanceCounter(result) then begin
-  result:=timeGetTime;
+  result:=GetTickCount; { *Converted from TimeGetTime* }
  end;
  result:=result shr fFrequencyShift;
 end;
-{$else}
+{$ELSE}
 begin
  result:=trunc(Now*86400000.0) shr fFrequencyShift;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPHighResolutionTimer.Sleep(const pDelay:TPasMPInt64);
-var EndTime,NowTime{$ifdef unix},SleepTime{$endif}:TPasMPInt64;
-{$ifdef unix}
+var EndTime,NowTime{$IFDEF unix},SleepTime{$ENDIF}:TPasMPInt64;
+{$IFDEF unix}
     req,rem:TPasMPTimeSpec;
-{$endif}
+{$ENDIF}
 begin
  if pDelay>0 then begin
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
   NowTime:=GetTime;
   EndTime:=NowTime+pDelay;
   while (NowTime+fTwoMillisecondsInterval)<EndTime do begin
@@ -6146,7 +6172,7 @@ begin
   while NowTime<EndTime do begin
    NowTime:=GetTime;
   end;
-{$elseif defined(Linux) or defined(Android)}
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)}
   NowTime:=GetTime;
   EndTime:=NowTime+pDelay;
   while (NowTime+fFourMillisecondsInterval)<EndTime do begin
@@ -6154,11 +6180,11 @@ begin
    if SleepTime>0 then begin
     req.tv_sec:=SleepTime div 1000000000;
     req.tv_nsec:=SleepTime mod 10000000000;
-{$ifdef fpc}
+{$IFDEF fpc}
     fpNanoSleep(@req,@rem);
-{$else}
+{$ELSE}
     NanoSleep(req,@rem);
-{$endif}
+{$ENDIF}
     NowTime:=GetTime;
     continue;
    end;
@@ -6171,7 +6197,7 @@ begin
   while NowTime<EndTime do begin
    NowTime:=GetTime;
   end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
   NowTime:=GetTime;
   EndTime:=NowTime+pDelay;
   while (NowTime+fFourMillisecondsInterval)<EndTime do begin
@@ -6179,11 +6205,11 @@ begin
    if SleepTime>0 then begin
     req.tv_sec:=SleepTime div 1000000;
     req.tv_nsec:=(SleepTime mod 1000000)*1000;
-{$ifdef fpc}
+{$IFDEF fpc}
     fpNanoSleep(@req,@rem);
-{$else}
+{$ELSE}
     NanoSleep(req,@rem);
-{$endif}
+{$ENDIF}
     NowTime:=GetTime;
     continue;
    end;
@@ -6196,7 +6222,7 @@ begin
   while NowTime<EndTime do begin
    NowTime:=GetTime;
   end;
-{$else}
+{$ELSE}
   NowTime:=GetTime;
   EndTime:=NowTime+pDelay;
   while (NowTime+4)<EndTime do begin
@@ -6210,7 +6236,7 @@ begin
   while NowTime<EndTime do begin
    NowTime:=GetTime;
   end;
-{$ifend}
+{$IFEND}
  end;
 end;
 
@@ -6288,94 +6314,94 @@ end;
 constructor TPasMPMutex.Create;
 begin
  inherited Create;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  fMutex:=CreateMutex(nil,false,nil);
  if fMutex=0 then begin
   RaiseLastOSError;
  end;
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_mutex_init(@fMutex,nil);
-{$else}
+{$ELSE}
  pthread_mutex_init(fMutex,nil);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fCriticalSection:=TPasMPCriticalSection.Create;
-{$ifend}
+{$IFEND}
 end;
 
-{$ifdef Unix}
-constructor TPasMPMutex.Create(const lpMutexAttributes:pointer);
+{$IFDEF Unix}
+constructor TPasMPMutex.Create(const lpMutexAttributes:Pointer);
 begin
  inherited Create;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  fMutex:=CreateMutex(lpMutexAttributes,false,'');
  if fMutex=0 then begin
   RaiseLastOSError;
  end;
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_mutex_init(@fMutex,lpMutexAttributes);
-{$else}
+{$ELSE}
  pthread_mutex_init(fMutex,lpMutexAttributes);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fCriticalSection:=TCriticalSection.Create;
-{$ifend}
+{$IFEND}
 end;
-{$endif}
+{$ENDIF}
 
-{$ifdef Windows}
-constructor TPasMPMutex.Create(const lpMutexAttributes:pointer;const bInitialOwner:boolean;const lpName:string);
+{$IFDEF Windows}
+constructor TPasMPMutex.Create(const lpMutexAttributes:Pointer;const bInitialOwner:Boolean;const lpName:string);
 begin
  inherited Create;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  fMutex:=CreateMutex(lpMutexAttributes,bInitialOwner,PChar(lpName));
  if fMutex=0 then begin
   RaiseLastOSError;
  end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
  pthread_mutex_init(@fMutex,lpMutexAttributes);
-{$else}
+{$ELSE}
  fCriticalSection:=TCriticalSection.Create;
-{$ifend}
+{$IFEND}
 end;
 
-constructor TPasMPMutex.Create(const DesiredAccess:TPasMPUInt32;const bInitialOwner:boolean;const lpName:string);
+constructor TPasMPMutex.Create(const DesiredAccess:TPasMPUInt32;const bInitialOwner:Boolean;const lpName:string);
 begin
  inherited Create;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  fMutex:=OpenMutex(DesiredAccess,bInitialOwner,PChar(lpName));
  if fMutex=0 then begin
   RaiseLastOSError;
  end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
  pthread_mutex_init(@fMutex,nil);
-{$else}
+{$ELSE}
  fCriticalSection:=TCriticalSection.Create;
-{$ifend}
+{$IFEND}
 end;
-{$endif}
+{$ENDIF}
 
 destructor TPasMPMutex.Destroy;
 begin
-{$if defined(Windows)}
- CloseHandle(fMutex);
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$IF DEFINED(Windows)}
+ FileClose(fMutex); { *Converted from CloseHandle* }
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_mutex_destroy(@fMutex);
-{$else}
+{$ELSE}
  pthread_mutex_destroy(fMutex);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fCriticalSection.Free;
-{$ifend}
+{$IFEND}
  inherited Destroy;
 end;
 
 procedure TPasMPMutex.Acquire;
 begin
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  case WaitForSingleObject(fMutex,INFINITE) of
   WAIT_OBJECT_0:begin
   end;
@@ -6387,119 +6413,137 @@ begin
    RaiseLastOSError;
   end;
  end;
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_mutex_lock(@fMutex);
-{$else}
+{$ELSE}
  pthread_mutex_lock(fMutex);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fCriticalSection.Acquire;
-{$ifend}
+{$IFEND}
 end;
 
 procedure TPasMPMutex.Release;
 begin
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  if not ReleaseMutex(fMutex) then begin
   RaiseLastOSError;
  end;
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_mutex_unlock(@fMutex);
-{$else}
+{$ELSE}
  pthread_mutex_unlock(fMutex);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fCriticalSection.Release;
-{$ifend}
+{$IFEND}
 end;
 
 constructor TPasMPConditionVariableLock.Create;
 begin
- inherited Create;
-{$if defined(Windows)}
- InitializeCriticalSection(fCriticalSection);
-{$elseif defined(Unix)}
-{$ifdef fpc}
- pthread_mutex_init(@fMutex,nil);
-{$else}
- pthread_mutex_init(fMutex,nil);
-{$endif}
-{$else}
- fCriticalSection:=TPasMPCriticalSection.Create;
-{$ifend}
+  inherited Create;
+{$IF DEFINED(Windows)}
+  {$IFDEF FPC}
+  FCriticalSection := TCriticalSection.Create;
+  {$ELSE}
+  InitializeCriticalSection(FCriticalSection);
+  {$ENDIF}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
+  pthread_mutex_init(@fMutex, nil);
+{$ELSE}
+  pthread_mutex_init(fMutex, nil);
+{$ENDIF}
+{$ELSE}
+  fCriticalSection := TPasMPCriticalSection.Create;
+{$IFEND}
 end;
 
 destructor TPasMPConditionVariableLock.Destroy;
 begin
-{$if defined(Windows)}
- DeleteCriticalSection(fCriticalSection);
-{$elseif defined(Unix)}
-{$ifdef fpc}
- pthread_mutex_destroy(@fMutex);
-{$else}
- pthread_mutex_destroy(fMutex);
-{$endif}
-{$else}
- fCriticalSection.Free;
-{$ifend}
- inherited Destroy;
+{$IF DEFINED(Windows)}
+  {$IFDEF FPC}
+  FCriticalSection.Destroy;
+  {$ELSE}
+  DeleteCriticalSection(FCriticalSection);
+  {$ENDIF}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
+  pthread_mutex_destroy(@fMutex);
+{$ELSE}
+  pthread_mutex_destroy(fMutex);
+{$ENDIF}
+{$ELSE}
+  fCriticalSection.Free;
+{$IFEND}
+  inherited Destroy;
 end;
 
 procedure TPasMPConditionVariableLock.Acquire;
 begin
-{$if defined(Windows)}
- EnterCriticalSection(fCriticalSection);
-{$elseif defined(Unix)}
-{$ifdef fpc}
- pthread_mutex_lock(@fMutex);
-{$else}
- pthread_mutex_lock(fMutex);
-{$endif}
-{$else}
- fCriticalSection.Acquire;
-{$ifend}
+{$IF DEFINED(Windows)}
+  {$IFDEF FPC}
+  FCriticalSection.Enter;
+  {$ELSE}
+  EnterCriticalSection(FCriticalSection);
+  {$ENDIF}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
+  pthread_mutex_lock(@fMutex);
+{$ELSE}
+  pthread_mutex_lock(fMutex);
+{$ENDIF}
+{$ELSE}
+  fCriticalSection.Acquire;
+{$IFEND}
 end;
 
 procedure TPasMPConditionVariableLock.Release;
 begin
-{$if defined(Windows)}
- LeaveCriticalSection(fCriticalSection);
-{$elseif defined(Unix)}
-{$ifdef fpc}
- pthread_mutex_unlock(@fMutex);
-{$else}
- pthread_mutex_unlock(fMutex);
-{$endif}
-{$else}
- fCriticalSection.Release;
-{$ifend}
+{$IF DEFINED(Windows)}
+  {$IFDEF FPC}
+  FCriticalSection.Leave;
+  {$ELSE}
+  LeaveCriticalSection(FCriticalSection);
+  {$ENDIF}
+{$ELSEIF DEFINED(Unix)}
+  {$IFDEF fpc}
+  pthread_mutex_unlock(@fMutex);
+  {$ELSE}
+  pthread_mutex_unlock(fMutex);
+  {$ENDIF}
+{$ELSE}
+  fCriticalSection.Release;
+{$IFEND}
 end;
 
 constructor TPasMPConditionVariable.Create;
-{$if defined(Unix)}
-const CLOCK_REALTIME=0;
-      CLOCK_MONOTONIC=1;
-      CLOCK_MONOTONIC_RAW=4;
-var r:TPasMPInt32;
-    TimeSpec_:TPasMPTimeSpec;
-{$ifend}
+{$IF DEFINED(Unix)}
+const
+  CLOCK_REALTIME = 0;
+  CLOCK_MONOTONIC = 1;
+  CLOCK_MONOTONIC_RAW = 4;
+var
+  r: TPasMPInt32;
+  TimeSpec_: TPasMPTimeSpec;
+{$IFEND}
 begin
  inherited Create;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  InitializeConditionVariable(@fConditionVariable);
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
  fClockID:=CLOCK_REALTIME;
  fHasConditionVariableAttributes:=false;
  // TODO: FIX-ME: Also use monotonic clock source for other *nix targets than just Linux, otherwise we
  // can have NTP-related deadlock fun on these Non-Linux *nix targets!
-{$if defined(Linux) and not defined(Android)}
- r:=pthread_condattr_init({$ifdef fpc}@fConditionVariableAttributes{$else}fConditionVariableAttributes{$endif});
+{$IF DEFINED(Linux) and not DEFINED(Android)}
+ r:=pthread_condattr_init({$IFDEF fpc}@fConditionVariableAttributes{$ELSE}fConditionVariableAttributes{$ENDIF});
  if r=0 then begin
   try
    if clock_gettime(CLOCK_MONOTONIC_RAW,@TimeSpec_)=0 then begin
-    r:=pthread_condattr_setclock({$ifdef fpc}@fConditionVariableAttributes{$else}fConditionVariableAttributes{$endif},CLOCK_MONOTONIC_RAW);
+    r:=pthread_condattr_setclock({$IFDEF fpc}@fConditionVariableAttributes{$ELSE}fConditionVariableAttributes{$ENDIF},CLOCK_MONOTONIC_RAW);
    end else begin
     r:=-1; // No support for CLOCK_MONOTONIC_RAW
    end;
@@ -6507,7 +6551,7 @@ begin
     fClockID:=CLOCK_MONOTONIC_RAW;
    end else begin
     if clock_gettime(CLOCK_MONOTONIC,@TimeSpec_)=0 then begin
-     r:=pthread_condattr_setclock({$ifdef fpc}@fConditionVariableAttributes{$else}fConditionVariableAttributes{$endif},CLOCK_MONOTONIC);
+     r:=pthread_condattr_setclock({$IFDEF fpc}@fConditionVariableAttributes{$ELSE}fConditionVariableAttributes{$ENDIF},CLOCK_MONOTONIC);
      if r=0 then begin
       fClockID:=CLOCK_MONOTONIC;
      end;
@@ -6517,51 +6561,51 @@ begin
    if fClockID<>CLOCK_REALTIME then begin
     fHasConditionVariableAttributes:=true;
    end else begin
-    pthread_condattr_destroy({$ifdef fpc}@fConditionVariableAttributes{$else}fConditionVariableAttributes{$endif});
+    pthread_condattr_destroy({$IFDEF fpc}@fConditionVariableAttributes{$ELSE}fConditionVariableAttributes{$ENDIF});
    end;
   end;
  end;
  if fHasConditionVariableAttributes then begin
-  pthread_cond_init({$ifdef fpc}@fConditionVariable{$else}fConditionVariable{$endif},@fConditionVariableAttributes);
- end else{$ifend}begin
-  pthread_cond_init({$ifdef fpc}@fConditionVariable{$else}fConditionVariable{$endif},nil);
+  pthread_cond_init({$IFDEF fpc}@fConditionVariable{$ELSE}fConditionVariable{$ENDIF},@fConditionVariableAttributes);
+ end else{$IFEND}begin
+  pthread_cond_init({$IFDEF fpc}@fConditionVariable{$ELSE}fConditionVariable{$ENDIF},nil);
  end;
-{$else}
+{$ELSE}
  fWaitCounter:=0;
  fCriticalSection:=TPasMPCriticalSection.Create;
  fReleaseCounter:=0;
  fGenerationCounter:=0;
  fEvent:=TPasMPEvent.Create(nil,true,false,'');
-{$ifend}
+{$IFEND}
 end;
 
 destructor TPasMPConditionVariable.Destroy;
 begin
-{$if defined(Windows)}
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$IF DEFINED(Windows)}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_cond_destroy(@fConditionVariable);
-{$else}
+{$ELSE}
  pthread_cond_destroy(fConditionVariable);
-{$endif}
+{$ENDIF}
  if fHasConditionVariableAttributes then begin
   try
-   pthread_condattr_destroy({$ifdef fpc}@fConditionVariableAttributes{$else}fConditionVariableAttributes{$endif});
+   pthread_condattr_destroy({$IFDEF fpc}@fConditionVariableAttributes{$ELSE}fConditionVariableAttributes{$ENDIF});
   finally
    fHasConditionVariableAttributes:=false;
   end;
  end;
-{$else}
+{$ELSE}
  fCriticalSection.Free;
  fEvent.Free;
-{$ifend}
+{$IFEND}
  inherited Destroy;
 end;
 
 function TPasMPConditionVariable.Wait(const Lock:TPasMPConditionVariableLock;const dwMilliSeconds:TPasMPUInt32=INFINITE):TWaitResult;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
- if SleepConditionVariableCS(@fConditionVariable,@Lock.fCriticalSection,dwMilliSeconds) then begin
+ if SleepConditionVariableCS(@fConditionVariable,@Lock.FCriticalSection,dwMilliSeconds) then begin
   result:=wrSignaled;
  end else begin
   case GetLastError of
@@ -6574,20 +6618,20 @@ begin
   end;
  end;
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 var TimeSpec_:TPasMPTimeSpec;
     tv:timeval;
     tz:TPasMPTimeZone;
 begin
  if dwMilliSeconds=INFINITE then begin
-  case pthread_cond_wait({$ifdef fpc}@fConditionVariable,@Lock.fMutex{$else}fConditionVariable,Lock.fMutex{$endif}) of
+  case pthread_cond_wait({$IFDEF fpc}@fConditionVariable,@Lock.fMutex{$ELSE}fConditionVariable,Lock.fMutex{$ENDIF}) of
    0:begin
     result:=wrSignaled;
    end;
-   {$ifdef fpc}ESysETIMEDOUT{$else}ETIMEDOUT{$endif}:begin
+   {$IFDEF fpc}ESysETIMEDOUT{$ELSE}ETIMEDOUT{$ENDIF}:begin
     result:=wrTimeOut;
    end;
-   {$ifdef fpc}ESysEINVAL{$else}EINVAL{$endif}:begin
+   {$IFDEF fpc}ESysEINVAL{$ELSE}EINVAL{$ENDIF}:begin
     result:=wrAbandoned;
    end;
    else begin
@@ -6595,14 +6639,14 @@ begin
    end;
   end;
  end else begin
- {$if defined(Linux)}if clock_gettime(fClockID,@TimeSpec_)<>0 then{$ifend}begin
+ {$IF DEFINED(Linux)}if clock_gettime(fClockID,@TimeSpec_)<>0 then{$IFEND}begin
    tz.tz_minuteswest:=0;
    tz.tz_dsttime:=0;
-{$ifdef fpc}
+{$IFDEF fpc}
    fpgettimeofday(@tv,@tz);
-{$else}
+{$ELSE}
    gettimeofday(tv,@tz);
-{$endif}
+{$ENDIF}
    TimeSpec_.tv_sec:=tv.tv_sec;
    TimeSpec_.tv_nsec:=tv.tv_usec*1000;
   end;
@@ -6612,14 +6656,14 @@ begin
    inc(TimeSpec_.tv_sec);
    dec(TimeSpec_.tv_nsec,1000000000);
   end;
-  case pthread_cond_timedwait({$ifdef fpc}@fConditionVariable,@Lock.fMutex,@TimeSpec_{$else}fConditionVariable,Lock.fMutex,TimeSpec_{$endif}) of
+  case pthread_cond_timedwait({$IFDEF fpc}@fConditionVariable,@Lock.fMutex,@TimeSpec_{$ELSE}fConditionVariable,Lock.fMutex,TimeSpec_{$ENDIF}) of
    0:begin
     result:=wrSignaled;
    end;
-   {$ifdef fpc}ESysETIMEDOUT{$else}ETIMEDOUT{$endif}:begin
+   {$IFDEF fpc}ESysETIMEDOUT{$ELSE}ETIMEDOUT{$ENDIF}:begin
     result:=wrTimeOut;
    end;
-   {$ifdef fpc}ESysEINVAL{$else}EINVAL{$endif}:begin
+   {$IFDEF fpc}ESysEINVAL{$ELSE}EINVAL{$ENDIF}:begin
     result:=wrAbandoned;
    end;
    else begin
@@ -6628,9 +6672,9 @@ begin
   end;
  end;
 end;
-{$else}
+{$ELSE}
 var SavedGenerationCounter:TPasMPInt32;
-    WaitDone,WasLastWaiter:boolean;
+    WaitDone,WasLastWaiter:Boolean;
 begin
 
  result:=wrError;
@@ -6689,22 +6733,22 @@ begin
  end;
 
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPConditionVariable.Signal;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  WakeConditionVariable(@fConditionVariable);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_cond_signal(@fConditionVariable);
-{$else}
+{$ELSE}
  pthread_cond_signal(fConditionVariable);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fCriticalSection.Acquire;
  try
@@ -6717,22 +6761,22 @@ begin
   fCriticalSection.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPConditionVariable.Broadcast;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  WakeAllConditionVariable(@fConditionVariable);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_cond_broadcast(@fConditionVariable);
-{$else}
+{$ELSE}
  pthread_cond_signal(fConditionVariable);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fCriticalSection.Acquire;
  try
@@ -6745,52 +6789,52 @@ begin
   fCriticalSection.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 constructor TPasMPSemaphore.Create(const InitialCount,MaximumCount:TPasMPInt32);
 begin
  inherited Create;
  fInitialCount:=InitialCount;
  fMaximumCount:=MaximumCount;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  fHandle:=CreateSemaphore(nil,InitialCount,MaximumCount,nil);
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  sem_init(@fHandle,0,InitialCount);
-{$else}
+{$ELSE}
  sem_init(fHandle,0,InitialCount);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fCurrentCount:=fInitialCount;
-{$ifdef PasMPSemaphoreUseConditionVariable}
+{$IFDEF PasMPSemaphoreUseConditionVariable}
  fConditionVariableLock:=TPasMPConditionVariableLock.Create;
  fConditionVariable:=TPasMPConditionVariable.Create;
-{$else}
+{$ELSE}
  fCriticalSection:=TPasMPCriticalSection.Create;
  fEvent:=TPasMPEvent.Create(nil,false,false,'');
-{$endif}
-{$ifend}
+{$ENDIF}
+{$IFEND}
 end;
 
 destructor TPasMPSemaphore.Destroy;
 begin
-{$if defined(Windows)}
- CloseHandle(fHandle);
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$IF DEFINED(Windows)}
+ FileClose(fHandle); { *Converted from CloseHandle* }
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  sem_destroy(@fHandle);
-{$else}
+{$ELSE}
  sem_destroy(fHandle);
-{$endif}
-{$else}
-{$ifdef PasMPSemaphoreUseConditionVariable}
+{$ENDIF}
+{$ELSE}
+{$IFDEF PasMPSemaphoreUseConditionVariable}
  fConditionVariable.Free;
  fConditionVariableLock.Free;
-{$else}
+{$ELSE}
  fEvent.Free;
  fCriticalSection.Free;
-{$endif}
-{$ifend}
+{$ENDIF}
+{$IFEND}
  inherited Destroy;
 end;
 
@@ -6805,7 +6849,7 @@ begin
 end;
 
 function TPasMPSemaphore.Acquire(const AcquireCount:TPasMPInt32):TWaitResult;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 var Counter:TPasMPInt32;
 begin
  result:=wrError;
@@ -6829,20 +6873,20 @@ begin
   end;
  end;
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 var Counter:TPasMPInt32;
 begin
  result:=wrError;
  for Counter:=1 to AcquireCount do begin
-  case sem_wait({$ifdef fpc}@fHandle{$else}fHandle{$endif}) of
+  case sem_wait({$IFDEF fpc}@fHandle{$ELSE}fHandle{$ENDIF}) of
    0:begin
     result:=wrSignaled;
    end;
-   {$ifdef fpc}ESysETIMEDOUT{$else}ETIMEDOUT{$endif}:begin
+   {$IFDEF fpc}ESysETIMEDOUT{$ELSE}ETIMEDOUT{$ENDIF}:begin
     result:=wrTimeOut;
     exit;
    end;
-   {$ifdef fpc}ESysEINVAL{$else}EINVAL{$endif}:begin
+   {$IFDEF fpc}ESysEINVAL{$ELSE}EINVAL{$ENDIF}:begin
     result:=wrAbandoned;
     exit;
    end;
@@ -6853,8 +6897,8 @@ begin
   end;
  end;
 end;
-{$else}
-{$ifdef PasMPSemaphoreUseConditionVariable}
+{$ELSE}
+{$IFDEF PasMPSemaphoreUseConditionVariable}
 var Counter:TPasMPInt32;
 begin
  result:=wrError;
@@ -6879,9 +6923,9 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$else}
+{$ELSE}
 var Counter:TPasMPInt32;
-    Done:boolean;
+    Done:Boolean;
 begin
  result:=wrError;
  for Counter:=1 to AcquireCount do begin
@@ -6906,19 +6950,19 @@ begin
   end;
  end;
 end;
-{$endif}
-{$ifend}
+{$ENDIF}
+{$IFEND}
 
 function TPasMPSemaphore.Release(const ReleaseCount:TPasMPInt32):TPasMPInt32;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  ReleaseSemaphore(fHandle,ReleaseCount,@result);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
  result:=0;
  while result<ReleaseCount do begin
-  case sem_post({$ifdef fpc}@fHandle{$else}fHandle{$endif}) of
+  case sem_post({$IFDEF fpc}@fHandle{$ELSE}fHandle{$ENDIF}) of
    0:begin
     inc(result);
    end;
@@ -6928,8 +6972,8 @@ begin
   end;
  end;
 end;
-{$else}
-{$ifdef PasMPSemaphoreUseConditionVariable}
+{$ELSE}
+{$IFDEF PasMPSemaphoreUseConditionVariable}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -6951,8 +6995,8 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$else}
-var WakeUp:boolean;
+{$ELSE}
+var WakeUp:Boolean;
 begin
  WakeUp:=false;
  fCriticalSection.Acquire;
@@ -6978,8 +7022,8 @@ begin
   fEvent.SetEvent;
  end;
 end;
-{$endif}
-{$ifend}
+{$ENDIF}
+{$IFEND}
 
 constructor TPasMPInvertedSemaphore.Create(const InitialCount,MaximumCount:TPasMPInt32);
 begin
@@ -7075,52 +7119,52 @@ end;
 constructor TPasMPMultipleReaderSingleWriterLock.Create;
 begin
  inherited Create;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  InitializeSRWLock(@fSRWLock);
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_rwlock_init(@fReadWriteLock,nil);
-{$else}
+{$ELSE}
  pthread_rwlock_init(fReadWriteLock,nil);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fReaders:=0;
  fWriters:=0;
  fConditionVariableLock:=TPasMPConditionVariableLock.Create;
  fConditionVariable:=TPasMPConditionVariable.Create;
-{$ifend}
+{$IFEND}
 end;
 
 destructor TPasMPMultipleReaderSingleWriterLock.Destroy;
 begin
-{$if defined(Windows)}
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$IF DEFINED(Windows)}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_rwlock_destroy(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_destroy(fReadWriteLock);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fConditionVariable.Free;
  fConditionVariableLock.Free;
-{$ifend}
+{$IFEND}
  inherited Destroy;
 end;
 
 procedure TPasMPMultipleReaderSingleWriterLock.AcquireRead;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  AcquireSRWLockShared(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_rdlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_rdlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var State:TPasMPInt32;
 begin
  fConditionVariableLock.Acquire;
@@ -7133,22 +7177,22 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
-function TPasMPMultipleReaderSingleWriterLock.TryAcquireRead:boolean;
-{$if defined(Windows)}
+function TPasMPMultipleReaderSingleWriterLock.TryAcquireRead:Boolean;
+{$IF DEFINED(Windows)}
 begin
  result:=TryAcquireSRWLockShared(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  result:=pthread_rwlock_tryrdlock(@fReadWriteLock)=0;
-{$else}
+{$ELSE}
  result:=pthread_rwlock_tryrdlock(fReadWriteLock)=0;
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 var State:TPasMPInt32;
 begin
  fConditionVariableLock.Acquire;
@@ -7161,22 +7205,22 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPMultipleReaderSingleWriterLock.ReleaseRead;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  ReleaseSRWLockShared(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_unlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_unlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7188,22 +7232,22 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPMultipleReaderSingleWriterLock.AcquireWrite;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  AcquireSRWLockExclusive(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_wrlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_wrlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7215,22 +7259,22 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
-function TPasMPMultipleReaderSingleWriterLock.TryAcquireWrite:boolean;
-{$if defined(Windows)}
+function TPasMPMultipleReaderSingleWriterLock.TryAcquireWrite:Boolean;
+{$IF DEFINED(Windows)}
 begin
  result:=TryAcquireSRWLockExclusive(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  result:=pthread_rwlock_trywrlock(@fReadWriteLock)=0;
-{$else}
+{$ELSE}
  result:=pthread_rwlock_trywrlock(fReadWriteLock)=0;
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7242,22 +7286,22 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPMultipleReaderSingleWriterLock.ReleaseWrite;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  ReleaseSRWLockExclusive(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_unlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_unlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7269,25 +7313,25 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPMultipleReaderSingleWriterLock.ReadToWrite;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  ReleaseSRWLockShared(@fSRWLock);
  AcquireSRWLockExclusive(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_unlock(@fReadWriteLock);
  pthread_rwlock_wrlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_unlock(fReadWriteLock);
  pthread_rwlock_wrlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7300,25 +7344,25 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPMultipleReaderSingleWriterLock.WriteToRead;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  ReleaseSRWLockExclusive(@fSRWLock);
  AcquireSRWLockShared(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_unlock(@fReadWriteLock);
  pthread_rwlock_rdlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_unlock(fReadWriteLock);
  pthread_rwlock_rdlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7331,7 +7375,7 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPMultipleReaderSingleWriterLock.BeginRead;
 begin
@@ -7343,7 +7387,7 @@ begin
  ReleaseRead;
 end;
 
-function TPasMPMultipleReaderSingleWriterLock.BeginWrite:boolean;
+function TPasMPMultipleReaderSingleWriterLock.BeginWrite:Boolean;
 begin
  AcquireWrite;
  result:=true;
@@ -7378,7 +7422,7 @@ begin
  until false;
 end;
 
-function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireRead:boolean;
+function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireRead:Boolean;
 var State:TPasMPInt32;
 begin
  State:=fState and TPasMPInt32(TPasMPUInt32($fffffffe));
@@ -7406,7 +7450,7 @@ begin
  end;
 end;
 
-function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireWrite:boolean;
+function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireWrite:Boolean;
 var State:TPasMPInt32;
 begin
  State:=fState and TPasMPInt32(TPasMPUInt32($fffffffe));
@@ -7450,7 +7494,7 @@ begin
  ReleaseRead;
 end;
 
-function TPasMPMultipleReaderSingleWriterSpinLock.BeginWrite:boolean;
+function TPasMPMultipleReaderSingleWriterSpinLock.BeginWrite:Boolean;
 begin
  AcquireWrite;
  result:=true;
@@ -7474,7 +7518,7 @@ begin
  until false;
 end;
 
-class function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireRead(var LockState:TPasMPInt32):boolean;
+class function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireRead(var LockState:TPasMPInt32):Boolean;
 var State:TPasMPInt32;
 begin
  State:=LockState and TPasMPInt32(TPasMPUInt32($fffffffe));
@@ -7502,7 +7546,7 @@ begin
  end;
 end;
 
-class function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireWrite(var LockState:TPasMPInt32):boolean;
+class function TPasMPMultipleReaderSingleWriterSpinLock.TryAcquireWrite(var LockState:TPasMPInt32):Boolean;
 var State:TPasMPInt32;
 begin
  State:=LockState and TPasMPInt32(TPasMPUInt32($fffffffe));
@@ -7539,51 +7583,51 @@ end;
 constructor TPasMPSlimReaderWriterLock.Create;
 begin
  inherited Create;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
  InitializeSRWLock(@fSRWLock);
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_rwlock_init(@fReadWriteLock,nil);
-{$else}
+{$ELSE}
  pthread_rwlock_init(fReadWriteLock,nil);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fCount:=0;
  fConditionVariableLock:=TPasMPConditionVariableLock.Create;
  fConditionVariable:=TPasMPConditionVariable.Create;
-{$ifend}
+{$IFEND}
 end;
 
 destructor TPasMPSlimReaderWriterLock.Destroy;
 begin
-{$if defined(Windows)}
-{$elseif defined(Unix)}
-{$ifdef fpc}
+{$IF DEFINED(Windows)}
+{$ELSEIF DEFINED(Unix)}
+{$IFDEF fpc}
  pthread_rwlock_destroy(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_destroy(fReadWriteLock);
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
  fConditionVariable.Free;
  fConditionVariableLock.Free;
-{$ifend}
+{$IFEND}
  inherited Destroy;
 end;
 
 procedure TPasMPSlimReaderWriterLock.Acquire;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  AcquireSRWLockExclusive(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_wrlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_wrlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7595,22 +7639,22 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
-function TPasMPSlimReaderWriterLock.TryAcquire:boolean;
-{$if defined(Windows)}
+function TPasMPSlimReaderWriterLock.TryAcquire:Boolean;
+{$IF DEFINED(Windows)}
 begin
  result:=TryAcquireSRWLockExclusive(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  result:=pthread_rwlock_trywrlock(@fReadWriteLock)=0;
-{$else}
+{$ELSE}
  result:=pthread_rwlock_trywrlock(fReadWriteLock)=0;
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7622,22 +7666,22 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 procedure TPasMPSlimReaderWriterLock.Release;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 begin
  ReleaseSRWLockExclusive(@fSRWLock);
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  pthread_rwlock_unlock(@fReadWriteLock);
-{$else}
+{$ELSE}
  pthread_rwlock_unlock(fReadWriteLock);
-{$endif}
+{$ENDIF}
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7649,31 +7693,31 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 constructor TPasMPSpinLock.Create;
 begin
  inherited Create;
-{$if defined(PasMPPThreadSpinLock)}
+{$IF DEFINED(PasMPPThreadSpinLock)}
  pthread_spin_init(@fSpinLock,0);
-{$else}
+{$ELSE}
  fState:=0;
-{$ifend}
+{$IFEND}
 end;
 
 destructor TPasMPSpinLock.Destroy;
 begin
-{$if defined(PasMPPThreadSpinLock)}
+{$IF DEFINED(PasMPPThreadSpinLock)}
  pthread_spin_destroy(@fSpinLock);
-{$ifend}
+{$IFEND}
  inherited Destroy;
 end;
 
-procedure TPasMPSpinLock.Acquire; {$if defined(PasMPPThreadSpinLock)}
+procedure TPasMPSpinLock.Acquire; {$IF DEFINED(PasMPPThreadSpinLock)}
 begin
  pthread_spin_lock(@fSpinLock);
 end;
-{$elseif defined(cpu386)}assembler; register;
+{$ELSEIF DEFINED(cpu386)}assembler; register;
 asm
  test dword ptr [eax+TPasMPSpinLock.fState],1
  jnz @SpinLoop
@@ -7687,8 +7731,8 @@ asm
  jmp @TryAgain
 @TryDone:
 end;
-{$elseif defined(cpux86_64)}assembler; register;
-{$ifdef Windows}
+{$ELSEIF DEFINED(cpux86_64)}assembler; register;
+{$IFDEF Windows}
 asm
  // Win64 ABI
  // rcx = self
@@ -7704,7 +7748,7 @@ asm
  jmp @TryAgain
 @TryDone:
 end;
-{$else}
+{$ELSE}
 asm
  // System V ABI
  // rdi = self
@@ -7720,20 +7764,20 @@ asm
  jmp @TryAgain
 @TryDone:
 end;
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
 begin
  while TPasMPInterlocked.CompareExchange(fState,-1,0)<>0 do begin
   TPasMP.Yield;
  end;
 end;
-{$ifend}
+{$IFEND}
 
-function TPasMPSpinLock.TryAcquire:longbool; {$if defined(PasMPPThreadSpinLock)}
+function TPasMPSpinLock.TryAcquire:longbool; {$IF DEFINED(PasMPPThreadSpinLock)}
 begin
  result:=pthread_spin_trylock(@fSpinLock)=0;
 end;
-{$elseif defined(cpu386)}assembler; register;
+{$ELSEIF DEFINED(cpu386)}assembler; register;
 asm
  xor eax,eax
  lock bts dword ptr [eax+TPasMPSpinLock.fState],0
@@ -7741,8 +7785,8 @@ asm
   not eax
  @Failed:
 end;
-{$elseif defined(cpux86_64)}assembler; register;
-{$ifdef Windows}
+{$ELSEIF DEFINED(cpux86_64)}assembler; register;
+{$IFDEF Windows}
 asm
  // Win64 ABI
  // rcx = self
@@ -7752,7 +7796,7 @@ asm
   not rax
  @Failed:
 end;
-{$else}
+{$ELSE}
 asm
  // System V ABI
  // rdi = self
@@ -7762,40 +7806,40 @@ asm
   not rax
  @Failed:
 end;
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
 begin
  result:=TPasMPInterlocked.CompareExchange(fState,-1,0)=0;
 end;
-{$ifend}
+{$IFEND}
 
-procedure TPasMPSpinLock.Release; {$if defined(PasMPPThreadSpinLock)}
+procedure TPasMPSpinLock.Release; {$IF DEFINED(PasMPPThreadSpinLock)}
 begin
  pthread_spin_unlock(@fSpinLock);
 end;
-{$elseif defined(cpu386)}assembler; register;
+{$ELSEIF DEFINED(cpu386)}assembler; register;
 asm
  mov dword ptr [eax+TPasMPSpinLock.fState],0
 end;
-{$elseif defined(cpux86_64)}assembler; register;
-{$ifdef Windows}
+{$ELSEIF DEFINED(cpux86_64)}assembler; register;
+{$IFDEF Windows}
 asm
  // Win64 ABI
  // rcx = self
  mov dword ptr [rcx+TPasMPSpinLock.fState],0
 end;
-{$else}
+{$ELSE}
 asm
  // System V ABI
  // rdi = self
  mov dword ptr [rdi+TPasMPSpinLock.fState],0
 end;
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
 begin
  TPasMPInterlocked.Exchange(fState,0);
 end;
-{$ifend}
+{$IFEND}
 
 constructor TPasMPBenaphore.Create;
 begin
@@ -7847,11 +7891,11 @@ end;
 procedure TPasMPRecursiveBenaphore.Acquire;
 var CurrentThreadID:TThreadID;
 begin
-{$if (defined(NEXTGEN) or not defined(Windows)) and not defined(FPC)}
+{$IF (DEFINED(NEXTGEN) or not DEFINED(Windows)) and not DEFINED(FPC)}
  CurrentThreadID:=TThread.CurrentThread.ThreadID;
-{$else}
+{$ELSE}
  CurrentThreadID:=GetCurrentThreadID;
-{$ifend}
+{$IFEND}
  if TPasMPInterlocked.Increment(fLockCount)>1 then begin
   if fOwningThreadID=CurrentThreadID then begin
    inc(fRecursionCount);
@@ -7867,11 +7911,11 @@ end;
 function TPasMPRecursiveBenaphore.TryAcquire:longbool;
 var CurrentThreadID:TThreadID;
 begin
-{$if (defined(NEXTGEN) or not defined(Windows)) and not defined(FPC)}
+{$IF (DEFINED(NEXTGEN) or not DEFINED(Windows)) and not DEFINED(FPC)}
  CurrentThreadID:=TThread.CurrentThread.ThreadID;
-{$else}
+{$ELSE}
  CurrentThreadID:=GetCurrentThreadID;
-{$ifend}
+{$IFEND}
  if TPasMPInterlocked.CompareExchange(fLockCount,1,0)=0 then begin
   fOwningThreadID:=CurrentThreadID;
   fRecursionCount:=1;
@@ -7888,15 +7932,15 @@ end;
 procedure TPasMPRecursiveBenaphore.Release;
 var CurrentThreadID:TThreadID;
 begin
-{$if (defined(NEXTGEN) or not defined(Windows)) and not defined(FPC)}
+{$IF (DEFINED(NEXTGEN) or not DEFINED(Windows)) and not DEFINED(FPC)}
  CurrentThreadID:=TThread.CurrentThread.ThreadID;
-{$else}
+{$ELSE}
  CurrentThreadID:=GetCurrentThreadID;
-{$ifend}
+{$IFEND}
  if fOwningThreadID=CurrentThreadID then begin
   dec(fRecursionCount);
   if fRecursionCount=0 then begin
-   fOwningThreadID:={$ifdef fpc}TThreadID(0){$else}0{$endif};
+   fOwningThreadID:={$IFDEF fpc}TThreadID(0){$ELSE}0{$ENDIF};
    if TPasMPInterlocked.Decrement(fLockCount)>0 then begin
     fSemaphore.Release;
    end;
@@ -7911,21 +7955,21 @@ end;
 constructor TPasMPBarrier.Create(const Count:TPasMPInt32);
 begin
  inherited Create;
-{$if defined(PasMPPThreadBarrier)}
+{$IF DEFINED(PasMPPThreadBarrier)}
  pthread_barrier_init(@fBarrier,nil,Count);
-{$else}
+{$ELSE}
  fCount:=Count;
  fTotal:=0;
  fConditionVariableLock:=TPasMPConditionVariableLock.Create;
  fConditionVariable:=TPasMPConditionVariable.Create;
-{$ifend}
+{$IFEND}
 end;
 
 destructor TPasMPBarrier.Destroy;
 begin
-{$if defined(PasMPPThreadBarrier)}
+{$IF DEFINED(PasMPPThreadBarrier)}
  pthread_barrier_destroy(@fBarrier);
-{$else}
+{$ELSE}
  fConditionVariableLock.Acquire;
  try
   while fTotal>PasMPBarrierFlag do begin
@@ -7937,16 +7981,16 @@ begin
  end;
  fConditionVariable.Free;
  fConditionVariableLock.Free;
-{$ifend}
+{$IFEND}
  inherited Destroy;
 end;
 
-function TPasMPBarrier.Wait:boolean;
-{$if defined(PasMPPThreadBarrier)}
+function TPasMPBarrier.Wait:Boolean;
+{$IF DEFINED(PasMPPThreadBarrier)}
 begin
  result:=pthread_barrier_wait(@fBarrier)=PTHREAD_BARRIER_SERIAL_THREAD;
 end;
-{$else}
+{$ELSE}
 begin
  fConditionVariableLock.Acquire;
  try
@@ -7979,55 +8023,55 @@ begin
   fConditionVariableLock.Release;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 constructor TPasMPThreadSafeStack.Create;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 begin
  inherited Create;
  TPasMPMemory.AllocateAlignedMemory(fHead,SizeOf(TPasMPTaggedPointer),PasMPCPUCacheLineSize);
  fHead^.PointerValue:=nil;
  fHead^.TagValue:=0;
 end;
-{$else}
+{$ELSE}
 begin
  inherited Create;
  fCriticalSection:=TPasMPCriticalSection.Create;
  fHead:=nil;
 end;
-{$endif}
+{$ENDIF}
 
 destructor TPasMPThreadSafeStack.Destroy;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 begin
  TPasMPMemory.FreeAlignedMemory(fHead);
  inherited Destroy;
 end;
-{$else}
+{$ELSE}
 begin
  fCriticalSection.Free;
  inherited Destroy;
 end;
-{$endif}
+{$ENDIF}
 
 procedure TPasMPThreadSafeStack.Clear;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 begin
  fHead^.PointerValue:=nil;
  fHead^.TagValue:=0;
 end;
-{$else}
+{$ELSE}
 begin
  fHead:=nil;
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPThreadSafeStack.IsEmpty:boolean;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+function TPasMPThreadSafeStack.IsEmpty:Boolean;
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 begin
  result:=not assigned(fHead^.PointerValue);
 end;
-{$else}
+{$ELSE}
 begin
  result:=true;
  if assigned(fHead) then begin
@@ -8041,47 +8085,47 @@ begin
   end;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPThreadSafeStack.Push(const Item:pointer):pointer;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+function TPasMPThreadSafeStack.Push(const Item:Pointer):Pointer;
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 var OldHead,NewHead,ComparsionHead:TPasMPTaggedPointer;
 begin
  OldHead:=fHead^;
  repeat
-  pointer(Item^):=OldHead.PointerValue;
+  Pointer(Item^):=OldHead.PointerValue;
   NewHead.PointerValue:=Item;
   NewHead.TagValue:=OldHead.TagValue+1;
   ComparsionHead:=OldHead;
   OldHead.Value:=TPasMPInterlocked.CompareExchange(fHead^.Value,NewHead.Value,ComparsionHead.Value);
- until {$ifdef cpu64}(OldHead.PointerValue=ComparsionHead.PointerValue) and (OldHead.TagValue=ComparsionHead.TagValue){$else}OldHead.Value.Value=ComparsionHead.Value.Value{$endif};
+ until {$IFDEF cpu64}(OldHead.PointerValue=ComparsionHead.PointerValue) and (OldHead.TagValue=ComparsionHead.TagValue){$ELSE}OldHead.Value.Value=ComparsionHead.Value.Value{$ENDIF};
  result:=OldHead.PointerValue;
 end;
-{$else}
+{$ELSE}
 begin
  fCriticalSection.Acquire;
  try
   result:=fHead;
-  pointer(Item^):=fHead;
+  Pointer(Item^):=fHead;
   fHead:=Item;
  finally
   fCriticalSection.Leave;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPThreadSafeStack.Pop:pointer;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+function TPasMPThreadSafeStack.Pop:Pointer;
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 var OldHead,NewHead,ComparsionHead:TPasMPTaggedPointer;
 begin
  if assigned(fHead^.PointerValue) then begin
   OldHead:=fHead^;
   while assigned(OldHead.PointerValue) do begin
-   NewHead.PointerValue:=pointer(OldHead.PointerValue^);
+   NewHead.PointerValue:=Pointer(OldHead.PointerValue^);
    NewHead.TagValue:=NewHead.TagValue+1;
    ComparsionHead:=OldHead;
    OldHead.Value:=TPasMPInterlocked.CompareExchange(fHead^.Value,NewHead.Value,ComparsionHead.Value);
-   if {$ifdef cpu64}(OldHead.PointerValue=ComparsionHead.PointerValue) and (OldHead.TagValue=ComparsionHead.TagValue){$else}OldHead.Value.Value=ComparsionHead.Value.Value{$endif} then begin
+   if {$IFDEF cpu64}(OldHead.PointerValue=ComparsionHead.PointerValue) and (OldHead.TagValue=ComparsionHead.TagValue){$ELSE}OldHead.Value.Value=ComparsionHead.Value.Value{$ENDIF} then begin
     break;
    end;
   end;
@@ -8090,7 +8134,7 @@ begin
   result:=nil;
  end;
 end;
-{$else}
+{$ELSE}
 begin
  result:=nil;
  if assigned(fHead) then begin
@@ -8098,17 +8142,17 @@ begin
   try
    if assigned(fHead) then begin
     result:=fHead;
-    fHead:=pointer(result^);
+    fHead:=Pointer(result^);
    end;
   finally
    fCriticalSection.Leave;
   end;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-constructor TPasMPThreadSafeQueue.Create(ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+constructor TPasMPThreadSafeQueue.Create(ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 var Node:PPasMPThreadSafeQueueNode;
 begin
  inherited Create;
@@ -8135,7 +8179,7 @@ begin
  fTail^.TagValue:=0;
  InitializeItem(@Node^.Data);
 end;
-{$else}
+{$ELSE}
 begin
  inherited Create;
  fItemSize:=ItemSize;
@@ -8156,11 +8200,11 @@ begin
  fTail:=fHead;
  InitializeItem(@fHead^.Data);
 end;
-{$endif}
+{$ENDIF}
 
 destructor TPasMPThreadSafeQueue.Destroy;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-var Item:pointer;
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+var Item:Pointer;
 begin
  GetMem(Item,fItemSize);
  try
@@ -8179,7 +8223,7 @@ begin
  TPasMPMemory.FreeAlignedMemory(fHead);
  inherited Destroy;
 end;
-{$else}
+{$ELSE}
 var CurrentNode,NextNode:PPasMPThreadSafeQueueNode;
 begin
  CurrentNode:=fHead;
@@ -8197,25 +8241,25 @@ begin
  fHeadCriticalSection.Free;
  inherited Destroy;
 end;
-{$endif}
+{$ENDIF}
 
-procedure TPasMPThreadSafeQueue.InitializeItem(const Data:pointer);
+procedure TPasMPThreadSafeQueue.InitializeItem(const Data:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeQueue.FinalizeItem(const Data:pointer);
+procedure TPasMPThreadSafeQueue.FinalizeItem(const Data:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeQueue.CopyItem(const Source,Destination:pointer);
+procedure TPasMPThreadSafeQueue.CopyItem(const Source,Destination:Pointer);
 begin
  Move(Source^,Destination^,fItemSize);
 end;
 
 procedure TPasMPThreadSafeQueue.Clear;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 var Node:PPasMPThreadSafeQueueNode;
-    Item:pointer;
+    Item:Pointer;
 begin
  GetMem(Item,fItemSize);
  try
@@ -8241,7 +8285,7 @@ begin
  fTail^.TagValue:=0;
  InitializeItem(@Node^.Data);
 end;
-{$else}
+{$ELSE}
 var CurrentNode,NextNode:PPasMPThreadSafeQueueNode;
 begin
  CurrentNode:=fHead;
@@ -8265,22 +8309,22 @@ begin
  fTail:=fHead;
  InitializeItem(@fHead^.Data);
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPThreadSafeQueue.IsEmpty:boolean;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+function TPasMPThreadSafeQueue.IsEmpty:Boolean;
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
 begin
  result:=fHead^.PointerValue=fTail^.PointerValue;
 end;
-{$else}
+{$ELSE}
 begin
  result:=fHead=fTail;
 end;
-{$endif}
+{$ENDIF}
 
 procedure TPasMPThreadSafeQueue.Enqueue(const Item);
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-{$ifdef PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
 // Based on http://people.csail.mit.edu/edya/publications/OptimisticFIFOQueue-journal.pdf
 var Node:PPasMPThreadSafeQueueNode;
     Tail,OldTail,NewTail:TPasMPTaggedPointer;
@@ -8302,12 +8346,12 @@ begin
   NewTail.PointerValue:=Node;
   NewTail.TagValue:=Tail.TagValue+1;
   OldTail.Value:=TPasMPInterlocked.CompareExchange(fTail^.Value,NewTail.Value,Tail.Value);
- until {$ifdef CPU64}(OldTail.PointerValue=Tail.PointerValue) and (OldTail.TagValue=Tail.TagValue){$else}OldTail.Value.Value=Tail.Value.Value{$endif};
+ until {$IFDEF CPU64}(OldTail.PointerValue=Tail.PointerValue) and (OldTail.TagValue=Tail.TagValue){$ELSE}OldTail.Value.Value=Tail.Value.Value{$ENDIF};
  NewTail.PointerValue:=Node;
  NewTail.TagValue:=Tail.TagValue;
  PPasMPThreadSafeQueueNode(Tail.PointerValue)^.Previous.Value:=NewTail.Value;
 end;
-{$else}
+{$ELSE}
 var Node:PPasMPThreadSafeQueueNode;
     Tail,Next,CheckTail,Temporary,OldNext:TPasMPTaggedPointer;
 begin
@@ -8328,7 +8372,7 @@ begin
 	Next.Value:=PPasMPThreadSafeQueueNode(Tail.PointerValue)^.Next.Value;
   TPasMPMemoryBarrier.Read;
   CheckTail.Value:=fTail^.Value;
-  if {$ifdef CPU64}(Tail.TagValue=CheckTail.TagValue) and (Tail.PointerValue=CheckTail.PointerValue){$else}Tail.Value.Value=CheckTail.Value.Value{$endif} then begin
+  if {$IFDEF CPU64}(Tail.TagValue=CheckTail.TagValue) and (Tail.PointerValue=CheckTail.PointerValue){$ELSE}Tail.Value.Value=CheckTail.Value.Value{$ENDIF} then begin
 	 if assigned(Next.PointerValue) then begin
     Temporary.PointerValue:=Next.PointerValue;
     Temporary.TagValue:=Tail.TagValue+1;
@@ -8337,7 +8381,7 @@ begin
     Temporary.PointerValue:=Node;
     Temporary.TagValue:=Next.TagValue+1;
     OldNext.Value:=TPasMPInterlocked.CompareExchange(PPasMPThreadSafeQueueNode(Tail^.PointerValue)^.Next.Value,Temporary.Value,Next.Value);
-    if {$ifdef CPU64}(OldNext.PointerValue=Next.PointerValue) and (OldNext.TagValue=Next.TagValue){$else}OldNext.Value.Value=Next.Value.Value{$endif} then begin
+    if {$IFDEF CPU64}(OldNext.PointerValue=Next.PointerValue) and (OldNext.TagValue=Next.TagValue){$ELSE}OldNext.Value.Value=Next.Value.Value{$ENDIF} then begin
      Temporary.PointerValue:=Node;
      Temporary.TagValue:=Tail.TagValue+1;
      TPasMPInterlocked.CompareExchange(fTail^.Value,Temporary.Value,Tail.Value);
@@ -8347,8 +8391,8 @@ begin
   end;
  until false;
 end;
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
 var Node:PPasMPThreadSafeQueueNode;
 begin
  if fAddCPUCacheLinePaddingToInternalItemDataStructure then begin
@@ -8367,11 +8411,11 @@ begin
   fTailCriticalSection.Release;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPThreadSafeQueue.Dequeue(out Item):boolean;
-{$ifdef PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
-{$ifdef PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
+function TPasMPThreadSafeQueue.Dequeue(out Item):Boolean;
+{$IFDEF PASMP_HAS_DOUBLE_NATIVE_MACHINE_WORD_ATOMIC_COMPARE_EXCHANGE}
+{$IFDEF PASMP_USE_OPTIMISTIC_FIFO_QUEUE}
 // Based on http://people.csail.mit.edu/edya/publications/OptimisticFIFOQueue-journal.pdf
 var Tail,Head,CheckHead,FirstNodePrevious,NewHead,OldHead,CurrentNode,NextNode,NewNode:TPasMPTaggedPointer;
 begin
@@ -8383,8 +8427,8 @@ begin
   FirstNodePrevious.Value:=PPasMPThreadSafeQueueNode(Head.PointerValue)^.Previous.Value;
   TPasMPMemoryBarrier.Read;
   CheckHead.Value:=fHead^.Value;
-  if {$ifdef cpu64}(Head.PointerValue=CheckHead.PointerValue) and (Head.TagValue=CheckHead.TagValue){$else}Head.Value.Value=CheckHead.Value.Value{$endif} then begin
-   if {$ifdef cpu64}(Head.PointerValue<>Tail.PointerValue) or (Head.TagValue<>Tail.TagValue){$else}Head.Value.Value<>Tail.Value.Value{$endif} then begin
+  if {$IFDEF cpu64}(Head.PointerValue=CheckHead.PointerValue) and (Head.TagValue=CheckHead.TagValue){$ELSE}Head.Value.Value=CheckHead.Value.Value{$ENDIF} then begin
+   if {$IFDEF cpu64}(Head.PointerValue<>Tail.PointerValue) or (Head.TagValue<>Tail.TagValue){$ELSE}Head.Value.Value<>Tail.Value.Value{$ENDIF} then begin
     // Not in the original paper, but there is a race condition where push adds a node, but leaves Node^.Next^.Previous uninitialized for a short time.
     // This only manifests too when FirstNodePrevious.TagValue = Head.TagValue, which is also very rare. If they aren't equal, FixList fixes the issue
 		// (or at least it takes long enough, so that things settle). So here ensure time is not wasted getting to the end-game only to try to dereference
@@ -8395,12 +8439,12 @@ begin
       CurrentNode:=Tail;
       repeat
        CheckHead.Value:=fHead^.Value;
-{$ifdef cpu64}
+{$IFDEF cpu64}
        if ((Head.PointerValue=CheckHead.PointerValue) and (Head.TagValue=CheckHead.TagValue)) and
           ((CurrentNode.PointerValue<>Head.PointerValue) or (CurrentNode.TagValue<>Head.TagValue)) then begin
-{$else}
+{$ELSE}
        if (Head.Value.Value=CheckHead.Value.Value) and (CurrentNode.Value.Value<>Head.Value.Value) then begin
-{$endif}
+{$ENDIF}
         NextNode.Value:=PPasMPThreadSafeQueueNode(CurrentNode.PointerValue)^.Next.Value;
         NewNode.PointerValue:=CurrentNode.PointerValue;
         NewNode.TagValue:=CurrentNode.TagValue-1;
@@ -8416,7 +8460,7 @@ begin
       NewHead.PointerValue:=FirstNodePrevious.PointerValue;
       NewHead.TagValue:=Head.TagValue+1;
       OldHead.Value:=TPasMPInterlocked.CompareExchange(fHead^.Value,NewHead.Value,Head.Value);
-      if {$ifdef CPU64}(OldHead.PointerValue=Head.PointerValue) and (OldHead.TagValue=Head.TagValue){$else}OldHead.Value.Value=Head.Value.Value{$endif} then begin
+      if {$IFDEF CPU64}(OldHead.PointerValue=Head.PointerValue) and (OldHead.TagValue=Head.TagValue){$ELSE}OldHead.Value.Value=Head.Value.Value{$ENDIF} then begin
        CopyItem(@PPasMPThreadSafeQueueNode(FirstNodePrevious.PointerValue)^.Data,@Item);
        FinalizeItem(@PPasMPThreadSafeQueueNode(FirstNodePrevious.PointerValue)^.Data);
        TPasMPMemory.FreeAlignedMemory(Head.PointerValue);
@@ -8431,7 +8475,7 @@ begin
   end;
  until false;
 end;
-{$else}
+{$ELSE}
 var Head,Tail,Next,CheckHead,OldHead,Temporary:TPasMPTaggedPointer;
 begin
  result:=false;
@@ -8442,7 +8486,7 @@ begin
 	Next.Value:=PPasMPThreadSafeQueueNode(Head.PointerValue)^.Next.Value;
   TPasMPMemoryBarrier.Read;
   CheckHead.Value:=fHead^.Value;
-  if {$ifdef cpu64}(Head.PointerValue=CheckHead.PointerValue) and (Head.TagValue=CheckHead.TagValue){$else}Head.Value.Value=CheckHead.Value.Value{$endif} then begin
+  if {$IFDEF cpu64}(Head.PointerValue=CheckHead.PointerValue) and (Head.TagValue=CheckHead.TagValue){$ELSE}Head.Value.Value=CheckHead.Value.Value{$ENDIF} then begin
 	 if Head.PointerValue=Tail.PointerValue then begin
     if assigned(Next.PointerValue) then begin
      Temporary.PointerValue:=Next.PointerValue;
@@ -8455,7 +8499,7 @@ begin
     Temporary.PointerValue:=Next.PointerValue;
     Temporary.TagValue:=Head.TagValue+1;
     OldHead.Value:=TPasMPInterlocked.CompareExchange(fHead^.Value,Temporary.Value,Head.Value);
-    if {$ifdef CPU64}(OldHead.PointerValue=Head.PointerValue) and (OldHead.TagValue=Head.TagValue){$else}OldHead.Value.Value=Head.Value.Value{$endif} then begin
+    if {$IFDEF CPU64}(OldHead.PointerValue=Head.PointerValue) and (OldHead.TagValue=Head.TagValue){$ELSE}OldHead.Value.Value=Head.Value.Value{$ENDIF} then begin
      CopyItem(@PPasMPThreadSafeQueueNode(Next.PointerValue)^.Data,@Item);
      FinalizeItem(@PPasMPThreadSafeQueueNode(Next.PointerValue)^.Data);
      TPasMPMemory.FreeAlignedMemory(Head.PointerValue);
@@ -8466,8 +8510,8 @@ begin
   end;
  until false;
 end;
-{$endif}
-{$else}
+{$ENDIF}
+{$ELSE}
 var Node,NewHead:PPasMPThreadSafeQueueNode;
 begin
  result:=false;
@@ -8492,9 +8536,9 @@ begin
   end;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-constructor TPasMPThreadSafeBoundedArrayBasedQueue.Create(const MaximalCount,ItemSize:TPasMPUInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPThreadSafeBoundedArrayBasedQueue.Create(const MaximalCount,ItemSize:TPasMPUInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 var i:TPasMPUInt32;
     p:PPasMPUInt8;
     QueueItemNode:PPasMPThreadSafeBoundedArrayBasedQueueItemNode;
@@ -8518,7 +8562,7 @@ begin
  TPasMPMemory.AllocateAlignedMemory(fData,fInternalItemSize*fMaximalCount,PasMPCPUCacheLineSize);
  p:=fData;
  for i:=1 to fMaximalCount do begin
-  QueueItemNode:=pointer(p);
+  QueueItemNode:=Pointer(p);
   QueueItemNode^.Sequence:=i-1;
   InitializeItem(@QueueItemNode^.Data);
   inc(p,fInternalItemSize);
@@ -8533,7 +8577,7 @@ var i:TPasMPUInt32;
 begin
  p:=fData;
  for i:=1 to fMaximalCount do begin
-  QueueItemNode:=pointer(p);
+  QueueItemNode:=Pointer(p);
   FinalizeItem(@QueueItemNode^.Data);
   inc(p,fInternalItemSize);
  end;
@@ -8541,21 +8585,21 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPThreadSafeBoundedArrayBasedQueue.InitializeItem(const Data:pointer);
+procedure TPasMPThreadSafeBoundedArrayBasedQueue.InitializeItem(const Data:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeBoundedArrayBasedQueue.FinalizeItem(const Data:pointer);
+procedure TPasMPThreadSafeBoundedArrayBasedQueue.FinalizeItem(const Data:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeBoundedArrayBasedQueue.CopyItem(const Source,Destination:pointer);
+procedure TPasMPThreadSafeBoundedArrayBasedQueue.CopyItem(const Source,Destination:Pointer);
 begin
  Move(Source^,Destination^,fItemSize);
 end;
 
 procedure TPasMPThreadSafeBoundedArrayBasedQueue.Clear;
-var Item:pointer;
+var Item:Pointer;
 begin
  GetMem(Item,fItemSize);
  try
@@ -8568,57 +8612,57 @@ begin
  end;
 end;
 
-function TPasMPThreadSafeBoundedArrayBasedQueue.IsEmpty:boolean;
+function TPasMPThreadSafeBoundedArrayBasedQueue.IsEmpty:Boolean;
 var LocalTailSequence,QueueItemNodeSequence:TPasMPUInt32;
     QueueItemNode:PPasMPThreadSafeBoundedArrayBasedQueueItemNode;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalTailSequence:=fTailSequence;
- QueueItemNode:={%H-}pointer(TPasMPPtrUInt(TPasMPPtrUInt(pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalTailSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
-{$if defined(CPU386) or defined(CPUx86_64)}
+ QueueItemNode:={%H-}Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalTailSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  QueueItemNodeSequence:=QueueItemNode^.Sequence;
  result:=TPasMPInt32(QueueItemNodeSequence-(LocalTailSequence+1))<0;
 end;
 
-function TPasMPThreadSafeBoundedArrayBasedQueue.IsFull:boolean;
+function TPasMPThreadSafeBoundedArrayBasedQueue.IsFull:Boolean;
 var LocalHeadSequence,QueueItemNodeSequence:TPasMPUInt32;
     QueueItemNode:PPasMPThreadSafeBoundedArrayBasedQueueItemNode;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalHeadSequence:=fHeadSequence;
- QueueItemNode:={%H-}pointer(TPasMPPtrUInt(TPasMPPtrUInt(pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalHeadSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
-{$if defined(CPU386) or defined(CPUx86_64)}
+ QueueItemNode:={%H-}Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalHeadSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  QueueItemNodeSequence:=QueueItemNode^.Sequence;
  result:=TPasMPInt32(QueueItemNodeSequence-LocalHeadSequence)<0;
 end;
 
-function TPasMPThreadSafeBoundedArrayBasedQueue.Enqueue(const Item):boolean;
+function TPasMPThreadSafeBoundedArrayBasedQueue.Enqueue(const Item):Boolean;
 var LocalHeadSequence,QueueItemNodeSequence:TPasMPUInt32;
     QueueItemNode:PPasMPThreadSafeBoundedArrayBasedQueueItemNode;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalHeadSequence:=fHeadSequence;
  repeat
-  QueueItemNode:={%H-}pointer(TPasMPPtrUInt(TPasMPPtrUInt(pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalHeadSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
-{$if defined(CPU386) or defined(CPUx86_64)}
+  QueueItemNode:={%H-}Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalHeadSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   QueueItemNodeSequence:=QueueItemNode^.Sequence;
   case TPasMPInt32(QueueItemNodeSequence-LocalHeadSequence) of
    0:begin
@@ -8633,46 +8677,46 @@ begin
     exit;
    end;
    else begin
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
     TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
     TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
     LocalHeadSequence:=fHeadSequence;
    end;
   end;
  until false;
  InitializeItem(@QueueItemNode^.Data);
  CopyItem(@Item,@QueueItemNode^.Data);
-{$if defined(CPU386)}
+{$IF DEFINED(CPU386)}
  asm
   mfence;
  end;
-{$elseif not (defined(CPU386) or defined(CPUx86_64))}
+{$ELSEIF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  QueueItemNode^.Sequence:=LocalHeadSequence+1;
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Write;
-{$ifend}
+{$IFEND}
  result:=true;
 end;
 
-function TPasMPThreadSafeBoundedArrayBasedQueue.Dequeue(out Item):boolean;
+function TPasMPThreadSafeBoundedArrayBasedQueue.Dequeue(out Item):Boolean;
 var LocalTailSequence,QueueItemNodeSequence:TPasMPUInt32;
     QueueItemNode:PPasMPThreadSafeBoundedArrayBasedQueueItemNode;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalTailSequence:=fTailSequence;
  repeat
-  QueueItemNode:={%H-}pointer(TPasMPPtrUInt(TPasMPPtrUInt(pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalTailSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
-{$if defined(CPU386) or defined(CPUx86_64)}
+  QueueItemNode:={%H-}Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Pointer(fData))+TPasMPPtrUInt(TPasMPPtrUInt(LocalTailSequence and fMask)*TPasMPPtrUInt(fInternalItemSize))));
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   QueueItemNodeSequence:=QueueItemNode^.Sequence;
   case TPasMPInt32(QueueItemNodeSequence-(LocalTailSequence+1)) of
    0:begin
@@ -8687,28 +8731,28 @@ begin
     exit;
    end;
    else begin
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
     TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
     TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
     LocalTailSequence:=fTailSequence;
    end;
   end;
  until false;
  CopyItem(@QueueItemNode^.Data,@Item);
  FinalizeItem(@QueueItemNode^.Data);
-{$if defined(CPU386)}
+{$IF DEFINED(CPU386)}
  asm
   mfence;
  end;
-{$elseif not (defined(CPU386) or defined(CPUx86_64))}
+{$ELSEIF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  QueueItemNode^.Sequence:=LocalTailSequence+fMask+1;
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Write;
-{$ifend}
+{$IFEND}
  result:=true;
 end;
 
@@ -8716,7 +8760,7 @@ const PasMPThreadSafeHashTableItemStateDeleted=-1;
       PasMPThreadSafeHashTableItemStateEmpty=0;
       PasMPThreadSafeHashTableItemStateUsed=1;
 
-constructor TPasMPThreadSafeHashTable.Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPThreadSafeHashTable.Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create;
  fCriticalSection:=TPasMPCriticalSection.Create;
@@ -8825,40 +8869,40 @@ begin
  end;
 end;
 
-procedure TPasMPThreadSafeHashTable.InitializeItem(const Data:pointer);
+procedure TPasMPThreadSafeHashTable.InitializeItem(const Data:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeHashTable.FinalizeItem(const Data:pointer);
+procedure TPasMPThreadSafeHashTable.FinalizeItem(const Data:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeHashTable.CopyItem(const Source,Destination:pointer);
+procedure TPasMPThreadSafeHashTable.CopyItem(const Source,Destination:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeHashTable.GetKey(const Data,Key:pointer);
+procedure TPasMPThreadSafeHashTable.GetKey(const Data,Key:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeHashTable.SetKey(const Data,Key:pointer);
+procedure TPasMPThreadSafeHashTable.SetKey(const Data,Key:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeHashTable.GetValue(const Data,Value:pointer);
+procedure TPasMPThreadSafeHashTable.GetValue(const Data,Value:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeHashTable.SetValue(const Data,Value:pointer);
+procedure TPasMPThreadSafeHashTable.SetValue(const Data,Value:Pointer);
 begin
 end;
 
-function TPasMPThreadSafeHashTable.HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash;
+function TPasMPThreadSafeHashTable.HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash;
 begin
  result:=0;
 end;
 
-function TPasMPThreadSafeHashTable.CompareKey(const Data,Key:pointer):boolean;
+function TPasMPThreadSafeHashTable.CompareKey(const Data,Key:Pointer):Boolean;
 begin
  result:=false;
 end;
@@ -8867,7 +8911,7 @@ procedure TPasMPThreadSafeHashTable.Clear;
 begin
 end;
 
-function TPasMPThreadSafeHashTable.GetKeyValue(const Key,Value:pointer):boolean;
+function TPasMPThreadSafeHashTable.GetKeyValue(const Key,Value:Pointer):Boolean;
 var CurrentState:PPasMPThreadSafeHashTableState;
     Hash:TPasMPThreadSafeHashTableHash;
     StartIndex,Index,Step:TPasMPInt32;
@@ -8881,7 +8925,7 @@ begin
   Step:=((Hash shl 1) or 1) and CurrentState^.Mask;
   Index:=StartIndex;
   repeat
-   Item:=pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
+   Item:=Pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
    case Item^.State of
     PasMPThreadSafeHashTableItemStateDeleted:begin
      // Found deleted item slot => ignore it
@@ -8915,7 +8959,7 @@ begin
  end;
 end;
 
-function TPasMPThreadSafeHashTable.SetKeyValueOnState(const CurrentState:PPasMPThreadSafeHashTableState;const Key,Value:pointer):boolean;
+function TPasMPThreadSafeHashTable.SetKeyValueOnState(const CurrentState:PPasMPThreadSafeHashTableState;const Key,Value:Pointer):Boolean;
 var Hash:TPasMPThreadSafeHashTableHash;
     StartIndex,Index,Step,FoundDeletedItemSlotIndex:TPasMPInt32;
     Item:PPasMPThreadSafeHashTableItem;
@@ -8932,7 +8976,7 @@ begin
  // First try to set a existent or empty slot item
  Index:=StartIndex;
  repeat
-  Item:=pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
+  Item:=Pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
   case Item^.State of
    PasMPThreadSafeHashTableItemStateDeleted:begin
     // Found deleted item slot => remember it for the next try iteration
@@ -8992,7 +9036,7 @@ begin
  // Otherwise try to set the last found deleted slot item
  if FoundDeletedItemSlotIndex>=0 then begin
   Index:=FoundDeletedItemSlotIndex;
-  Item:=pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
+  Item:=Pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(Item^.Lock);
   try
    if Item^.State=PasMPThreadSafeHashTableItemStateDeleted then begin
@@ -9020,7 +9064,7 @@ begin
  // Otherwise try to find and set a deleted slot item
  Index:=StartIndex;
  repeat
-  Item:=pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
+  Item:=Pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
   case Item^.State of
    PasMPThreadSafeHashTableItemStateDeleted:begin
     TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(Item^.Lock);
@@ -9054,7 +9098,7 @@ begin
 
 end;
 
-function TPasMPThreadSafeHashTable.UnderGrowLoadFactor(const CurrentState:PPasMPThreadSafeHashTableState):boolean;
+function TPasMPThreadSafeHashTable.UnderGrowLoadFactor(const CurrentState:PPasMPThreadSafeHashTableState):Boolean;
 begin
  if CurrentState^.Count<CurrentState^.Size then begin
   if CurrentState^.Count<=$7fffff then begin
@@ -9097,7 +9141,7 @@ begin
     OtherIndex:=0;
     while OtherIndex<CurrentState^.Size do begin
 
-     OtherItem:=pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(OtherIndex)*TPasMPPtrUInt(fInternalItemSize))));
+     OtherItem:=Pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(OtherIndex)*TPasMPPtrUInt(fInternalItemSize))));
 
      if OtherItem^.State=PasMPThreadSafeHashTableItemStateUsed then begin
 
@@ -9113,7 +9157,7 @@ begin
 
         repeat
 
-         Item:=pointer(TPasMPPtrUInt(TPasMPPtrUInt(NewState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
+         Item:=Pointer(TPasMPPtrUInt(TPasMPPtrUInt(NewState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
 
          if Item^.State=PasMPThreadSafeHashTableItemStateEmpty then begin
           Item^.Hash:=OtherItem^.Hash;
@@ -9148,7 +9192,7 @@ begin
      OldLastState:=NewState;
     end;
     NewState^.Next:=nil;
-    TPasMPInterlocked.Write(pointer(fLastState),pointer(NewState));
+    TPasMPInterlocked.Write(Pointer(fLastState),Pointer(NewState));
 
     TPasMPInterlocked.Decrement(CurrentState^.ReferenceCounter);
 
@@ -9164,7 +9208,7 @@ begin
 
 end;
 
-function TPasMPThreadSafeHashTable.SetKeyValue(const Key,Value:pointer):boolean;
+function TPasMPThreadSafeHashTable.SetKeyValue(const Key,Value:Pointer):Boolean;
 var CurrentState:PPasMPThreadSafeHashTableState;
     Version:TPasMPInt32;
 begin
@@ -9184,7 +9228,7 @@ begin
  until result and (Version=fVersion);
 end;
 
-function TPasMPThreadSafeHashTable.DeleteKey(const Key:pointer):boolean;
+function TPasMPThreadSafeHashTable.DeleteKey(const Key:Pointer):Boolean;
 var CurrentState:PPasMPThreadSafeHashTableState;
     Hash:TPasMPThreadSafeHashTableHash;
     StartIndex,Index,Step,Version:TPasMPInt32;
@@ -9200,7 +9244,7 @@ begin
    Step:=((Hash shl 1) or 1) and CurrentState^.Mask;
    Index:=StartIndex;
    repeat
-    Item:=pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
+    Item:=Pointer(TPasMPPtrUInt(TPasMPPtrUInt(CurrentState^.Items)+TPasMPPtrUInt(TPasMPPtrUInt(Index)*TPasMPPtrUInt(fInternalItemSize))));
     case Item^.State of
      PasMPThreadSafeHashTableItemStateDeleted:begin
       // Found deleted item slot => ignore it
@@ -9243,9 +9287,9 @@ begin
  until Version=fVersion;
 end;
 
-constructor TPasMPThreadSafeDynamicArray.Create(const AItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPThreadSafeDynamicArray.Create(const AItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 var BucketItemIndex:TPasMPInt32;
-    Bucket:pointer;
+    Bucket:Pointer;
     BucketItemOffset:TPasMPPtrUInt;
 begin
  inherited Create;
@@ -9266,8 +9310,8 @@ begin
  FillChar(Bucket^,PasMPThreadSafeDynamicArrayFirstBucketSize*TPasMPPtrUInt(fInternalItemSize),#0);
  for BucketItemIndex:=0 to PasMPThreadSafeDynamicArrayFirstBucketSize-1 do begin
   BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-  InitializeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
-  PPasMPInt32(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))))^:=0;
+  InitializeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+  PPasMPInt32(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))))^:=0;
  end;
  TPasMPInterlocked.Write(fBuckets[0],Bucket);
  TPasMPMemoryBarrier.ReadWrite;
@@ -9275,7 +9319,7 @@ end;
 
 destructor TPasMPThreadSafeDynamicArray.Destroy;
 var BucketIndex,BucketSize,BucketItemIndex:TPasMPInt32;
-    Bucket:pointer;
+    Bucket:Pointer;
 begin
  TPasMPMemoryBarrier.ReadWrite;
  for BucketIndex:=low(TPasMPThreadSafeDynamicArrayBuckets) to high(TPasMPThreadSafeDynamicArrayBuckets) do begin
@@ -9283,7 +9327,7 @@ begin
   if assigned(Bucket) then begin
    BucketSize:=PasMPThreadSafeDynamicArrayFirstBucketSize shl BucketIndex;
    for BucketItemIndex:=0 to BucketSize-1 do begin
-    FinalizeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+(TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize)))));
+    FinalizeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+(TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize)))));
    end;
    TPasMPMemory.FreeAlignedMemory(Bucket);
   end;
@@ -9292,21 +9336,21 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPThreadSafeDynamicArray.InitializeItem(const ItemData:pointer);
+procedure TPasMPThreadSafeDynamicArray.InitializeItem(const ItemData:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeDynamicArray.FinalizeItem(const ItemData:pointer);
+procedure TPasMPThreadSafeDynamicArray.FinalizeItem(const ItemData:Pointer);
 begin
 end;
 
-procedure TPasMPThreadSafeDynamicArray.CopyItem(const Source,Destination:pointer);
+procedure TPasMPThreadSafeDynamicArray.CopyItem(const Source,Destination:Pointer);
 begin
 end;
 
 procedure TPasMPThreadSafeDynamicArray.SetSize(const NewSize:TPasMPInt32);
 var ItemIndex,BucketIndex,BucketItemIndex,Position,PositionHighestBit,OldCountBuckets,NewCountBuckets,BucketSize:TPasMPInt32;
-    Bucket:pointer;
+    Bucket:Pointer;
     BucketItemOffset:TPasMPPtrUInt;
 begin
 
@@ -9335,8 +9379,8 @@ begin
         Bucket:=fBuckets[BucketIndex];
         if assigned(Bucket) then begin
          BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-         FinalizeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
-         FillChar(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset))^,fInternalItemSize,#0);
+         FinalizeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+         FillChar(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset))^,fInternalItemSize,#0);
         end;
        end;
       end;
@@ -9356,8 +9400,8 @@ begin
         if assigned(Bucket) then begin
          for BucketItemIndex:=0 to BucketSize-1 do begin
           BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-          InitializeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
-          PPasMPInt32(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))))^:=0;
+          InitializeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+          PPasMPInt32(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))))^:=0;
          end;
         end;
         TPasMPInterlocked.Write(fBuckets[BucketIndex],Bucket);
@@ -9370,8 +9414,8 @@ begin
         if assigned(Bucket) then begin
          for BucketItemIndex:=0 to BucketSize-1 do begin
           BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-          FinalizeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
-          FillChar(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset))^,fInternalItemSize,#0);
+          FinalizeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+          FillChar(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset))^,fInternalItemSize,#0);
          end;
          TPasMPMemory.FreeAlignedMemory(Bucket);
         end;
@@ -9398,9 +9442,9 @@ begin
 
 end;
 
-function TPasMPThreadSafeDynamicArray.GetItem(const ItemIndex:TPasMPInt32;const ItemData:pointer):boolean;
+function TPasMPThreadSafeDynamicArray.GetItem(const ItemIndex:TPasMPInt32;const ItemData:Pointer):Boolean;
 var Position,PositionHighestBit,BucketIndex,BucketItemIndex:TPasMPInt32;
-    Bucket:pointer;
+    Bucket:Pointer;
     BucketItemOffset:TPasMPPtrUInt;
     BucketItemLock:PPasMPInt32;
 begin
@@ -9415,10 +9459,10 @@ begin
     BucketItemIndex:=(TPasMPInt32(1) shl PositionHighestBit) xor Position;
     Bucket:=fBuckets[BucketIndex];
     BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-    BucketItemLock:=PPasMPInt32(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
+    BucketItemLock:=PPasMPInt32(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
     TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(BucketItemLock^);
     try
-     CopyItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)),ItemData);
+     CopyItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)),ItemData);
     finally
      TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(BucketItemLock^);
     end;
@@ -9430,9 +9474,9 @@ begin
  end;
 end;
 
-function TPasMPThreadSafeDynamicArray.SetItem(const ItemIndex:TPasMPInt32;const ItemData:pointer):boolean;
+function TPasMPThreadSafeDynamicArray.SetItem(const ItemIndex:TPasMPInt32;const ItemData:Pointer):Boolean;
 var Position,PositionHighestBit,BucketIndex,BucketItemIndex:TPasMPInt32;
-    Bucket:pointer;
+    Bucket:Pointer;
     BucketItemOffset:TPasMPPtrUInt;
     BucketItemLock:PPasMPInt32;
 begin
@@ -9447,10 +9491,10 @@ begin
     Bucket:=fBuckets[BucketIndex];
     BucketItemIndex:=(TPasMPInt32(1) shl PositionHighestBit) xor Position;
     BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-    BucketItemLock:=PPasMPInt32(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
+    BucketItemLock:=PPasMPInt32(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
     TPasMPMultipleReaderSingleWriterSpinLock.AcquireWrite(BucketItemLock^);
     try
-     CopyItem(ItemData,pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+     CopyItem(ItemData,Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
     finally
      TPasMPMultipleReaderSingleWriterSpinLock.ReleaseWrite(BucketItemLock^);
     end;
@@ -9462,9 +9506,9 @@ begin
  end;
 end;
 
-function TPasMPThreadSafeDynamicArray.Push(const ItemData:pointer):TPasMPInt32;
+function TPasMPThreadSafeDynamicArray.Push(const ItemData:Pointer):TPasMPInt32;
 var NewSize,Position,PositionHighestBit,OldCountBuckets,NewCountBuckets,BucketIndex,BucketSize,BucketItemIndex:TPasMPInt32;
-    Bucket:pointer;
+    Bucket:Pointer;
     BucketItemOffset:TPasMPPtrUInt;
     BucketItemLock:PPasMPInt32;
 begin
@@ -9489,8 +9533,8 @@ begin
     if assigned(Bucket) then begin
      for BucketItemIndex:=0 to BucketSize-1 do begin
       BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-      InitializeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
-      PPasMPInt32(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))))^:=0;
+      InitializeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+      PPasMPInt32(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))))^:=0;
      end;
     end;
     TPasMPInterlocked.Write(fBuckets[BucketIndex],Bucket);
@@ -9507,11 +9551,11 @@ begin
   Bucket:=fBuckets[BucketIndex];
   BucketItemIndex:=(TPasMPInt32(1) shl PositionHighestBit) xor Position;
   BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-  BucketItemLock:=PPasMPInt32(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
-  InitializeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+  BucketItemLock:=PPasMPInt32(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
+  InitializeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireWrite(BucketItemLock^);
   try
-   CopyItem(ItemData,pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+   CopyItem(ItemData,Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
   finally
    TPasMPMultipleReaderSingleWriterSpinLock.ReleaseWrite(BucketItemLock^);
   end;
@@ -9521,9 +9565,9 @@ begin
  end;
 end;
 
-function TPasMPThreadSafeDynamicArray.Pop(const ItemData:pointer):boolean;
+function TPasMPThreadSafeDynamicArray.Pop(const ItemData:Pointer):Boolean;
 var NewSize,Position,PositionHighestBit,OldCountBuckets,NewCountBuckets,BucketIndex,BucketSize,BucketItemIndex:TPasMPInt32;
-    Bucket:pointer;
+    Bucket:Pointer;
     BucketItemOffset:TPasMPPtrUInt;
     BucketItemLock:PPasMPInt32;
 begin
@@ -9546,16 +9590,16 @@ begin
     Bucket:=fBuckets[BucketIndex];
     BucketItemIndex:=(TPasMPInt32(1) shl PositionHighestBit) xor Position;
     BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-    BucketItemLock:=PPasMPInt32(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
+    BucketItemLock:=PPasMPInt32(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset+TPasMPPtrUInt(fItemLockOffset))));
     TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(BucketItemLock^);
     try
-     CopyItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)),ItemData);
+     CopyItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)),ItemData);
     finally
      TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(BucketItemLock^);
     end;
 
-    FinalizeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
-    FillChar(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset))^,fInternalItemSize,#0);
+    FinalizeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+    FillChar(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset))^,fInternalItemSize,#0);
 
     OldCountBuckets:=fCountBuckets;
     NewCountBuckets:=PositionHighestBit-(PasMPThreadSafeDynamicArrayFirstBucketBits-1);
@@ -9568,7 +9612,7 @@ begin
       if assigned(Bucket) then begin
        for BucketItemIndex:=0 to BucketSize-1 do begin
         BucketItemOffset:=TPasMPPtrUInt(BucketItemIndex)*TPasMPPtrUInt(fInternalItemSize);
-        FinalizeItem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
+        FinalizeItem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Bucket)+BucketItemOffset)));
        end;
        TPasMPMemory.FreeAlignedMemory(Bucket);
       end;
@@ -9620,7 +9664,7 @@ begin
  TPasMPMultipleReaderSingleWriterSpinLock.ReleaseWrite(fLockState);
 end;
 
-function TPasMPSingleProducerSingleConsumerRingBuffer.Read(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
+function TPasMPSingleProducerSingleConsumerRingBuffer.Read(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex,ToRead:TPasMPInt32;
     p:PPasMPUInt8;
 begin
@@ -9629,15 +9673,15 @@ begin
  end else begin
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
   repeat
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
    TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
    LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
    LocalWriteIndex:=fWriteIndex;
    if LocalWriteIndex>=LocalReadIndex then begin
     result:=LocalWriteIndex-LocalReadIndex;
@@ -9650,7 +9694,7 @@ begin
     TPasMP.Yield;
    end;
   until false;
-  p:=pointer(Buffer);
+  p:=Pointer(Buffer);
   if (LocalReadIndex+Bytes)>fSize then begin
    ToRead:=fSize-LocalReadIndex;
    Move(fData[LocalReadIndex],p^,ToRead);
@@ -9665,20 +9709,20 @@ begin
     dec(LocalReadIndex,fSize);
    end;
   end;
-{$ifdef CPU386}
+{$IFDEF CPU386}
   asm
    mfence
   end;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
   fReadIndex:=LocalReadIndex;
   TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(fLockState);
   result:=Bytes;
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerRingBuffer.TryRead(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
+function TPasMPSingleProducerSingleConsumerRingBuffer.TryRead(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex,ToRead:TPasMPInt32;
     p:PPasMPUInt8;
 begin
@@ -9686,15 +9730,15 @@ begin
   result:=0;
  end else begin
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
   TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
   LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   LocalWriteIndex:=fWriteIndex;
   if LocalWriteIndex>=LocalReadIndex then begin
    result:=LocalWriteIndex-LocalReadIndex;
@@ -9704,7 +9748,7 @@ begin
   if Bytes>result then begin
    result:=0;
   end else begin
-   p:=pointer(Buffer);
+   p:=Pointer(Buffer);
    if (LocalReadIndex+Bytes)>fSize then begin
     ToRead:=fSize-LocalReadIndex;
     Move(fData[LocalReadIndex],p^,ToRead);
@@ -9719,13 +9763,13 @@ begin
      dec(LocalReadIndex,fSize);
     end;
    end;
-{$ifdef CPU386}
+{$IFDEF CPU386}
    asm
     mfence
    end;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
    fReadIndex:=LocalReadIndex;
    result:=Bytes;
   end;
@@ -9733,7 +9777,7 @@ begin
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerRingBuffer.ReadAsMuchAsPossible(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
+function TPasMPSingleProducerSingleConsumerRingBuffer.ReadAsMuchAsPossible(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex,ToRead:TPasMPInt32;
     p:PPasMPUInt8;
 begin
@@ -9741,15 +9785,15 @@ begin
   result:=0;
  end else begin
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
   TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
   LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   LocalWriteIndex:=fWriteIndex;
   if LocalWriteIndex>=LocalReadIndex then begin
    result:=LocalWriteIndex-LocalReadIndex;
@@ -9760,7 +9804,7 @@ begin
    Bytes:=result;
   end;
   if Bytes>0 then begin
-   p:=pointer(Buffer);
+   p:=Pointer(Buffer);
    if (LocalReadIndex+Bytes)>fSize then begin
     ToRead:=fSize-LocalReadIndex;
     Move(fData[LocalReadIndex],p^,ToRead);
@@ -9775,13 +9819,13 @@ begin
      dec(LocalReadIndex,fSize);
     end;
    end;
-{$ifdef CPU386}
+{$IFDEF CPU386}
    asm
     mfence
    end;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
    fReadIndex:=LocalReadIndex;
   end;
   TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(fLockState);
@@ -9789,7 +9833,7 @@ begin
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerRingBuffer.Write(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
+function TPasMPSingleProducerSingleConsumerRingBuffer.Write(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex,ToWrite:TPasMPInt32;
     p:PPasMPUInt8;
 begin
@@ -9798,15 +9842,15 @@ begin
  end else begin
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
   repeat
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
    TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
    LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
    LocalWriteIndex:=fWriteIndex;
    if LocalWriteIndex>=LocalReadIndex then begin
     result:=((fSize+LocalReadIndex)-LocalWriteIndex)-1;
@@ -9819,7 +9863,7 @@ begin
     TPasMP.Yield;
    end;
   until false;
-  p:=pointer(Buffer);
+  p:=Pointer(Buffer);
   if (LocalWriteIndex+Bytes)>fSize then begin
    ToWrite:=fSize-LocalWriteIndex;
    Move(p^,fData[LocalWriteIndex],ToWrite);
@@ -9834,20 +9878,20 @@ begin
     dec(LocalWriteIndex,fSize);
    end;
   end;
-{$ifdef CPU386}
+{$IFDEF CPU386}
   asm
    mfence
   end;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
   fWriteIndex:=LocalWriteIndex;
   TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(fLockState);
   result:=Bytes;
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerRingBuffer.TryWrite(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
+function TPasMPSingleProducerSingleConsumerRingBuffer.TryWrite(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex,ToWrite:TPasMPInt32;
     p:PPasMPUInt8;
 begin
@@ -9855,15 +9899,15 @@ begin
   result:=0;
  end else begin
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
   TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
   LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   LocalWriteIndex:=fWriteIndex;
   if LocalWriteIndex>=LocalReadIndex then begin
    result:=((fSize+LocalReadIndex)-LocalWriteIndex)-1;
@@ -9873,7 +9917,7 @@ begin
   if Bytes>result then begin
    result:=0;
   end else begin
-   p:=pointer(Buffer);
+   p:=Pointer(Buffer);
    if (LocalWriteIndex+Bytes)>fSize then begin
     ToWrite:=fSize-LocalWriteIndex;
     Move(p^,fData[LocalWriteIndex],ToWrite);
@@ -9888,13 +9932,13 @@ begin
      dec(LocalWriteIndex,fSize);
     end;
    end;
-{$ifdef CPU386}
+{$IFDEF CPU386}
    asm
     mfence
    end;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
    fWriteIndex:=LocalWriteIndex;
    result:=Bytes;
   end;
@@ -9902,7 +9946,7 @@ begin
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerRingBuffer.WriteAsMuchAsPossible(const Buffer:pointer;Bytes:TPasMPInt32):TPasMPInt32;
+function TPasMPSingleProducerSingleConsumerRingBuffer.WriteAsMuchAsPossible(const Buffer:Pointer;Bytes:TPasMPInt32):TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex,ToWrite:TPasMPInt32;
     p:PPasMPUInt8;
 begin
@@ -9910,15 +9954,15 @@ begin
   result:=0;
  end else begin
   TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
   TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
   LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   LocalWriteIndex:=fWriteIndex;
   if LocalWriteIndex>=LocalReadIndex then begin
    result:=((fSize+LocalReadIndex)-LocalWriteIndex)-1;
@@ -9929,7 +9973,7 @@ begin
    Bytes:=result;
   end;
   if Bytes>0 then begin
-   p:=pointer(Buffer);
+   p:=Pointer(Buffer);
    if (LocalWriteIndex+Bytes)>fSize then begin
     ToWrite:=fSize-LocalWriteIndex;
     Move(p^,fData[LocalWriteIndex],ToWrite);
@@ -9944,13 +9988,13 @@ begin
      dec(LocalWriteIndex,fSize);
     end;
    end;
-{$ifdef CPU386}
+{$IFDEF CPU386}
    asm
     mfence
    end;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
    fWriteIndex:=LocalWriteIndex;
   end;
   TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(fLockState);
@@ -9962,15 +10006,15 @@ function TPasMPSingleProducerSingleConsumerRingBuffer.AvailableForRead:TPasMPInt
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
  TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(fLockState);
  if LocalWriteIndex>=LocalReadIndex then begin
@@ -9984,15 +10028,15 @@ function TPasMPSingleProducerSingleConsumerRingBuffer.AvailableForWrite:TPasMPIn
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
  TPasMPMultipleReaderSingleWriterSpinLock.AcquireRead(fLockState);
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  TPasMPMultipleReaderSingleWriterSpinLock.ReleaseRead(fLockState);
  if LocalWriteIndex>=LocalReadIndex then begin
@@ -10019,18 +10063,18 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPSingleProducerSingleConsumerBoundedQueue.Enqueue(const Item):boolean;
+function TPasMPSingleProducerSingleConsumerBoundedQueue.Enqueue(const Item):Boolean;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=(((fMaximalCount+LocalReadIndex)-LocalWriteIndex)-1)>0;
@@ -10049,18 +10093,18 @@ begin
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerBoundedQueue.Dequeue(out Item):boolean;
+function TPasMPSingleProducerSingleConsumerBoundedQueue.Dequeue(out Item):Boolean;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=(LocalWriteIndex-LocalReadIndex)>0;
@@ -10082,15 +10126,15 @@ end;
 function TPasMPSingleProducerSingleConsumerBoundedQueue.AvailableForEnqueue:TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=((fMaximalCount+LocalReadIndex)-LocalWriteIndex)-1;
@@ -10102,15 +10146,15 @@ end;
 function TPasMPSingleProducerSingleConsumerBoundedQueue.AvailableForDequeue:TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=LocalWriteIndex-LocalReadIndex;
@@ -10119,18 +10163,18 @@ begin
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerBoundedQueue.IsFull:boolean;
+function TPasMPSingleProducerSingleConsumerBoundedQueue.IsFull:Boolean;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=(LocalWriteIndex-LocalReadIndex)=0;
@@ -10139,7 +10183,7 @@ begin
  end;
 end;
 
-{$ifdef HAS_GENERICS}
+{$IFDEF HAS_GENERICS}
 constructor TPasMPSingleProducerSingleConsumerBoundedQueue<T>.Create(const MaximalCount:TPasMPInt32);
 begin
  inherited Create;
@@ -10156,18 +10200,18 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.Enqueue(const Item:T):boolean;
+function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.Enqueue(const Item:T):Boolean;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=(((fMaximalCount+LocalReadIndex)-LocalWriteIndex)-1)>0;
@@ -10187,18 +10231,18 @@ begin
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.Dequeue(out Item:T):boolean;
+function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.Dequeue(out Item:T):Boolean;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=(LocalWriteIndex-LocalReadIndex)>0;
@@ -10221,15 +10265,15 @@ end;
 function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.AvailableForEnqueue:TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=((fMaximalCount+LocalReadIndex)-LocalWriteIndex)-1;
@@ -10241,15 +10285,15 @@ end;
 function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.AvailableForDequeue:TPasMPInt32;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=LocalWriteIndex-LocalReadIndex;
@@ -10258,18 +10302,18 @@ begin
  end;
 end;
 
-function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.IsFull:boolean;
+function TPasMPSingleProducerSingleConsumerBoundedQueue<T>.IsFull:Boolean;
 var LocalReadIndex,LocalWriteIndex:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  LocalReadIndex:=fReadIndex;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalWriteIndex:=fWriteIndex;
  if LocalWriteIndex>=LocalReadIndex then begin
   result:=(LocalWriteIndex-LocalReadIndex)=0;
@@ -10277,9 +10321,9 @@ begin
   result:=((fMaximalCount-LocalReadIndex)+LocalWriteIndex)=0;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-constructor TPasMPBoundedStack.Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPBoundedStack.Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 var i:TPasMPInt32;
     p:PPasMPUInt8;
     StackItem:PPasMPBoundedStackItem;
@@ -10298,7 +10342,7 @@ begin
  TPasMPMemory.AllocateAlignedMemory(fData,fInternalItemSize*fMaximalCount,PasMPCPUCacheLineSize);
  p:=fData;
  for i:=0 to fMaximalCount-1 do begin
-  StackItem:=pointer(p);
+  StackItem:=Pointer(p);
   inc(p,fInternalItemSize);
   fFree.Push(StackItem);
  end;
@@ -10312,17 +10356,17 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPBoundedStack.IsEmpty:boolean;
+function TPasMPBoundedStack.IsEmpty:Boolean;
 begin
  result:=fStack.IsEmpty;
 end;
 
-function TPasMPBoundedStack.IsFull:boolean;
+function TPasMPBoundedStack.IsFull:Boolean;
 begin
  result:=fFree.IsEmpty;
 end;
 
-function TPasMPBoundedStack.Push(const Item):boolean;
+function TPasMPBoundedStack.Push(const Item):Boolean;
 var StackItem:PPasMPBoundedStackItem;
 begin
  StackItem:=fFree.Pop;
@@ -10335,7 +10379,7 @@ begin
  end;
 end;
 
-function TPasMPBoundedStack.Pop(out Item):boolean;
+function TPasMPBoundedStack.Pop(out Item):Boolean;
 var StackItem:PPasMPBoundedStackItem;
 begin
  StackItem:=fStack.Pop;
@@ -10348,8 +10392,8 @@ begin
  end;
 end;
 
-{$ifdef HAS_GENERICS}
-constructor TPasMPBoundedStack<T>.Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+{$IFDEF HAS_GENERICS}
+constructor TPasMPBoundedStack<T>.Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 var i:TPasMPInt32;
     p:PPasMPUInt8;
     StackItem:PPasMPBoundedTypedStackItem;
@@ -10367,7 +10411,7 @@ begin
  TPasMPMemory.AllocateAlignedMemory(fData,fInternalItemSize*fMaximalCount,PasMPCPUCacheLineSize);
  p:=fData;
  for i:=0 to fMaximalCount-1 do begin
-  StackItem:=pointer(p);
+  StackItem:=Pointer(p);
   Initialize(StackItem^);
   inc(p,fInternalItemSize);
   fFree.Push(StackItem);
@@ -10381,7 +10425,7 @@ var i:TPasMPInt32;
 begin
  p:=fData;
  for i:=0 to fMaximalCount-1 do begin
-  StackItem:=pointer(p);
+  StackItem:=Pointer(p);
   Finalize(StackItem^);
   inc(p,fInternalItemSize);
  end;
@@ -10391,17 +10435,17 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPBoundedStack<T>.IsEmpty:boolean;
+function TPasMPBoundedStack<T>.IsEmpty:Boolean;
 begin
  result:=fStack.IsEmpty;
 end;
 
-function TPasMPBoundedStack<T>.IsFull:boolean;
+function TPasMPBoundedStack<T>.IsFull:Boolean;
 begin
  result:=fFree.IsEmpty;
 end;
 
-function TPasMPBoundedStack<T>.Push(const Item:T):boolean;
+function TPasMPBoundedStack<T>.Push(const Item:T):Boolean;
 var StackItem:PPasMPBoundedTypedStackItem;
 begin
  StackItem:=fFree.Pop;
@@ -10414,7 +10458,7 @@ begin
  end;
 end;
 
-function TPasMPBoundedStack<T>.Pop(out Item:T):boolean;
+function TPasMPBoundedStack<T>.Pop(out Item:T):Boolean;
 var StackItem:PPasMPBoundedTypedStackItem;
 begin
  StackItem:=fStack.Pop;
@@ -10427,9 +10471,9 @@ begin
   result:=false;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-constructor TPasMPUnboundedStack.Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPUnboundedStack.Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create;
  fStack:=TPasMPThreadSafeStack.Create;
@@ -10452,12 +10496,12 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPUnboundedStack.IsEmpty:boolean;
+function TPasMPUnboundedStack.IsEmpty:Boolean;
 begin
  result:=fStack.IsEmpty;
 end;
 
-function TPasMPUnboundedStack.Push(const Item):boolean;
+function TPasMPUnboundedStack.Push(const Item):Boolean;
 var StackItem:PPasMPUnboundedStackItem;
 begin
  if fAddCPUCacheLinePaddingToInternalItemDataStructure then begin
@@ -10470,7 +10514,7 @@ begin
  result:=true;
 end;
 
-function TPasMPUnboundedStack.Pop(out Item):boolean;
+function TPasMPUnboundedStack.Pop(out Item):Boolean;
 var StackItem:PPasMPUnboundedStackItem;
 begin
  StackItem:=fStack.Pop;
@@ -10483,8 +10527,8 @@ begin
  end;
 end;
 
-{$ifdef HAS_GENERICS}
-constructor TPasMPUnboundedStack<T>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+{$IFDEF HAS_GENERICS}
+constructor TPasMPUnboundedStack<T>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create;
  fStack:=TPasMPThreadSafeStack.Create;
@@ -10508,12 +10552,12 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPUnboundedStack<T>.IsEmpty:boolean;
+function TPasMPUnboundedStack<T>.IsEmpty:Boolean;
 begin
  result:=fStack.IsEmpty;
 end;
 
-function TPasMPUnboundedStack<T>.Push(const Item:T):boolean;
+function TPasMPUnboundedStack<T>.Push(const Item:T):Boolean;
 var StackItem:PPasMPUnboundedTypedStackItem;
 begin
  if fAddCPUCacheLinePaddingToInternalItemDataStructure then begin
@@ -10527,7 +10571,7 @@ begin
  result:=true;
 end;
 
-function TPasMPUnboundedStack<T>.Pop(out Item:T):boolean;
+function TPasMPUnboundedStack<T>.Pop(out Item:T):Boolean;
 var StackItem:PPasMPUnboundedTypedStackItem;
 begin
  StackItem:=fStack.Pop;
@@ -10540,9 +10584,9 @@ begin
   result:=false;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-constructor TPasMPBoundedQueue.Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPBoundedQueue.Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 var i:TPasMPInt32;
     p:PPasMPUInt8;
     QueueItem:PPasMPBoundedQueueItem;
@@ -10561,7 +10605,7 @@ begin
  TPasMPMemory.AllocateAlignedMemory(fData,fInternalItemSize*fMaximalCount,PasMPCPUCacheLineSize);
  p:=fData;
  for i:=0 to fMaximalCount-1 do begin
-  QueueItem:=pointer(p);
+  QueueItem:=Pointer(p);
   inc(p,fInternalItemSize);
   fFree.Push(QueueItem);
  end;
@@ -10575,17 +10619,17 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPBoundedQueue.IsEmpty:boolean;
+function TPasMPBoundedQueue.IsEmpty:Boolean;
 begin
  result:=fQueue.IsEmpty;
 end;
 
-function TPasMPBoundedQueue.IsFull:boolean;
+function TPasMPBoundedQueue.IsFull:Boolean;
 begin
  result:=fFree.IsEmpty;
 end;
 
-function TPasMPBoundedQueue.Enqueue(const Item):boolean;
+function TPasMPBoundedQueue.Enqueue(const Item):Boolean;
 var QueueItem:PPasMPBoundedQueueItem;
 begin
  QueueItem:=fFree.Pop;
@@ -10598,7 +10642,7 @@ begin
  end;
 end;
 
-function TPasMPBoundedQueue.Dequeue(out Item):boolean;
+function TPasMPBoundedQueue.Dequeue(out Item):Boolean;
 var StackItem:PPasMPBoundedQueueItem;
 begin
  result:=fQueue.Dequeue(StackItem);
@@ -10608,8 +10652,8 @@ begin
  end;
 end;
 
-{$ifdef HAS_GENERICS}
-constructor TPasMPBoundedQueue<T>.Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+{$IFDEF HAS_GENERICS}
+constructor TPasMPBoundedQueue<T>.Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 var i:TPasMPInt32;
     p:PPasMPUInt8;
     QueueItem:PPasMPBoundedTypedQueueItem;
@@ -10627,7 +10671,7 @@ begin
  TPasMPMemory.AllocateAlignedMemory(fData,fInternalItemSize*fMaximalCount,PasMPCPUCacheLineSize);
  p:=fData;
  for i:=0 to fMaximalCount-1 do begin
-  QueueItem:=pointer(p);
+  QueueItem:=Pointer(p);
   Initialize(QueueItem^);
   inc(p,fInternalItemSize);
   fFree.Push(QueueItem);
@@ -10641,7 +10685,7 @@ var i:TPasMPInt32;
 begin
  p:=fData;
  for i:=0 to fMaximalCount-1 do begin
-  QueueItem:=pointer(p);
+  QueueItem:=Pointer(p);
   Finalize(QueueItem^);
   inc(p,fInternalItemSize);
  end;
@@ -10651,17 +10695,17 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPBoundedQueue<T>.IsEmpty:boolean;
+function TPasMPBoundedQueue<T>.IsEmpty:Boolean;
 begin
  result:=fQueue.IsEmpty;
 end;
 
-function TPasMPBoundedQueue<T>.IsFull:boolean;
+function TPasMPBoundedQueue<T>.IsFull:Boolean;
 begin
  result:=fFree.IsEmpty;
 end;
 
-function TPasMPBoundedQueue<T>.Enqueue(const Item:T):boolean;
+function TPasMPBoundedQueue<T>.Enqueue(const Item:T):Boolean;
 var QueueItem:PPasMPBoundedTypedQueueItem;
 begin
  QueueItem:=fFree.Pop;
@@ -10675,7 +10719,7 @@ begin
  end;
 end;
 
-function TPasMPBoundedQueue<T>.Dequeue(out Item:T):boolean;
+function TPasMPBoundedQueue<T>.Dequeue(out Item:T):Boolean;
 var QueueItem:PPasMPBoundedTypedQueueItem;
 begin
  result:=fQueue.Dequeue(QueueItem);
@@ -10688,9 +10732,9 @@ begin
   result:=false;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-constructor TPasMPBoundedArrayBasedQueue.Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPBoundedArrayBasedQueue.Create(const MaximalCount,ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create(MaximalCount,ItemSize,AddCPUCacheLinePaddingToInternalItemDataStructure);
 end;
@@ -10700,8 +10744,8 @@ begin
  inherited Destroy;
 end;
 
-{$ifdef HAS_GENERICS}
-constructor TPasMPBoundedArrayBasedQueue<T>.Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+{$IFDEF HAS_GENERICS}
+constructor TPasMPBoundedArrayBasedQueue<T>.Create(const MaximalCount:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create(MaximalCount,SizeOf(T),AddCPUCacheLinePaddingToInternalItemDataStructure);
 end;
@@ -10711,34 +10755,34 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPBoundedArrayBasedQueue<T>.InitializeItem(const Data:pointer);
+procedure TPasMPBoundedArrayBasedQueue<T>.InitializeItem(const Data:Pointer);
 begin
  Initialize(T(Data^));
 end;
 
-procedure TPasMPBoundedArrayBasedQueue<T>.FinalizeItem(const Data:pointer);
+procedure TPasMPBoundedArrayBasedQueue<T>.FinalizeItem(const Data:Pointer);
 begin
  Finalize(T(Data^));
 end;
 
-procedure TPasMPBoundedArrayBasedQueue<T>.CopyItem(const Source,Destination:pointer);
+procedure TPasMPBoundedArrayBasedQueue<T>.CopyItem(const Source,Destination:Pointer);
 begin
  T(Destination^):=T(Source^);
 end;
 
-function TPasMPBoundedArrayBasedQueue<T>.Enqueue(const Item:T):boolean;
+function TPasMPBoundedArrayBasedQueue<T>.Enqueue(const Item:T):Boolean;
 begin
  result:=inherited Enqueue(Item);
 end;
 
-function TPasMPBoundedArrayBasedQueue<T>.Dequeue(out Item:T):boolean;
+function TPasMPBoundedArrayBasedQueue<T>.Dequeue(out Item:T):Boolean;
 begin
  result:=inherited Dequeue(Item);
 end;
 
-{$endif}
+{$ENDIF}
 
-constructor TPasMPUnboundedQueue.Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPUnboundedQueue.Create(const ItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create(ItemSize,AddCPUCacheLinePaddingToInternalItemDataStructure);
 end;
@@ -10748,8 +10792,8 @@ begin
  inherited Destroy;
 end;
 
-{$ifdef HAS_GENERICS}
-constructor TPasMPUnboundedQueue<T>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+{$IFDEF HAS_GENERICS}
+constructor TPasMPUnboundedQueue<T>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create(SizeOf(T),AddCPUCacheLinePaddingToInternalItemDataStructure);
 end;
@@ -10759,17 +10803,17 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPUnboundedQueue<T>.InitializeItem(const Data:pointer);
+procedure TPasMPUnboundedQueue<T>.InitializeItem(const Data:Pointer);
 begin
  Initialize(T(Data^));
 end;
 
-procedure TPasMPUnboundedQueue<T>.FinalizeItem(const Data:pointer);
+procedure TPasMPUnboundedQueue<T>.FinalizeItem(const Data:Pointer);
 begin
  Finalize(T(Data^));
 end;
 
-procedure TPasMPUnboundedQueue<T>.CopyItem(const Source,Destination:pointer);
+procedure TPasMPUnboundedQueue<T>.CopyItem(const Source,Destination:Pointer);
 begin
  T(Destination^):=T(Source^);
 end;
@@ -10779,14 +10823,14 @@ begin
  inherited Enqueue(Item);
 end;
 
-function TPasMPUnboundedQueue<T>.Dequeue(out Item:T):boolean;
+function TPasMPUnboundedQueue<T>.Dequeue(out Item:T):Boolean;
 begin
  result:=inherited Dequeue(Item);
 end;
-{$endif}
+{$ENDIF}
 
-{$ifdef HAS_GENERICS}
-{$if defined(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$ifend}
+{$IFDEF HAS_GENERICS}
+{$IF DEFINED(fpc) and (fpc_version>=3)}{$push}{$optimization noorderfields}{$IFEND}
 constructor TPasMPMultipleProducerMultipleConsumerQueue<T>.Create(const aCapacity:TPasMPSizeInt);
 var Index:TPasMPSizeInt;
 begin
@@ -10832,18 +10876,18 @@ var OldHead,SlotTurn,DesiredTurn:TPasMPSizeUIntEx;
 begin
 
  // Atomically increment fHead by 1 (fetch-and-add).
- OldHead:=TPasMPInterlocked.Add({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fHead),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(1));
+ OldHead:=TPasMPInterlocked.Add({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fHead),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(1));
  Slot:=@fSlots[Idx(OldHead)];
 
  // Wait for the consumer to finish the previous round if needed
  DesiredTurn:=TurnOf(OldHead) shl 1;
  repeat
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
-  SlotTurn:=Slot^.fTurn; // SlotTurn:=TPasMPInterlocked.Read({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(Slot^.fTurn));
+{$IFEND}
+  SlotTurn:=Slot^.fTurn; // SlotTurn:=TPasMPInterlocked.Read({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(Slot^.fTurn));
  until SlotTurn=DesiredTurn;
 
  // Construct the item
@@ -10864,11 +10908,11 @@ begin
  result:=false;
 
  // Read the local head
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  HeadSnapshot:=fHead; // HeadSnapshot:=TPasMPInterlocked.Read(fHead);
 
  // The loop
@@ -10876,40 +10920,40 @@ begin
 
   Slot:=@fSlots[Idx(HeadSnapshot)];
   DesiredTurn:=TurnOf(HeadSnapshot) shl 1;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
-  SlotTurn:=Slot^.fTurn; // SlotTurn:=TPasMPInterlocked.Read({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(Slot^.fTurn));
+{$IFEND}
+  SlotTurn:=Slot^.fTurn; // SlotTurn:=TPasMPInterlocked.Read({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(Slot^.fTurn));
 
   // If the slot is indeed ready to store
   if SlotTurn=DesiredTurn then begin
    // Attempt to claim by CAS the head
-   if TPasMPInterlocked.CompareExchange({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fHead),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(HeadSnapshot+1),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(HeadSnapshot))={$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(HeadSnapshot) then begin
+   if TPasMPInterlocked.CompareExchange({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fHead),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(HeadSnapshot+1),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(HeadSnapshot))={$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(HeadSnapshot) then begin
     // We succeeded, now place the item
     Slot^.fData:=aValue;
     TPasMPMemoryBarrier.Write;
-    Slot^.fTurn:=DesiredTurn+1; // TPasMPInterlocked.Write({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(Slot^.fTurn),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(DesiredTurn+1));
+    Slot^.fTurn:=DesiredTurn+1; // TPasMPInterlocked.Write({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(Slot^.fTurn),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(DesiredTurn+1));
     result:=true;
    end else begin
     // If CAS failed, someone else advanced head, so re-read and try again
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
     TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
     TPasMPMemoryBarrier.Read;
-{$ifend}
-    HeadSnapshot:=fHead; // HeadSnapshot:=TPasMPInterlocked.Read({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fHead));
+{$IFEND}
+    HeadSnapshot:=fHead; // HeadSnapshot:=TPasMPInterlocked.Read({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fHead));
    end;
   end else begin
    // The slot is not ready -> queue is full or behind. Re-read head to see if it changed; if not, just fail
    PreviousHeadSnapshot:=HeadSnapshot;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
-   HeadSnapshot:=fHead; // HeadSnapshot:=TPasMPInterlocked.Read({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fHead));
+{$IFEND}
+   HeadSnapshot:=fHead; // HeadSnapshot:=TPasMPInterlocked.Read({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fHead));
    if HeadSnapshot=PreviousHeadSnapshot then begin
     result:=false;
     exit;
@@ -10927,19 +10971,19 @@ var OldTail,SlotTurn,DesiredTurn:TPasMPSizeUIntEx;
 begin
 
 // Atomically increment FTail
- OldTail:=TPasMPInterlocked.Add({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fTail),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(1));
+ OldTail:=TPasMPInterlocked.Add({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fTail),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(1));
  Slot:=@fSlots[Idx(OldTail)];
 
  // We expect the slot turn to be: turn(OldTail)*2 + 1
  DesiredTurn:=(TurnOf(OldTail) shl 1) or 1;
 
  repeat
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
-  SlotTurn:=Slot^.fTurn; // SlotTurn:=TPasMPInterlocked.Read({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(Slot^.fTurn));
+{$IFEND}
+  SlotTurn:=Slot^.fTurn; // SlotTurn:=TPasMPInterlocked.Read({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(Slot^.fTurn));
  until SlotTurn=DesiredTurn;
 
  // Acquire barrier
@@ -10948,7 +10992,7 @@ begin
  Finalize(Slot^.fData);
 
  // Mark slot free => DesiredTurn + 1
-//TPasMPInterlocked.Write({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(Slot^.fTurn),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(DesiredTurn+1));
+//TPasMPInterlocked.Write({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(Slot^.fTurn),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(DesiredTurn+1));
  TPasMPMemoryBarrier.Write;
  Slot^.fTurn:=DesiredTurn+1;
 
@@ -10961,57 +11005,57 @@ begin
 
  result:=false;
 
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
- TailSnapshot:=fTail; //TailSnapshot:=TPasMPInterlocked.Read({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fTail));
+{$IFEND}
+ TailSnapshot:=fTail; //TailSnapshot:=TPasMPInterlocked.Read({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fTail));
  TPasMPMemoryBarrier.ReadDependency;
 
  while true do begin
 
   Slot:=@fSlots[Idx(TailSnapshot)];
   DesiredTurn:=(TurnOf(TailSnapshot) shl 1) or 1;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   SlotTurn:=Slot^.fTurn; //SlotTurn:=TPasMPInterlocked.Read(Slot^.fTurn);
   TPasMPMemoryBarrier.ReadDependency;
 
   if SlotTurn=DesiredTurn then begin
    // Attempt to claim the slot by CAS
-   if TPasMPInterlocked.CompareExchange({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fTail),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(TailSnapshot+1),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(TailSnapshot))={$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(TailSnapshot) then begin
+   if TPasMPInterlocked.CompareExchange({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fTail),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(TailSnapshot+1),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(TailSnapshot))={$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(TailSnapshot) then begin
     TPasMPMemoryBarrier.Read;
     aValue:=Slot^.fData;
     Finalize(Slot^.fData);
-    Slot^.fTurn:=DesiredTurn+1; //TPasMPInterlocked.Write({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(Slot^.fTurn),{$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(DesiredTurn+1));
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+    Slot^.fTurn:=DesiredTurn+1; //TPasMPInterlocked.Write({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(Slot^.fTurn),{$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(DesiredTurn+1));
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
     TPasMPMemoryBarrier.Write;
-{$ifend}
+{$IFEND}
     result:=true;
     exit;
    end else begin
     // Another consumer got it first
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
     TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
     TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
     TailSnapshot:=fTail; // TailSnapshot:=TPasMPInterlocked.Read(fTail);
     TPasMPMemoryBarrier.ReadDependency;
    end;
   end else begin
    // Slot doesn't hold a valid item; if fTail hasn't changed, queue is empty
    PreviousTailSnapshot:=TailSnapshot;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
-   TailSnapshot:=fTail; // TailSnapshot:=TPasMPInterlocked.Read({$ifdef cpu64}TPasMPUInt64{$else}TPasMPUInt32{$endif}(fTail));
+{$IFEND}
+   TailSnapshot:=fTail; // TailSnapshot:=TPasMPInterlocked.Read({$IFDEF cpu64}TPasMPUInt64{$ELSE}TPasMPUInt32{$ENDIF}(fTail));
    if TailSnapshot=PreviousTailSnapshot then begin
     result:=false;
     exit;
@@ -11027,11 +11071,11 @@ function TPasMPMultipleProducerMultipleConsumerQueue<T>.Size:TPasMPSizeUIntEx;
 var LocalHead,LocalTail:TPasMPSizeInt;
 begin
  LocalHead:=fHead;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  LocalTail:=fTail;
  result:=LocalHead-LocalTail;
 end;
@@ -11041,9 +11085,9 @@ begin
  result:=Size<=0;
 end;
 
-{$endif}
+{$ENDIF}
 
-constructor TPasMPHashTable.Create(const KeySize,ValueSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPHashTable.Create(const KeySize,ValueSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  fKeySize:=KeySize;
  fValueSize:=ValueSize;
@@ -11056,42 +11100,42 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPHashTable.InitializeItem(const Data:pointer);
+procedure TPasMPHashTable.InitializeItem(const Data:Pointer);
 begin
  FillChar(Data^,fItemSize,#0);
 end;
 
-procedure TPasMPHashTable.FinalizeItem(const Data:pointer);
+procedure TPasMPHashTable.FinalizeItem(const Data:Pointer);
 begin
 end;
 
-procedure TPasMPHashTable.CopyItem(const Source,Destination:pointer);
+procedure TPasMPHashTable.CopyItem(const Source,Destination:Pointer);
 begin
  Move(Source^,Destination^,fItemSize);
 end;
 
-procedure TPasMPHashTable.GetKey(const Data,Key:pointer);
+procedure TPasMPHashTable.GetKey(const Data,Key:Pointer);
 begin
- Move(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^,Key^,fKeySize);
+ Move(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^,Key^,fKeySize);
 end;
 
-procedure TPasMPHashTable.SetKey(const Data,Key:pointer);
+procedure TPasMPHashTable.SetKey(const Data,Key:Pointer);
 begin
- Move(Key^,pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^,fKeySize);
+ Move(Key^,Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^,fKeySize);
 end;
 
-procedure TPasMPHashTable.GetValue(const Data,Value:pointer);
+procedure TPasMPHashTable.GetValue(const Data,Value:Pointer);
 begin
- Move(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,Value^,fValueSize);
+ Move(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,Value^,fValueSize);
 end;
 
-procedure TPasMPHashTable.SetValue(const Data,Value:pointer);
+procedure TPasMPHashTable.SetValue(const Data,Value:Pointer);
 begin
- Move(Value^,pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,fValueSize);
+ Move(Value^,Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,fValueSize);
 end;
 
-function TPasMPHashTable.HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash;
-{$ifdef CPUARM}
+function TPasMPHashTable.HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash;
+{$IFDEF CPUARM}
 var b:PPasMPUInt8;
     len,h,i:TPasMPUInt32;
 begin
@@ -11101,7 +11145,7 @@ begin
  if len>0 then begin
   b:=Key;
   while len>3 do begin
-   i:=TPasMPUInt32(pointer(b)^);
+   i:=TPasMPUInt32(Pointer(b)^);
    h:=(h xor i) xor $2e63823a;
    inc(h,(h shl 15) or (h shr (32-15)));
    dec(h,(h shl 9) or (h shr (32-9)));
@@ -11114,7 +11158,7 @@ begin
    dec(len,4);
   end;
   if len>1 then begin
-   i:=TPasMPUInt16(pointer(b)^);
+   i:=TPasMPUInt16(Pointer(b)^);
    h:=(h xor i) xor $2e63823a;
    inc(h,(h shl 15) or (h shr (32-15)));
    dec(h,(h shl 9) or (h shr (32-9)));
@@ -11143,12 +11187,12 @@ begin
   result:=$ffffffff;
  end;
 end;
-{$else}
+{$ELSE}
 const m=TPasMPUInt32($57559429);
       n=TPasMPUInt32($5052acdb);
 var b:PPasMPUInt8;
     h,k,len:TPasMPUInt32;
-    p:{$ifdef fpc}qword{$else}TPasMPInt64{$endif};
+    p:{$IFDEF fpc}qword{$ELSE}TPasMPInt64{$ENDIF};
 begin
  len:=fKeySize;
  h:=len;
@@ -11157,13 +11201,13 @@ begin
   b:=Key;
   while len>7 do begin
    begin
-    p:=TPasMPUInt32(pointer(b)^)*{$ifdef fpc}qword{$else}TPasMPInt64{$endif}(n);
+    p:=TPasMPUInt32(Pointer(b)^)*{$IFDEF fpc}qword{$ELSE}TPasMPInt64{$ENDIF}(n);
     h:=h xor TPasMPUInt32(p and $ffffffff);
     k:=k xor TPasMPUInt32(p shr 32);
     inc(b,4);
    end;
    begin
-    p:=TPasMPUInt32(pointer(b)^)*{$ifdef fpc}qword{$else}TPasMPInt64{$endif}(m);
+    p:=TPasMPUInt32(Pointer(b)^)*{$IFDEF fpc}qword{$ELSE}TPasMPInt64{$ENDIF}(m);
     k:=k xor TPasMPUInt32(p and $ffffffff);
     h:=h xor TPasMPUInt32(p shr 32);
     inc(b,4);
@@ -11171,7 +11215,7 @@ begin
    dec(len,8);
   end;
   if len>3 then begin
-   p:=TPasMPUInt32(pointer(b)^)*{$ifdef fpc}qword{$else}TPasMPInt64{$endif}(n);
+   p:=TPasMPUInt32(Pointer(b)^)*{$IFDEF fpc}qword{$ELSE}TPasMPInt64{$ENDIF}(n);
    h:=h xor TPasMPUInt32(p and $ffffffff);
    k:=k xor TPasMPUInt32(p shr 32);
    inc(b,4);
@@ -11179,7 +11223,7 @@ begin
   end;
   if len>0 then begin
    if len>1 then begin
-    p:=TPasMPUInt16(pointer(b)^);
+    p:=TPasMPUInt16(Pointer(b)^);
     inc(b,2);
     dec(len,2);
    end else begin
@@ -11188,13 +11232,13 @@ begin
    if len>0 then begin
     p:=p or (TPasMPUInt8(b^) shl 16);
    end;
-   p:=p*{$ifdef fpc}qword{$else}TPasMPInt64{$endif}(m);
+   p:=p*{$IFDEF fpc}qword{$ELSE}TPasMPInt64{$ENDIF}(m);
    k:=k xor TPasMPUInt32(p and $ffffffff);
    h:=h xor TPasMPUInt32(p shr 32);
   end;
  end;
  begin
-  p:=(h xor (k+n))*{$ifdef fpc}qword{$else}TPasMPInt64{$endif}(n);
+  p:=(h xor (k+n))*{$IFDEF fpc}qword{$ELSE}TPasMPInt64{$ENDIF}(n);
   h:=h xor TPasMPUInt32(p and $ffffffff);
   k:=k xor TPasMPUInt32(p shr 32);
  end;
@@ -11203,10 +11247,10 @@ begin
   result:=$ffffffff;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPHashTable.CompareKey(const Data,Key:pointer):boolean;
-{$ifdef OldDelphi}
+function TPasMPHashTable.CompareKey(const Data,Key:Pointer):Boolean;
+{$IFDEF OldDelphi}
 type PLongwords=^TLongwords;
      TLongwords=array[0..$ffff] of TPasMPUInt32;
      PBytes=^TBytes;
@@ -11214,41 +11258,41 @@ type PLongwords=^TLongwords;
 var Index:TPasMPInt32;
 begin
  for Index:=0 to (fKeySize div SizeOf(TPasMPUInt32))-1 do begin
-  if PLongwords(pointer(Data))^[Index]<>PLongwords(pointer(Key))^[Index] then begin
+  if PLongwords(Pointer(Data))^[Index]<>PLongwords(Pointer(Key))^[Index] then begin
    result:=false;
    exit;
   end;
  end;
  for Index:=(fKeySize and not (SizeOf(TPasMPUInt32)-1)) to fKeySize-1 do begin
-  if PBytes(pointer(Data))^[Index]<>PBytes(pointer(Key))^[Index] then begin
+  if PBytes(Pointer(Data))^[Index]<>PBytes(Pointer(Key))^[Index] then begin
    result:=false;
    exit;
   end;
  end;
  result:=true;
 end;
-{$else}
+{$ELSE}
 begin
- result:=CompareMem(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data))),Key,fKeySize);
+ result:=CompareMem(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data))),Key,fKeySize);
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPHashTable.GetKeyValue(const Key;out Value):boolean;
+function TPasMPHashTable.GetKeyValue(const Key;out Value):Boolean;
 begin
  result:=inherited GetKeyValue(@Key,@Value);
 end;
 
-function TPasMPHashTable.SetKeyValue(const Key,Value):boolean;
+function TPasMPHashTable.SetKeyValue(const Key,Value):Boolean;
 begin
  result:=inherited SetKeyValue(@Key,@Value);
 end;
 
-function TPasMPHashTable.DeleteKey(const Key):boolean;
+function TPasMPHashTable.DeleteKey(const Key):Boolean;
 begin
  result:=inherited DeleteKey(@Key);
 end;
 
-constructor TPasMPStringHashTable.Create(const ValueSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPStringHashTable.Create(const ValueSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  fKeySize:=SizeOf(string);
  fValueSize:=ValueSize;
@@ -11261,43 +11305,43 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPStringHashTable.InitializeItem(const Data:pointer);
+procedure TPasMPStringHashTable.InitializeItem(const Data:Pointer);
 begin
  Initialize(string(Data^));
 end;
 
-procedure TPasMPStringHashTable.FinalizeItem(const Data:pointer);
+procedure TPasMPStringHashTable.FinalizeItem(const Data:Pointer);
 begin
  Finalize(string(Data^));
 end;
 
-procedure TPasMPStringHashTable.CopyItem(const Source,Destination:pointer);
+procedure TPasMPStringHashTable.CopyItem(const Source,Destination:Pointer);
 begin
  string(Destination^):=string(Source^);
- Move(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Source)+TPasMPPtrUInt(fKeySize)))^,pointer(TPasMPPtrUInt(TPasMPPtrUInt(Destination)+TPasMPPtrUInt(fKeySize)))^,fValueSize);
+ Move(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Source)+TPasMPPtrUInt(fKeySize)))^,Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Destination)+TPasMPPtrUInt(fKeySize)))^,fValueSize);
 end;
 
-procedure TPasMPStringHashTable.GetKey(const Data,Key:pointer);
+procedure TPasMPStringHashTable.GetKey(const Data,Key:Pointer);
 begin
- string(Key^):=string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^);
+ string(Key^):=string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^);
 end;
 
-procedure TPasMPStringHashTable.SetKey(const Data,Key:pointer);
+procedure TPasMPStringHashTable.SetKey(const Data,Key:Pointer);
 begin
- string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^):=string(Key^);
+ string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^):=string(Key^);
 end;
 
-procedure TPasMPStringHashTable.GetValue(const Data,Value:pointer);
+procedure TPasMPStringHashTable.GetValue(const Data,Value:Pointer);
 begin
- Move(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,Value^,fValueSize);
+ Move(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,Value^,fValueSize);
 end;
 
-procedure TPasMPStringHashTable.SetValue(const Data,Value:pointer);
+procedure TPasMPStringHashTable.SetValue(const Data,Value:Pointer);
 begin
- Move(Value^,pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,fValueSize);
+ Move(Value^,Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^,fValueSize);
 end;
 
-function TPasMPStringHashTable.HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash;
+function TPasMPStringHashTable.HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash;
 var Index:TPasMPInt32;
 begin
  result:=length(string(Key^));
@@ -11309,27 +11353,27 @@ begin
  end;
 end;
 
-function TPasMPStringHashTable.CompareKey(const Data,Key:pointer):boolean;
+function TPasMPStringHashTable.CompareKey(const Data,Key:Pointer):Boolean;
 begin
  result:=string(Data^)=string(Key^);
 end;
 
-function TPasMPStringHashTable.GetKeyValue(const Key:string;out Value):boolean;
+function TPasMPStringHashTable.GetKeyValue(const Key:string;out Value):Boolean;
 begin
  result:=inherited GetKeyValue(@Key,@Value);
 end;
 
-function TPasMPStringHashTable.SetKeyValue(const Key:string;const Value):boolean;
+function TPasMPStringHashTable.SetKeyValue(const Key:string;const Value):Boolean;
 begin
  result:=inherited SetKeyValue(@Key,@Value);
 end;
 
-function TPasMPStringHashTable.DeleteKey(const Key:string):boolean;
+function TPasMPStringHashTable.DeleteKey(const Key:string):Boolean;
 begin
  result:=inherited DeleteKey(@Key);
 end;
 
-constructor TPasMPStringStringHashTable.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPStringStringHashTable.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  fKeySize:=SizeOf(string);
  fValueSize:=SizeOf(string);
@@ -11342,45 +11386,45 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPStringStringHashTable.InitializeItem(const Data:pointer);
+procedure TPasMPStringStringHashTable.InitializeItem(const Data:Pointer);
 begin
  Initialize(string(Data^));
- Initialize(string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
+ Initialize(string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
 end;
 
-procedure TPasMPStringStringHashTable.FinalizeItem(const Data:pointer);
+procedure TPasMPStringStringHashTable.FinalizeItem(const Data:Pointer);
 begin
  Finalize(string(Data^));
- Finalize(string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
+ Finalize(string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
 end;
 
-procedure TPasMPStringStringHashTable.CopyItem(const Source,Destination:pointer);
+procedure TPasMPStringStringHashTable.CopyItem(const Source,Destination:Pointer);
 begin
  string(Destination^):=string(Source^);
- string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Destination)+TPasMPPtrUInt(fKeySize)))^):=string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Source)+TPasMPPtrUInt(fKeySize)))^);
+ string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Destination)+TPasMPPtrUInt(fKeySize)))^):=string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Source)+TPasMPPtrUInt(fKeySize)))^);
 end;
 
-procedure TPasMPStringStringHashTable.GetKey(const Data,Key:pointer);
+procedure TPasMPStringStringHashTable.GetKey(const Data,Key:Pointer);
 begin
- string(Key^):=string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^);
+ string(Key^):=string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^);
 end;
 
-procedure TPasMPStringStringHashTable.SetKey(const Data,Key:pointer);
+procedure TPasMPStringStringHashTable.SetKey(const Data,Key:Pointer);
 begin
- string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^):=string(Key^);
+ string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^):=string(Key^);
 end;
 
-procedure TPasMPStringStringHashTable.GetValue(const Data,Value:pointer);
+procedure TPasMPStringStringHashTable.GetValue(const Data,Value:Pointer);
 begin
- string(Value^):=string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^);
+ string(Value^):=string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^);
 end;
 
-procedure TPasMPStringStringHashTable.SetValue(const Data,Value:pointer);
+procedure TPasMPStringStringHashTable.SetValue(const Data,Value:Pointer);
 begin
- string(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^):=string(Value^);
+ string(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^):=string(Value^);
 end;
 
-function TPasMPStringStringHashTable.HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash;
+function TPasMPStringStringHashTable.HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash;
 var Index:TPasMPInt32;
 begin
  result:=length(string(Key^));
@@ -11392,28 +11436,28 @@ begin
  end;
 end;
 
-function TPasMPStringStringHashTable.CompareKey(const Data,Key:pointer):boolean;
+function TPasMPStringStringHashTable.CompareKey(const Data,Key:Pointer):Boolean;
 begin
  result:=string(Data^)=string(Key^);
 end;
 
-function TPasMPStringStringHashTable.GetKeyValue(const Key:string;out Value:string):boolean;
+function TPasMPStringStringHashTable.GetKeyValue(const Key:string;out Value:string):Boolean;
 begin
  result:=inherited GetKeyValue(@Key,@Value);
 end;
 
-function TPasMPStringStringHashTable.SetKeyValue(const Key,Value:string):boolean;
+function TPasMPStringStringHashTable.SetKeyValue(const Key,Value:string):Boolean;
 begin
  result:=inherited SetKeyValue(@Key,@Value);
 end;
 
-function TPasMPStringStringHashTable.DeleteKey(const Key:string):boolean;
+function TPasMPStringStringHashTable.DeleteKey(const Key:string):Boolean;
 begin
  result:=inherited DeleteKey(@Key);
 end;
 
-{$ifdef HasGenericsCollections}
-constructor TPasMPHashTable<KeyType,ValueType>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+{$IFDEF HasGenericsCollections}
+constructor TPasMPHashTable<KeyType,ValueType>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  fKeySize:=SizeOf(KeyType);
  fValueSize:=SizeOf(ValueType);
@@ -11427,45 +11471,45 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPHashTable<KeyType,ValueType>.InitializeItem(const Data:pointer);
+procedure TPasMPHashTable<KeyType,ValueType>.InitializeItem(const Data:Pointer);
 begin
  Initialize(KeyType(Data^));
- Initialize(ValueType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
+ Initialize(ValueType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
 end;
 
-procedure TPasMPHashTable<KeyType,ValueType>.FinalizeItem(const Data:pointer);
+procedure TPasMPHashTable<KeyType,ValueType>.FinalizeItem(const Data:Pointer);
 begin
  Finalize(KeyType(Data^));
- Finalize(ValueType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
+ Finalize(ValueType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^));
 end;
 
-procedure TPasMPHashTable<KeyType,ValueType>.CopyItem(const Source,Destination:pointer);
+procedure TPasMPHashTable<KeyType,ValueType>.CopyItem(const Source,Destination:Pointer);
 begin
  KeyType(Destination^):=KeyType(Source^);
- ValueType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Destination)+TPasMPPtrUInt(fKeySize)))^):=ValueType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Source)+TPasMPPtrUInt(fKeySize)))^);
+ ValueType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Destination)+TPasMPPtrUInt(fKeySize)))^):=ValueType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Source)+TPasMPPtrUInt(fKeySize)))^);
 end;
 
-procedure TPasMPHashTable<KeyType,ValueType>.GetKey(const Data,Key:pointer);
+procedure TPasMPHashTable<KeyType,ValueType>.GetKey(const Data,Key:Pointer);
 begin
- KeyType(Key^):=KeyType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^);
+ KeyType(Key^):=KeyType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^);
 end;
 
-procedure TPasMPHashTable<KeyType,ValueType>.SetKey(const Data,Key:pointer);
+procedure TPasMPHashTable<KeyType,ValueType>.SetKey(const Data,Key:Pointer);
 begin
- KeyType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^):=KeyType(Key^);
+ KeyType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)))^):=KeyType(Key^);
 end;
 
-procedure TPasMPHashTable<KeyType,ValueType>.GetValue(const Data,Value:pointer);
+procedure TPasMPHashTable<KeyType,ValueType>.GetValue(const Data,Value:Pointer);
 begin
- ValueType(Value^):=ValueType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^);
+ ValueType(Value^):=ValueType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^);
 end;
 
-procedure TPasMPHashTable<KeyType,ValueType>.SetValue(const Data,Value:pointer);
+procedure TPasMPHashTable<KeyType,ValueType>.SetValue(const Data,Value:Pointer);
 begin
- ValueType(pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^):=ValueType(Value^);
+ ValueType(Pointer(TPasMPPtrUInt(TPasMPPtrUInt(Data)+TPasMPPtrUInt(fKeySize)))^):=ValueType(Value^);
 end;
 
-function TPasMPHashTable<KeyType,ValueType>.HashKey(const Key:pointer):TPasMPThreadSafeHashTableHash;
+function TPasMPHashTable<KeyType,ValueType>.HashKey(const Key:Pointer):TPasMPThreadSafeHashTableHash;
 begin
  result:=fComparer.GetHashCode(KeyType(Key^));
  if result=0 then begin
@@ -11473,38 +11517,38 @@ begin
  end;
 end;
 
-function TPasMPHashTable<KeyType,ValueType>.CompareKey(const Data,Key:pointer):boolean;
+function TPasMPHashTable<KeyType,ValueType>.CompareKey(const Data,Key:Pointer):Boolean;
 begin
  result:=fComparer.Equals(KeyType(Data^),KeyType(Key^));
 end;
 
-{$ifdef fpc}
+{$IFDEF fpc}
 procedure TPasMPHashTable<KeyType,ValueType>.Dummy(out Value:ValueType);
 begin
  // "Warning: Variable "Value" does not seem to be initialized" anti-warning workaround for FPC
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPHashTable<KeyType,ValueType>.GetKeyValue(const Key:KeyType;out Value:ValueType):boolean;
+function TPasMPHashTable<KeyType,ValueType>.GetKeyValue(const Key:KeyType;out Value:ValueType):Boolean;
 begin
-{$ifdef fpc}
+{$IFDEF fpc}
  Dummy(Value);
-{$endif}
+{$ENDIF}
  result:=inherited GetKeyValue(@Key,@Value);
 end;
 
-function TPasMPHashTable<KeyType,ValueType>.SetKeyValue(const Key:KeyType;const Value:ValueType):boolean;
+function TPasMPHashTable<KeyType,ValueType>.SetKeyValue(const Key:KeyType;const Value:ValueType):Boolean;
 begin
  result:=inherited SetKeyValue(@Key,@Value);
 end;
 
-function TPasMPHashTable<KeyType,ValueType>.DeleteKey(const Key:KeyType):boolean;
+function TPasMPHashTable<KeyType,ValueType>.DeleteKey(const Key:KeyType):Boolean;
 begin
  result:=inherited DeleteKey(@Key);
 end;
-{$endif}
+{$ENDIF}
 
-constructor TPasMPDynamicArray.Create(const aItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+constructor TPasMPDynamicArray.Create(const aItemSize:TPasMPInt32;const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create(aItemSize,AddCPUCacheLinePaddingToInternalItemDataStructure);
 end;
@@ -11514,25 +11558,25 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPDynamicArray.InitializeItem(const ItemData:pointer);
+procedure TPasMPDynamicArray.InitializeItem(const ItemData:Pointer);
 begin
 end;
 
-procedure TPasMPDynamicArray.FinalizeItem(const ItemData:pointer);
+procedure TPasMPDynamicArray.FinalizeItem(const ItemData:Pointer);
 begin
 end;
 
-procedure TPasMPDynamicArray.CopyItem(const Source,Destination:pointer);
+procedure TPasMPDynamicArray.CopyItem(const Source,Destination:Pointer);
 begin
  Move(Source^,Destination^,ItemSize);
 end;
 
-function TPasMPDynamicArray.GetItem(const ItemIndex:TPasMPInt32;out ItemData):boolean;
+function TPasMPDynamicArray.GetItem(const ItemIndex:TPasMPInt32;out ItemData):Boolean;
 begin
  result:=inherited GetItem(ItemIndex,@ItemData);
 end;
 
-function TPasMPDynamicArray.SetItem(const ItemIndex:TPasMPInt32;const ItemData):boolean;
+function TPasMPDynamicArray.SetItem(const ItemIndex:TPasMPInt32;const ItemData):Boolean;
 begin
  result:=inherited SetItem(ItemIndex,@ItemData);
 end;
@@ -11542,13 +11586,13 @@ begin
  result:=inherited Push(@ItemData);
 end;
 
-function TPasMPDynamicArray.Pop(out ItemData):boolean;
+function TPasMPDynamicArray.Pop(out ItemData):Boolean;
 begin
  result:=inherited Pop(@ItemData);
 end;
 
-{$ifdef HAS_GENERICS}
-constructor TPasMPDynamicArray<T>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:boolean=true);
+{$IFDEF HAS_GENERICS}
+constructor TPasMPDynamicArray<T>.Create(const AddCPUCacheLinePaddingToInternalItemDataStructure:Boolean=true);
 begin
  inherited Create(SizeOf(T),AddCPUCacheLinePaddingToInternalItemDataStructure);
 end;
@@ -11558,27 +11602,27 @@ begin
  inherited Destroy;
 end;
 
-procedure TPasMPDynamicArray<T>.InitializeItem(const ItemData:pointer);
+procedure TPasMPDynamicArray<T>.InitializeItem(const ItemData:Pointer);
 begin
  Initialize(PPasMPDynamicArrayDataType(ItemData)^);
 end;
 
-procedure TPasMPDynamicArray<T>.FinalizeItem(const ItemData:pointer);
+procedure TPasMPDynamicArray<T>.FinalizeItem(const ItemData:Pointer);
 begin
  Finalize(PPasMPDynamicArrayDataType(ItemData)^);
 end;
 
-procedure TPasMPDynamicArray<T>.CopyItem(const Source,Destination:pointer);
+procedure TPasMPDynamicArray<T>.CopyItem(const Source,Destination:Pointer);
 begin
  PPasMPDynamicArrayDataType(Destination)^:=PPasMPDynamicArrayDataType(Source)^;
 end;
 
-function TPasMPDynamicArray<T>.GetItem(const ItemIndex:TPasMPInt32;out ItemData:T):boolean;
+function TPasMPDynamicArray<T>.GetItem(const ItemIndex:TPasMPInt32;out ItemData:T):Boolean;
 begin
  result:=inherited GetItem(ItemIndex,@ItemData);
 end;
 
-function TPasMPDynamicArray<T>.SetItem(const ItemIndex:TPasMPInt32;const ItemData:T):boolean;
+function TPasMPDynamicArray<T>.SetItem(const ItemIndex:TPasMPInt32;const ItemData:T):Boolean;
 begin
  result:=inherited SetItem(ItemIndex,@ItemData);
 end;
@@ -11588,7 +11632,7 @@ begin
  result:=inherited Push(@ItemData);
 end;
 
-function TPasMPDynamicArray<T>.Pop(out ItemData:T):boolean;
+function TPasMPDynamicArray<T>.Pop(out ItemData:T):Boolean;
 begin
  result:=inherited Pop(@ItemData);
 end;
@@ -11607,37 +11651,37 @@ begin
   raise EPasMPDynamicArrayOutOfBounds.Create('Out of bounds');
  end;
 end;
-{$endif}
+{$ENDIF}
 
-{$if defined(fpc) and (defined(Linux) or defined(Android)) and declared(TThreadPriority)}
+{$IF DEFINED(fpc) and (DEFINED(Linux) or DEFINED(Android)) and DECLARED(TThreadPriority)}
 
-{$if not declared(pthread_t)}
+{$IF not DECLARED(pthread_t)}
 type pthread_t=ptruint;
-{$ifend}
+{$IFEND}
 
-{$if not (declared(Psched_param) and declared(Tsched_param) and declared(sched_param))}
+{$IF not (DECLARED(Psched_param) and DECLARED(Tsched_param) and DECLARED(sched_param))}
 type sched_param=record
       sched_priority:TPasMPInt32;
      end;
      Tsched_param=sched_param;
      Psched_param=^Tsched_param;
-{$ifend}
+{$IFEND}
 
-{$if not declared(sched_get_priority_min)}
+{$IF not DECLARED(sched_get_priority_min)}
 function sched_get_priority_min(policy:TPasMPInt32):TPasMPInt32; cdecl; external 'c' name 'sched_get_priority_min';
-{$ifend}
+{$IFEND}
 
-{$if not declared(sched_get_priority_max)}
+{$IF not DECLARED(sched_get_priority_max)}
 function sched_get_priority_max(policy:TPasMPInt32):TPasMPInt32; cdecl; external 'c' name 'sched_get_priority_max';
-{$ifend}
+{$IFEND}
 
-{$if not declared(pthread_getschedparam)}
+{$IF not DECLARED(pthread_getschedparam)}
 function pthread_getschedparam(thread:pthread_t;policy:PPasMPInt32;param:Psched_param):TPasMPInt32; cdecl; external 'c' name 'pthread_getschedparam';
-{$ifend}
+{$IFEND}
 
-{$if not declared(pthread_setschedparam)}
+{$IF not DECLARED(pthread_setschedparam)}
 function pthread_setschedparam(thread:pthread_t;policy:TPasMPInt32;param:Psched_param):TPasMPInt32; cdecl; external 'c' name 'pthread_getschedparam';
-{$ifend}
+{$IFEND}
 
 // A mapping of TThreadPriority to POSIX thread priorities as normalized-scaled 10 bit resolution (1024 levels) values
 const POSIXPriorities:array[TThreadPriority] of TPasMPInt32=
@@ -11770,7 +11814,7 @@ begin
  end;
 
 end;
-{$ifend}
+{$IFEND}
 
 constructor TPasMPJobTask.Create;
 begin
@@ -11800,7 +11844,7 @@ begin
  result:=nil;
 end;
 
-function TPasMPJobTask.Spread:boolean;
+function TPasMPJobTask.Spread:Boolean;
 begin
  result:=false;
 end;
@@ -11878,9 +11922,9 @@ begin
  end else begin
   inherited Create(false);
  end;
-{$ifdef HasRealTThreadPriority}
+{$IFDEF HasRealTThreadPriority}
  Priority:=AJobWorkerThread.fPasMPInstance.fWorkerThreadPriority;
-{$endif}
+{$ENDIF}
 end;
 
 destructor TPasMPWorkerSystemThread.Destroy;
@@ -11890,13 +11934,13 @@ end;
 
 procedure TPasMPWorkerSystemThread.Execute;
 begin
-{$ifdef HAS_NAMETHREADFORDEBUGGING}
+{$IFDEF HAS_NAMETHREADFORDEBUGGING}
  NameThreadForDebugging('TPasMPWorkerSystemThread');
-{$endif}
+{$ENDIF}
  ReturnValue:=0;
-{$ifdef HasRealTThreadPriority}
+{$IFDEF HasRealTThreadPriority}
  Priority:=fJobWorkerThread.fPasMPInstance.fWorkerThreadPriority;
-{$endif}
+{$ENDIF}
  fJobWorkerThread.ThreadProc;
  ReturnValue:=1;
 end;
@@ -11919,7 +11963,7 @@ begin
  inherited Destroy;
 end;
 
-function TPasMPJobQueue.HasJobs:boolean;
+function TPasMPJobQueue.HasJobs:Boolean;
 begin
  result:=fQueueBottom>fQueueTop;
 end;
@@ -11932,11 +11976,11 @@ begin
  begin
   // Acquire single-writer-side of lock
   repeat
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
    QueueLockState:=fQueueLockState and TPasMPInt32(TPasMPUInt32($fffffffe));
    if TPasMPInterlocked.CompareExchange(fQueueLockState,QueueLockState or 1,QueueLockState)=QueueLockState then begin
     break;
@@ -11944,18 +11988,18 @@ begin
     TPasMP.Relax;
    end;
   until false;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   while fQueueLockState<>1 do begin
    TPasMP.Yield;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
   end;
  end;
  try
@@ -11969,109 +12013,109 @@ begin
   SetLength(fQueueJobs,0);
   fQueueJobs:=NewJobs;
   NewJobs:=nil;
-{$ifdef CPU386}
+{$IFDEF CPU386}
   asm
    mfence
   end;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
  finally
   // Release single-writer-side of lock
   TPasMPInterlocked.Exchange(fQueueLockState,0);
  end;
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Write;
-{$ifend}
+{$IFEND}
 end;
 
 procedure TPasMPJobQueue.PushJob(const pJob:PPasMPJob);
 var QueueBottom,QueueTop:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  QueueBottom:=fQueueBottom;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  QueueTop:=fQueueTop;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  if (QueueBottom-QueueTop)>(fQueueSize-1) then begin
   // Full queue => non-lock-free resize
   Resize(QueueBottom,QueueTop);
  end;
  fQueueJobs[QueueBottom and fQueueMask]:=pJob;
-{$ifdef CPU386}
+{$IFDEF CPU386}
  asm
   mfence
  end;
-{$else}
-{$ifdef CPUx86_64}
+{$ELSE}
+{$IFDEF CPUx86_64}
  TPasMPMemoryBarrier.ReadWrite;
-{$endif}
-{$endif}
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$ENDIF}
+{$ENDIF}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  fQueueBottom:=QueueBottom+1;
-{$else}
+{$ELSE}
  TPasMPInterlocked.Exchange(fQueueBottom,QueueBottom+1);
-{$ifend}
+{$IFEND}
 end;
 
 function TPasMPJobQueue.PopJob:PPasMPJob;
 var QueueBottom,QueueTop:TPasMPInt32;
 begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  QueueBottom:=fQueueBottom-1;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
  TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
  TPasMPInterlocked.Exchange(fQueueBottom,QueueBottom);
-{$ifdef CPU386}
+{$IFDEF CPU386}
  asm
   mfence
  end;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
  QueueTop:=fQueueTop;
  if QueueTop<=QueueBottom then begin
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.Read;
-{$ifend}
-  result:=pointer(fQueueJobs[QueueBottom and fQueueMask]);
+{$IFEND}
+  result:=Pointer(fQueueJobs[QueueBottom and fQueueMask]);
   if QueueTop=QueueBottom then begin
    if TPasMPInterlocked.CompareExchange(fQueueTop,QueueTop+1,QueueTop)<>QueueTop then begin
     // Failed race against steal operation
     result:=nil;
    end;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    fQueueBottom:=QueueTop+1;
-{$else}
+{$ELSE}
    TPasMPInterlocked.Exchange(fQueueBottom,QueueTop+1);
-{$ifend}
+{$IFEND}
   end else begin
    // There's still more than one item left in the queue
   end;
  end else begin
   // Deque was already empty
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
   fQueueBottom:=QueueTop;
-{$else}
+{$ELSE}
   TPasMPInterlocked.Exchange(fQueueBottom,QueueTop);
-{$ifend}
+{$IFEND}
   result:=nil;
  end;
 end;
@@ -12082,31 +12126,31 @@ begin
  result:=nil;
 
  // Try to acquire multiple-reader-side of lock
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
 
  QueueLockState:=fQueueLockState and TPasMPInt32(TPasMPUInt32($fffffffe));
  if TPasMPInterlocked.CompareExchange(fQueueLockState,QueueLockState+2,QueueLockState)=QueueLockState then begin
 
   begin
-{$if not (defined(CPU386) or defined(CPUx86_64))}
+{$IF not (DEFINED(CPU386) or DEFINED(CPUx86_64))}
    TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
    QueueTop:=fQueueTop;
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
    QueueBottom:=fQueueBottom;
    if QueueTop<QueueBottom then begin
     // Non-empty queue.
-{$if defined(CPU386) or defined(CPUx86_64)}
+{$IF DEFINED(CPU386) or DEFINED(CPUx86_64)}
     TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
     TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
     result:=fQueueJobs[QueueTop and fQueueMask];
     if TPasMPInterlocked.CompareExchange(fQueueTop,QueueTop+1,QueueTop)<>QueueTop then begin
      // Failed race against steal operation
@@ -12170,67 +12214,67 @@ end;
 procedure TPasMPJobWorkerThread.ThreadInitialization;
 var ThreadIDHash:TPasMPUInt32;
     HashJobWorkerThread:TPasMPJobWorkerThread;
-{$ifdef Windows}
+{$IFDEF Windows}
     CurrentThreadHandle:THANDLE;
-{$else}
-{$ifdef Linux}
+{$ELSE}
+{$IFDEF Linux}
     CPUSet:TPasMPInt64;
-{$endif}
-{$endif}
+{$ENDIF}
+{$ENDIF}
 begin
 
-{$ifdef PasMPHaveFPUControls}
+{$IFDEF PasMPHaveFPUControls}
  SetExceptionMask(fPasMPInstance.fFPUExceptionMask);
  SetPrecisionMode(fPasMPInstance.fFPUPrecisionMode);
  SetRoundMode(fPasMPInstance.fFPURoundingMode);
-{$endif}
+{$ENDIF}
 
  if fCPUAffinityMask<>0 then begin
 
   if fPasMPInstance.fDoCPUCorePinning then begin
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
    CurrentThreadHandle:=GetCurrentThread;
  //SetThreadIdealProcessor(CurrentThreadHandle,fPasMPInstance.fAvailableCPUCores[fThreadIndex]);
    SetThreadAffinityMask(CurrentThreadHandle,fCPUAffinityMask);
-{$elseif defined(Linux)}
+{$ELSEIF DEFINED(Linux)}
    CPUSet:=TPasMPInt64(fCPUAffinityMask);
    sched_setaffinity(GetThreadID,SizeOf(CPUSet),@CPUSet);
-{$ifend}
+{$IFEND}
   end;
 
  end else if (length(fPasMPInstance.fAvailableCPUCores)>1) and
              (fThreadIndex<length(fPasMPInstance.fAvailableCPUCores)) then begin
 
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
   CurrentThreadHandle:=GetCurrentThread;
   if fPasMPInstance.fDoCPUCorePinning then begin
  //SetThreadIdealProcessor(CurrentThreadHandle,fPasMPInstance.fAvailableCPUCores[fThreadIndex]);
    SetThreadAffinityMask(CurrentThreadHandle,TPasMPUInt32(1) shl fPasMPInstance.fAvailableCPUCores[fThreadIndex]);
   end;
-{$elseif defined(Linux)}
+{$ELSEIF DEFINED(Linux)}
   if fPasMPInstance.fDoCPUCorePinning then begin
    CPUSet:=TPasMPInt64(1) shl fPasMPInstance.fAvailableCPUCores[fThreadIndex];
    sched_setaffinity(GetThreadID,SizeOf(CPUSet),@CPUSet);
   end;
-{$ifend}
+{$IFEND}
 
  end;
 
-{$ifdef UseThreadLocalStorage}
+{$IFDEF UseThreadLocalStorage}
 
-{$if defined(UseThreadLocalStorageX8632) or defined(UseThreadLocalStorageX8664)}
+{$IF DEFINED(UseThreadLocalStorageX8632) or DEFINED(UseThreadLocalStorageX8664)}
  TLSSetValue(CurrentJobWorkerThreadTLSIndex,self);
-{$else}
+{$ELSE}
  CurrentJobWorkerThread:=self;
-{$ifend}
+{$IFEND}
 
-{$else}
+{$ELSE}
 
-{$if (defined(NEXTGEN) or not defined(Windows)) and not defined(FPC)}
+{$IF (DEFINED(NEXTGEN) or not DEFINED(Windows)) and not DEFINED(FPC)}
  fThreadID:=TThread.CurrentThread.ThreadID;
-{$else}
+{$ELSE}
  fThreadID:=GetCurrentThreadID;
-{$ifend}
+{$IFEND}
  ThreadIDHash:=TPasMP.GetThreadIDHash(fThreadID);
 
  fPasMPInstance.fJobWorkerThreadHashTableCriticalSection.Acquire;
@@ -12244,17 +12288,17 @@ begin
  finally
   fPasMPInstance.fJobWorkerThreadHashTableCriticalSection.Release;
  end;
-{$endif}
+{$ENDIF}
 
  fIsReadyEvent.SetEvent;
 
 end;
 
-{//$define AlternativeGetJobVariant}
-{$ifdef AlternativeGetJobVariant}
+{//$DEFINE AlternativeGetJobVariant}
+{$IFDEF AlternativeGetJobVariant}
 // A prioritized GetJob implementation variant, which is based on the paper "Load Balancing Prioritized Tasks via Work-Stealing"
 // by Shams Imam and Vivek Sarkar
-// Optimized here by me (Benjamin Rosseaux) by replacing the boolean-arrays with uint32-variables for more effective atomic
+// Optimized here by me (Benjamin Rosseaux) by replacing the Boolean-arrays with uint32-variables for more effective atomic
 // operations and better faster bit scan possibilities for to find the next active priority index, for example with the BSF and
 // BSR machine instructions on the x86 CPU architecture
 function TPasMPJobWorkerThread.GetJob:PPasMPJob;
@@ -12347,11 +12391,11 @@ begin
   if (fPasMPInstance.fJobQueuesUsedBitmap and PriorityJobQueueBitMask)<>0 then begin
    fPasMPInstance.fJobQueuesLock.Acquire;
    try
-{$if defined(cpu386) or defined(cpux86_64)}
+{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}
     TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
     TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
     if (fPasMPInstance.fJobQueuesUsedBitmap and PriorityJobQueueBitMask)<>0 then begin
      // The global bitmap claim we have a job
      result:=fPasMPInstance.fJobQueues[JobQueuePriorityIndex].StealJob;
@@ -12383,23 +12427,23 @@ begin
 
  result:=nil;
 end;
-{$else}
+{$ELSE}
 // A prioritized GetJob implementation variant, which is based completety on my own ideas, which is better structured,
 // easier to understand and more pretty than the implementation above, in my opinion.
 function TPasMPJobWorkerThread.GetJob:PPasMPJob;
 var JobQueuePriorityIndex,OtherJobWorkerThreadIndex,OtherJobWorkerThreadCounter:TPasMPInt32;
     XorShiftTemp,PriorityJobQueueBitMask,CurrentBitmap:TPasMPUInt32;
     OtherJobWorkerThread:TPasMPJobWorkerThread;
-    FirstTry:boolean;
+    FirstTry:Boolean;
 begin
 
-{$if not (defined(cpu386) or defined(cpux86_64))}
+{$IF not (DEFINED(cpu386) or DEFINED(cpux86_64))}
  TPasMPMemoryBarrier.ReadWrite;
-{$ifend}
+{$IFEND}
  CurrentBitmap:=fPasMPInstance.fGlobalJobQueuesUsedBitmap;
-{$if not (defined(cpu386) or defined(cpux86_64))}
+{$IF not (DEFINED(cpu386) or DEFINED(cpux86_64))}
  TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
 
  FirstTry:=true;
 
@@ -12452,11 +12496,11 @@ begin
    if (fPasMPInstance.fJobQueuesUsedBitmap and PriorityJobQueueBitMask)<>0 then begin
     fPasMPInstance.fJobQueuesLock.Acquire;
     try
-{$if defined(cpu386) or defined(cpux86_64)}
+{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}
      TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
      TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
      if (fPasMPInstance.fJobQueuesUsedBitmap and PriorityJobQueueBitMask)<>0 then begin
       result:=fPasMPInstance.fJobQueues[JobQueuePriorityIndex].StealJob;
       if assigned(result) and ((result^.InternalData and PasMPJobFlagActive)<>0) then begin
@@ -12500,9 +12544,9 @@ begin
  result:=nil;
 
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMPJobWorkerThread.HasJobs:boolean;
+function TPasMPJobWorkerThread.HasJobs:Boolean;
 begin
  result:=fJobQueues[PasMPJobQueuePriorityHigh].HasJobs or
          fJobQueues[PasMPJobQueuePriorityNormal].HasJobs or
@@ -12667,7 +12711,7 @@ begin
   StackItem^.Right:=Min(fCount-1,PasMPProfilerHistoryRingBufferSizeMask);
   StackItem^.Depth:=TPasMPMath.BitScanReverse32(StackItem^.Right+1) shl 1;
   inc(StackItem);
-  while TPasMPPtrUInt(pointer(StackItem))>TPasMPPtrUInt(pointer(@Stack[0])) do begin
+  while TPasMPPtrUInt(Pointer(StackItem))>TPasMPPtrUInt(Pointer(@Stack[0])) do begin
    dec(StackItem);
    Left:=StackItem^.Left;
    Right:=StackItem^.Right;
@@ -12692,7 +12736,7 @@ begin
      inc(iB);
     end;
    end else begin
-    if (Depth=0) or (TPasMPPtrUInt(pointer(StackItem))>=TPasMPPtrUInt(pointer(@Stack[high(Stack)-1]))) then begin
+    if (Depth=0) or (TPasMPPtrUInt(Pointer(StackItem))>=TPasMPPtrUInt(Pointer(@Stack[high(Stack)-1]))) then begin
      // Heap sort
      i:=Size div 2;
      repeat
@@ -12799,7 +12843,7 @@ begin
  fOffsetTime:=fLastTime-fStartTime;
 end;
 
-procedure TPasMPProfiler.Start(const SuppressGaps:boolean=true);
+procedure TPasMPProfiler.Start(const SuppressGaps:Boolean=true);
 begin
  if SuppressGaps then begin
   fStartTime:=HighResolutionTimer.GetTime;
@@ -12821,7 +12865,7 @@ begin
    for Index:=0 to fCount-1 do begin
     if (fHistory[Index].StartTime<=fLastTime) and ((fLastTime-MaximalTimePeriodToKeep)<=fHistory[Index].EndTime) then begin
      if Index<>Counter then begin
-      Move(fHistory[Index],fHistory[Counter],TPasMPPtrUInt(pointer(@PPasMPProfilerHistoryRingBufferItem(nil)^.Dummy)));
+      Move(fHistory[Index],fHistory[Counter],TPasMPPtrUInt(Pointer(@PPasMPProfilerHistoryRingBufferItem(nil)^.Dummy)));
      end;
      inc(Counter);
     end;
@@ -12842,10 +12886,10 @@ constructor TPasMP.Create(const CountThreads:TPasMPInt32;
                           const MinimumCountThreads:TPasMPInt32;
                           const MaximumCountThreads:TPasMPInt32;
                           const ThreadHeadRoomForForeignTasks:TPasMPInt32;
-                          const DoCPUCorePinning:boolean;
-                          const SleepingOnIdle:boolean;
-                          const AllWorkerThreadsHaveOwnSystemThreads:boolean;
-                          const Profiling:boolean;
+                          const DoCPUCorePinning:Boolean;
+                          const SleepingOnIdle:Boolean;
+                          const AllWorkerThreadsHaveOwnSystemThreads:Boolean;
+                          const Profiling:Boolean;
                           const WorkerThreadPriority:TThreadPriority;
                           const WorkerThreadStackSize:TPasMPSizeUInt;
                           const WorkerThreadMaxDepth:TPasMPUInt32);
@@ -12855,11 +12899,11 @@ begin
 
  inherited Create;
 
-{$ifdef PasMPHaveFPUControls}
+{$IFDEF PasMPHaveFPUControls}
  fFPUExceptionMask:=GetExceptionMask;
  fFPUPrecisionMode:=GetPrecisionMode;
  fFPURoundingMode:=GetRoundMode;
-{$endif}
+{$ENDIF}
 
  fAvailableCPUCores:=nil;
 
@@ -12887,12 +12931,12 @@ begin
   fProfiler:=nil;
  end;
 
-{$ifdef PasMPUseGlobalPasMPCountOfHardwareThreads}
+{$IFDEF PasMPUseGlobalPasMPCountOfHardwareThreads}
  fCountCPUThreads:=GlobalPasMPCountOfHardwareThreads;
  fAvailableCPUCores:=GlobalPasMPAvailableCPUCores;
-{$else}
+{$ELSE}
  fCountCPUThreads:=TPasMP.GetCountOfHardwareThreads(fAvailableCPUCores);
-{$endif}
+{$ENDIF}
 
  if CountThreads>0 then begin
   fCountJobWorkerThreads:=CountThreads;
@@ -12917,13 +12961,13 @@ begin
 
  fSystemIsReadyEvent:=TPasMPEvent.Create(nil,true,false,'');
 
-{$ifdef PasMPUseWakeUpConditionVariable}
+{$IFDEF PasMPUseWakeUpConditionVariable}
  fWakeUpCounter:=0;
  fWakeUpConditionVariableLock:=TPasMPConditionVariableLock.Create;
  fWakeUpConditionVariable:=TPasMPConditionVariable.Create;
-{$else}
+{$ELSE}
  fWakeUpEvent:=TPasMPEvent.Create(nil,true,false,'');
-{$endif}
+{$ENDIF}
 
  fJobWorkerThreads:=nil;
  SetLength(fJobWorkerThreads,fCountJobWorkerThreads);
@@ -12944,11 +12988,11 @@ begin
 
  fGlobalJobQueuesUsedBitmap:=0;
 
-{$ifndef UseThreadLocalStorage}
+{$IFNDEF UseThreadLocalStorage}
  fJobWorkerThreadHashTableCriticalSection:=TPasMPCriticalSection.Create;
 
  FillChar(fJobWorkerThreadHashTable,SizeOf(TPasMPJobWorkerThreadHashTable),#0);
-{$endif}
+{$ENDIF}
 
  CPUAffinityMasks:=nil;
  try
@@ -13019,15 +13063,15 @@ begin
  fJobAllocator.Free;
  fJobAllocatorCriticalSection.Free;
  fSystemIsReadyEvent.Free;
-{$ifdef PasMPUseWakeUpConditionVariable}
+{$IFDEF PasMPUseWakeUpConditionVariable}
  fWakeUpConditionVariable.Free;
  fWakeUpConditionVariableLock.Free;
-{$else}
+{$ELSE}
  fWakeUpEvent.Free;
-{$endif}
-{$ifndef UseThreadLocalStorage}
+{$ENDIF}
+{$IFNDEF UseThreadLocalStorage}
  fJobWorkerThreadHashTableCriticalSection.Free;
-{$endif}
+{$ENDIF}
  fProfiler.Free;
  fCriticalSection.Free;
  inherited Destroy;
@@ -13079,7 +13123,7 @@ begin
 end;
 
 class function TPasMP.GetCountOfPhysicalCores(out AvailableCPUCores:TPasMPAvailableCPUCores):TPasMPInt32;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 var PhysicalCores,LogicalCores,i,j:TPasMPInt32;
     sinfo:SYSTEM_INFO;
     dwProcessAffinityMask,dwSystemAffinityMask:TPasMPPtrUInt;
@@ -13197,7 +13241,7 @@ begin
   CPUFirstLogicalCore:=nil;
  end;
 end;
-{$elseif defined(Linux) or defined(Android)}
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)}
 var CountCountIDs,CoreID,CPUIndex,Index:Int32;
     CoreIDFile:Text;
     CoreIDs:array of Int32;
@@ -13281,7 +13325,7 @@ begin
  end;
 
 end;
-{$elseif defined(Solaris)}
+{$ELSEIF DEFINED(Solaris)}
 var i:TPasMPInt32;
 begin
  result:=sysconf(_SC_NPROC_ONLN);
@@ -13290,7 +13334,7 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$elseif defined(fpc) and defined(Darwin)}
+{$ELSEIF DEFINED(fpc) and DEFINED(Darwin)}
 const IDs:array[0..3] of RawByteString=
        (
         'machdep.cpu.core_count',
@@ -13316,7 +13360,7 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 var mib:array[0..1] of cint;
     len:cint;
     t:cint;
@@ -13339,7 +13383,7 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$else}
+{$ELSE}
 var i:TPasMPInt32;
 begin
  result:=1;
@@ -13348,10 +13392,10 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$ifend}
+{$IFEND}
 
 class function TPasMP.GetCountOfHardwareThreads(out AvailableCPUCores:TPasMPAvailableCPUCores):TPasMPInt32;
-{$if defined(Windows)}
+{$IF DEFINED(Windows)}
 var PhysicalCores,LogicalCores,i,j:TPasMPInt32;
     sinfo:SYSTEM_INFO;
     dwProcessAffinityMask,dwSystemAffinityMask:TPasMPPtrUInt;
@@ -13464,7 +13508,7 @@ begin
   SetLength(AvailableCPUCores,result);
  end;
 end;
-{$elseif defined(Android)}
+{$ELSEIF DEFINED(Android)}
 const Paths:array[0..1] of string=
        (
         '/sys/devices/system/cpu/possible',
@@ -13472,7 +13516,7 @@ const Paths:array[0..1] of string=
        );
 var TryIteration,i:TPasMPInt32;
     fs:TFileStream;
-    s:{$ifdef HAS_TYPE_RAWBYTESTRING}RawByteString{$else}AnsiString{$endif};
+    s:{$IFDEF HAS_TYPE_RAWBYTESTRING}RawByteString{$ELSE}AnsiString{$ENDIF};
 begin
  for TryIteration:=0 to 1 do begin
   if FileExists(Paths[TryIteration]) then begin
@@ -13511,7 +13555,7 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$elseif defined(Linux) or defined(Android)}
+{$ELSEIF DEFINED(Linux) or DEFINED(Android)}
 var i,j:TPasMPInt32;
     CPUSet:TPasMPInt64;
 begin
@@ -13539,7 +13583,7 @@ begin
   end;
  end;
 end;
-{$elseif defined(Solaris)}
+{$ELSEIF DEFINED(Solaris)}
 var i:TPasMPInt32;
 begin
  result:=sysconf(_SC_NPROC_ONLN);
@@ -13548,7 +13592,7 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$elseif defined(fpc) and defined(Darwin)}
+{$ELSEIF DEFINED(fpc) and DEFINED(Darwin)}
 const IDs:array[0..3] of RawByteString=
        (
         'machdep.cpu.thread_count',
@@ -13574,7 +13618,7 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$elseif defined(Unix)}
+{$ELSEIF DEFINED(Unix)}
 var mib:array[0..1] of cint;
     len:cint;
     t:cint;
@@ -13597,7 +13641,7 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$else}
+{$ELSE}
 var i:TPasMPInt32;
 begin
  result:=1;
@@ -13606,25 +13650,25 @@ begin
   AvailableCPUCores[i]:=i;
  end;
 end;
-{$ifend}
+{$IFEND}
 
-class function TPasMP.Once(var OnceControl:TPasMPOnce;const InitRoutine:TPasMPOnceInitRoutine):boolean;
-{$ifdef Linux}
+class function TPasMP.Once(var OnceControl:TPasMPOnce;const InitRoutine:TPasMPOnceInitRoutine):Boolean;
+{$IFDEF Linux}
 begin
  result:=pthread_once(@OnceControl,InitRoutine)=0;
 end;
-{$else}
+{$ELSE}
 var SavedOnceControl:TPasMPOnce;
 begin
  result:=false;
  SavedOnceControl:=OnceControl;
-{$ifdef CPU386}
+{$IFDEF CPU386}
  asm
   mfence
  end;
-{$else}
+{$ELSE}
  TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
  while SavedOnceControl<>1 do begin
   if SavedOnceControl=0 then begin
    if TPasMPInterlocked.CompareExchange(OnceControl,2,0)=0 then begin
@@ -13637,24 +13681,24 @@ begin
     exit;
    end;
   end;
-{$ifdef cpu386}
+{$IFDEF cpu386}
   asm
    db $f3,$90 // pause (rep nop)
   end;
-{$else}
+{$ELSE}
   TPasMP.Yield;
-{$endif}
-{$ifdef CPU386}
+{$ENDIF}
+{$IFDEF CPU386}
   asm
    mfence
   end;
-{$else}
+{$ELSE}
   TPasMPMemoryBarrier.ReadWrite;
-{$endif}
+{$ENDIF}
   SavedOnceControl:=OnceControl;
  end;
 end;
-{$endif}
+{$ENDIF}
 
 procedure TPasMP.Reset;
 var Index:TPasMPInt32;
@@ -13670,51 +13714,51 @@ begin
  result:=TPasMPScope.Create(self);
 end;
 
-class function TPasMP.IsJobCompleted(const Job:PPasMPJob):boolean;
+class function TPasMP.IsJobCompleted(const Job:PPasMPJob):Boolean;
 begin
  result:=assigned(Job) and ((Job^.InternalData and PasMPJobFlagActive)=0);
 end;
 
-class function TPasMP.IsJobValid(const Job:PPasMPJob):boolean;
+class function TPasMP.IsJobValid(const Job:PPasMPJob):Boolean;
 begin
  result:=assigned(Job) and ((Job^.InternalData and PasMPJobFlagActive)<>0);
 end;
 
-function TPasMP.GetJobWorkerThread:TPasMPJobWorkerThread; {$ifdef UseThreadLocalStorage}{$if defined(UseThreadLocalStorageX8632) or defined(UseThreadLocalStorageX8664)}assembler;{$ifend}{$endif}
-{$ifdef UseThreadLocalStorage}
-{$if defined(UseThreadLocalStorageX8632)}
+function TPasMP.GetJobWorkerThread:TPasMPJobWorkerThread; {$IFDEF UseThreadLocalStorage}{$IF DEFINED(UseThreadLocalStorageX8632) or DEFINED(UseThreadLocalStorageX8664)}assembler;{$IFEND}{$ENDIF}
+{$IFDEF UseThreadLocalStorage}
+{$IF DEFINED(UseThreadLocalStorageX8632)}
 asm
  mov eax,dword ptr fs:[$00000018]
  mov ecx,dword ptr CurrentJobWorkerThreadTLSOffset
  mov eax,dword ptr [eax+ecx]
 end;
-{$elseif defined(UseThreadLocalStorageX8664)}
+{$ELSEIF DEFINED(UseThreadLocalStorageX8664)}
 asm
  mov rax,qword ptr gs:[$00000058]
  mov ecx,dword ptr CurrentJobWorkerThreadTLSOffset
  mov rax,qword ptr [rax+rcx]
 end;
-{$else}
+{$ELSE}
 begin
  result:=CurrentJobWorkerThread;
 end;
-{$ifend}
-{$else}
-var ThreadID:{$ifdef fpc}TThreadID{$else}TPasMPUInt32{$endif};
+{$IFEND}
+{$ELSE}
+var ThreadID:{$IFDEF fpc}TThreadID{$ELSE}TPasMPUInt32{$ENDIF};
     ThreadIDHash:TPasMPUInt32;
 begin
-{$if (defined(NEXTGEN) or not defined(Windows)) and not defined(FPC)}
+{$IF (DEFINED(NEXTGEN) or not DEFINED(Windows)) and not DEFINED(FPC)}
  ThreadID:=TThread.CurrentThread.ThreadID;
-{$else}
+{$ELSE}
  ThreadID:=GetCurrentThreadID;
-{$ifend}
+{$IFEND}
  ThreadIDHash:=TPasMP.GetThreadIDHash(ThreadID);
  result:=fJobWorkerThreadHashTable[ThreadIDHash and PasMPJobWorkerThreadHashTableMask];
  while assigned(result) and (result.fThreadID<>ThreadID) do begin
   result:=result.fNext;
  end;
 end;
-{$endif}
+{$ENDIF}
 
 function TPasMP.GetJobWorkerThreadIndex:TPasMPInt32;
 var CurrentJobWorkerThread:TPasMPJobWorkerThread;
@@ -13728,7 +13772,7 @@ begin
 end;
 
 procedure TPasMP.WaitForWakeUp;
-{$ifdef PasMPUseWakeUpConditionVariable}
+{$IFDEF PasMPUseWakeUpConditionVariable}
 var SavedWakeUpCounter:TPasMPInt32;
 begin
  if fSleepingOnIdle then begin
@@ -13747,7 +13791,7 @@ begin
   TPasMP.Yield;
  end;
 end;
-{$else}
+{$ELSE}
 begin
  if fSleepingOnIdle then begin
   fWakeUpEvent.ResetEvent;
@@ -13758,10 +13802,10 @@ begin
   TPasMP.Yield;
  end;
 end;
-{$endif}
+{$ENDIF}
 
 procedure TPasMP.WakeUpAll;
-{$ifdef PasMPUseWakeUpConditionVariable}
+{$IFDEF PasMPUseWakeUpConditionVariable}
 begin
  if fSleepingJobWorkerThreads>0 then begin
   fWakeUpConditionVariableLock.Acquire;
@@ -13773,15 +13817,15 @@ begin
   end;
  end;
 end;
-{$else}
+{$ELSE}
 begin
  if fSleepingJobWorkerThreads>0 then begin
   fWakeUpEvent.SetEvent;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMP.CanSpread:boolean;
+function TPasMP.CanSpread:Boolean;
 var CurrentJobWorkerThread,JobWorkerThread:TPasMPJobWorkerThread;
     ThreadIndex,Index:TPasMPInt32;
 begin
@@ -13803,7 +13847,7 @@ begin
  end;
 end;
 
-function TPasMP.IsFull:boolean;
+function TPasMP.IsFull:Boolean;
 var CurrentJobWorkerThread,JobWorkerThread:TPasMPJobWorkerThread;
     ThreadIndex,Index:TPasMPInt32;
 begin
@@ -13841,7 +13885,7 @@ begin
  end;
 end;
 
-function TPasMP.AllocateJob(const MethodCode,MethodData,Data:pointer;const ParentJob:PPasMPJob;const Flags,AreaMask,AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.AllocateJob(const MethodCode,MethodData,Data:Pointer;const ParentJob:PPasMPJob;const Flags,AreaMask,AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 var JobWorkerThread:TPasMPJobWorkerThread;
     InternalData:TPasMPUInt32;
 begin
@@ -13872,17 +13916,17 @@ begin
  result^.Data:=Data;
 end;
 
-{$ifdef HAS_ANONYMOUS_METHODS}
+{$IFDEF HAS_ANONYMOUS_METHODS}
 type PPasMPJobReferenceProcedureJobData=^TPasMPJobReferenceProcedureJobData;
      TPasMPJobReferenceProcedureJobData=record
       JobReferenceProcedure:TPasMPJobReferenceProcedure;
-      Data:pointer;
+      Data:Pointer;
      end;
 
 procedure TPasMP.JobReferenceProcedureJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
 var JobReferenceProcedureJobData:PPasMPJobReferenceProcedureJobData;
 begin
- JobReferenceProcedureJobData:=PPasMPJobReferenceProcedureJobData(pointer(@Job^.Data));
+ JobReferenceProcedureJobData:=PPasMPJobReferenceProcedureJobData(Pointer(@Job^.Data));
  try
   JobReferenceProcedureJobData^.JobReferenceProcedure(JobReferenceProcedureJobData^.Data,ThreadIndex);
  finally
@@ -13890,34 +13934,34 @@ begin
  end;
 end;
 
-function TPasMP.Acquire(const JobReferenceProcedure:TPasMPJobReferenceProcedure;const Data:pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.Acquire(const JobReferenceProcedure:TPasMPJobReferenceProcedure;const Data:Pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 var JobMethod:TPasMPJobMethod;
     JobReferenceProcedureJobData:PPasMPJobReferenceProcedureJobData;
 begin
  JobMethod:=JobReferenceProcedureJobFunction;
  result:=AllocateJob(TMethod(JobMethod).Code,TMethod(JobMethod).Data,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
  if assigned(result) then begin
-  JobReferenceProcedureJobData:=PPasMPJobReferenceProcedureJobData(pointer(@result^.Data));
+  JobReferenceProcedureJobData:=PPasMPJobReferenceProcedureJobData(Pointer(@result^.Data));
   Initialize(JobReferenceProcedureJobData^);
   JobReferenceProcedureJobData^.JobReferenceProcedure:=JobReferenceProcedure;
   JobReferenceProcedureJobData^.Data:=Data;
  end;
 end;
-{$endif}
+{$ENDIF}
 
-function TPasMP.Acquire(const JobProcedure:TPasMPJobProcedure;const Data:pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.Acquire(const JobProcedure:TPasMPJobProcedure;const Data:Pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 begin
  result:=AllocateJob(Addr(JobProcedure),nil,Data,ParentJob,Flags,AreaMask,AvoidAreaMask);
 end;
 
-function TPasMP.Acquire(const JobMethod:TPasMPJobMethod;const Data:pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.Acquire(const JobMethod:TPasMPJobMethod;const Data:Pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 begin
  result:=AllocateJob(TMethod(JobMethod).Code,TMethod(JobMethod).Data,Data,ParentJob,Flags,AreaMask,AvoidAreaMask);
 end;
 
-function TPasMP.Acquire(const JobTask:TPasMPJobTask;const Data:pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.Acquire(const JobTask:TPasMPJobTask;const Data:Pointer;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 begin
- result:=AllocateJob(nil,pointer(JobTask),Data,ParentJob,Flags or TPasMP.EncodeJobTagToJobFlags(JobTask.fJobTag),AreaMask,AvoidAreaMask);
+ result:=AllocateJob(nil,Pointer(JobTask),Data,ParentJob,Flags or TPasMP.EncodeJobTagToJobFlags(JobTask.fJobTag),AreaMask,AvoidAreaMask);
  JobTask.fJob:=result;
  JobTask.fThreadIndex:=-1;
 end;
@@ -13925,8 +13969,8 @@ end;
 procedure TPasMP.Release(const Job:PPasMPJob);
 begin
  if assigned(Job) then begin
-  if (assigned(Job^.Method.Data) and not assigned(Job^.Method.Code)) and TPasMPJobTask(pointer(Job^.Method.Data)).fFreeOnRelease then begin
-   TPasMPJobTask(pointer(Job^.Method.Data)).Free;
+  if (assigned(Job^.Method.Data) and not assigned(Job^.Method.Code)) and TPasMPJobTask(Pointer(Job^.Method.Data)).fFreeOnRelease then begin
+   TPasMPJobTask(Pointer(Job^.Method.Data)).Free;
   end;
   if (Job^.InternalData and PasMPJobFlagHasOwnerWorkerThread)<>0 then begin
    fJobWorkerThreads[(Job^.InternalData shr PasMPJobThreadIndexShift) and PasMPJobThreadIndexMask].fJobAllocator.FreeJob(Job);
@@ -13949,7 +13993,7 @@ var JobTask,NewJobTask:TPasMPJobTask;
     NewJob:PPasMPJob;
 begin
 
- JobTask:=TPasMPJobTask(pointer(Job^.Method.Data));
+ JobTask:=TPasMPJobTask(Pointer(Job^.Method.Data));
  JobTask.fThreadIndex:=ThreadIndex;
 
  if CanSpread then begin
@@ -14077,7 +14121,7 @@ begin
   end;
  end else begin
   if assigned(Job^.Method.Code) then begin
-   TPasMPJobProcedure(pointer(Job^.Method.Code))(Job,JobWorkerThread.ThreadIndex);
+   TPasMPJobProcedure(Pointer(Job^.Method.Code))(Job,JobWorkerThread.ThreadIndex);
   end;
  end;
 
@@ -14134,11 +14178,11 @@ begin
   fJobQueuesLock.Acquire;
   try
    fJobQueues[JobQueueIndex].PushJob(Job);
-{$if defined(cpu386) or defined(cpux86_64)}
+{$IF DEFINED(cpu386) or DEFINED(cpux86_64)}
    TPasMPMemoryBarrier.ReadDependency;
-{$else}
+{$ELSE}
    TPasMPMemoryBarrier.Read;
-{$ifend}
+{$IFEND}
    if (fJobQueuesUsedBitmap and PriorityJobQueueBitMask)=0 then begin
     fJobQueuesUsedBitmap:=fJobQueuesUsedBitmap or PriorityJobQueueBitMask;
     TPasMPMemoryBarrier.ReadWrite;
@@ -14183,7 +14227,7 @@ begin
  WakeUpAll;
 end;
 
-function TPasMP.StealAndExecuteJob:boolean;
+function TPasMP.StealAndExecuteJob:Boolean;
 var NextJob:PPasMPJob;
     JobWorkerThread:TPasMPJobWorkerThread;
 begin
@@ -14230,7 +14274,7 @@ end;
 procedure TPasMP.Wait(const Jobs:array of PPasMPJob);
 var JobIndex,CountJobs,SpinCount,CountMaxSpinCount:TPasMPInt32;
     Job,NextJob:PPasMPJob;
-    Done:boolean;
+    Done:Boolean;
     JobWorkerThread:TPasMPJobWorkerThread;
 begin
  CountJobs:=length(Jobs);
@@ -14336,11 +14380,11 @@ begin
  end;
 end;
 
-{$ifdef HAS_ANONYMOUS_METHODS}
+{$IFDEF HAS_ANONYMOUS_METHODS}
 type PPasMPParallelForReferenceProcedureStartJobData=^TPasMPParallelForReferenceProcedureStartJobData;
      TPasMPParallelForReferenceProcedureStartJobData=record
       ParallelForReferenceProcedure:TPasMPParallelForReferenceProcedure;
-      Data:pointer;
+      Data:Pointer;
       FirstIndex:TPasMPNativeInt;
       LastIndex:TPasMPNativeInt;
       Granularity:TPasMPInt32;
@@ -14361,7 +14405,7 @@ procedure TPasMP.ParallelForJobReferenceProcedureProcess(const Job:PPasMPJob;con
 var JobData:PPasMPParallelForReferenceProcedureJobData;
     StartJobData:PPasMPParallelForReferenceProcedureStartJobData;
 begin
- JobData:=PPasMPParallelForReferenceProcedureJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelForReferenceProcedureJobData(Pointer(@Job^.Data));
  StartJobData:=JobData^.StartJobData;
  if assigned(StartJobData^.ParallelForReferenceProcedure) then begin
   StartJobData^.ParallelForReferenceProcedure(Job,ThreadIndex,StartJobData^.Data,JobData^.FirstIndex,JobData^.LastIndex);
@@ -14373,7 +14417,7 @@ var NewJobs:array[0..1] of PPasMPJob;
     StartJobData:PPasMPParallelForReferenceProcedureStartJobData;
     JobData,NewJobData:PPasMPParallelForReferenceProcedureJobData;
 begin
- JobData:=PPasMPParallelForReferenceProcedureJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelForReferenceProcedureJobData(Pointer(@Job^.Data));
  if JobData^.FirstIndex<=JobData^.LastIndex then begin
   StartJobData:=JobData^.StartJobData;
   if (((JobData^.LastIndex-JobData^.FirstIndex)+1)<=StartJobData^.Granularity) or (JobData^.RemainDepth=0) or not StartJobData^.RecursiveSplit then begin
@@ -14384,7 +14428,7 @@ begin
     // It is a stolen job => split in two halfs
     begin
      NewJobs[0]:=Acquire(ParallelForJobReferenceProcedureFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelForReferenceProcedureJobData(pointer(@NewJobs[0]^.Data));
+     NewJobData:=PPasMPParallelForReferenceProcedureJobData(Pointer(@NewJobs[0]^.Data));
      NewJobData^.StartJobData:=StartJobData;
      NewJobData^.FirstIndex:=JobData^.FirstIndex;
      NewJobData^.LastIndex:=(JobData^.FirstIndex+((JobData^.LastIndex-JobData^.FirstIndex) div 2))-1;
@@ -14392,9 +14436,9 @@ begin
     end;
     begin
      NewJobs[1]:=Acquire(ParallelForJobReferenceProcedureFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelForReferenceProcedureJobData(pointer(@NewJobs[1]^.Data));
+     NewJobData:=PPasMPParallelForReferenceProcedureJobData(Pointer(@NewJobs[1]^.Data));
      NewJobData^.StartJobData:=StartJobData;
-     NewJobData^.FirstIndex:=PPasMPParallelForReferenceProcedureJobData(pointer(@NewJobs[0]^.Data))^.LastIndex+1;
+     NewJobData^.FirstIndex:=PPasMPParallelForReferenceProcedureJobData(Pointer(@NewJobs[0]^.Data))^.LastIndex+1;
      NewJobData^.LastIndex:=JobData^.LastIndex;
      NewJobData^.RemainDepth:=JobData^.RemainDepth-1;
     end;
@@ -14403,7 +14447,7 @@ begin
     // It is a non-stolen job => split and increment by granularity count
     begin
      NewJobs[0]:=Acquire(ParallelForJobReferenceProcedureFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelForReferenceProcedureJobData(pointer(@NewJobs[0]^.Data));
+     NewJobData:=PPasMPParallelForReferenceProcedureJobData(Pointer(@NewJobs[0]^.Data));
      NewJobData^.StartJobData:=StartJobData;
      NewJobData^.FirstIndex:=JobData^.FirstIndex+StartJobData^.Granularity;
      NewJobData^.LastIndex:=JobData^.LastIndex;
@@ -14426,7 +14470,7 @@ var NewJobs:array[0..31] of PPasMPJob;
     JobIndex:TPasMPInt32;
     JobEx:TPasMPJob;
 begin
- JobData:=PPasMPParallelForReferenceProcedureStartJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelForReferenceProcedureStartJobData(Pointer(@Job^.Data));
  try
   Index:=JobData^.FirstIndex;
   EndIndex:=JobData^.LastIndex+1;
@@ -14435,7 +14479,7 @@ begin
    Count:=EndIndex-Index;
    if Count<=Granularity then begin
     JobEx:=Job^;
-    NewJobDataEx:=PPasMPParallelForReferenceProcedureJobData(pointer(@JobEx.Data));
+    NewJobDataEx:=PPasMPParallelForReferenceProcedureJobData(Pointer(@JobEx.Data));
     NewJobDataEx^.StartJobData:=JobData;
     NewJobDataEx^.FirstIndex:=JobData^.FirstIndex;
     NewJobDataEx^.LastIndex:=JobData^.LastIndex;
@@ -14461,7 +14505,7 @@ begin
       inc(Size);
      end;
      NewJobs[JobIndex]:=Acquire(ParallelForJobReferenceProcedureFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelForReferenceProcedureJobData(pointer(@NewJobs[JobIndex]^.Data));
+     NewJobData:=PPasMPParallelForReferenceProcedureJobData(Pointer(@NewJobs[JobIndex]^.Data));
      NewJobData^.StartJobData:=JobData;
      NewJobData^.FirstIndex:=Index;
      NewJobData^.LastIndex:=(Index+Size)-1;
@@ -14482,11 +14526,11 @@ begin
  end;
 end;
 
-function TPasMP.ParallelFor(const Data:pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForReferenceProcedure:TPasMPParallelForReferenceProcedure;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32;const RecursiveSplit:Boolean):PPasMPJob;
+function TPasMP.ParallelFor(const Data:Pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForReferenceProcedure:TPasMPParallelForReferenceProcedure;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32;const RecursiveSplit:Boolean):PPasMPJob;
 var JobData:PPasMPParallelForReferenceProcedureStartJobData;
 begin
  result:=Acquire(ParallelForStartJobReferenceProcedureFunction,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
- JobData:=PPasMPParallelForReferenceProcedureStartJobData(pointer(@result^.Data));
+ JobData:=PPasMPParallelForReferenceProcedureStartJobData(Pointer(@result^.Data));
  Initialize(JobData^);
  JobData^.ParallelForReferenceProcedure:=ParallelForReferenceProcedure;
  JobData^.Data:=Data;
@@ -14497,12 +14541,12 @@ begin
  JobData^.CanSpread:=CanSpread;
  JobData^.RecursiveSplit:=RecursiveSplit;
 end;
-{$endif}
+{$ENDIF}
 
 type PPasMPParallelForStartJobData=^TPasMPParallelForStartJobData;
      TPasMPParallelForStartJobData=record
       Method:TMethod;
-      Data:pointer;
+      Data:Pointer;
       FirstIndex:TPasMPNativeInt;
       LastIndex:TPasMPNativeInt;
       Granularity:TPasMPInt32;
@@ -14523,7 +14567,7 @@ procedure TPasMP.ParallelForJobFunctionProcess(const Job:PPasMPJob;const ThreadI
 var JobData:PPasMPParallelForJobData;
     StartJobData:PPasMPParallelForStartJobData;
 begin
- JobData:=PPasMPParallelForJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelForJobData(Pointer(@Job^.Data));
  StartJobData:=JobData^.StartJobData;
  if assigned(StartJobData^.Method.Data) then begin
   TPasMPParallelForMethod(StartJobData^.Method)(Job,ThreadIndex,StartJobData^.Data,JobData^.FirstIndex,JobData^.LastIndex);
@@ -14537,7 +14581,7 @@ var NewJobs:array[0..1] of PPasMPJob;
     JobData,NewJobData:PPasMPParallelForJobData;
     StartJobData:PPasMPParallelForStartJobData;
 begin
- JobData:=PPasMPParallelForJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelForJobData(Pointer(@Job^.Data));
  if JobData^.FirstIndex<=JobData^.LastIndex then begin
   StartJobData:=JobData^.StartJobData;
   if (((JobData^.LastIndex-JobData^.FirstIndex)+1)<=StartJobData^.Granularity) or (JobData^.RemainDepth<=0) or not StartJobData^.RecursiveSplit then begin
@@ -14548,7 +14592,7 @@ begin
     // It is a stolen job => split in two halfs
     begin
      NewJobs[0]:=Acquire(ParallelForJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelForJobData(pointer(@NewJobs[0]^.Data));
+     NewJobData:=PPasMPParallelForJobData(Pointer(@NewJobs[0]^.Data));
      NewJobData^.StartJobData:=JobData^.StartJobData;
      NewJobData^.FirstIndex:=JobData^.FirstIndex;
      NewJobData^.LastIndex:=(JobData^.FirstIndex+((JobData^.LastIndex-JobData^.FirstIndex) div 2))-1;
@@ -14556,9 +14600,9 @@ begin
     end;
     begin
      NewJobs[1]:=Acquire(ParallelForJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelForJobData(pointer(@NewJobs[1]^.Data));
+     NewJobData:=PPasMPParallelForJobData(Pointer(@NewJobs[1]^.Data));
      NewJobData^.StartJobData:=JobData^.StartJobData;
-     NewJobData^.FirstIndex:=PPasMPParallelForJobData(pointer(@NewJobs[0]^.Data))^.LastIndex+1;
+     NewJobData^.FirstIndex:=PPasMPParallelForJobData(Pointer(@NewJobs[0]^.Data))^.LastIndex+1;
      NewJobData^.LastIndex:=JobData^.LastIndex;
      NewJobData^.RemainDepth:=JobData^.RemainDepth-1;
     end;
@@ -14567,7 +14611,7 @@ begin
     // It is a non-stolen job => split and increment by granularity count
     begin
      NewJobs[0]:=Acquire(ParallelForJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelForJobData(pointer(@NewJobs[0]^.Data));
+     NewJobData:=PPasMPParallelForJobData(Pointer(@NewJobs[0]^.Data));
      NewJobData^.StartJobData:=JobData^.StartJobData;
      NewJobData^.FirstIndex:=JobData^.FirstIndex+StartJobData^.Granularity;
      NewJobData^.LastIndex:=JobData^.LastIndex;
@@ -14590,7 +14634,7 @@ var NewJobs:array[0..31] of PPasMPJob;
     JobIndex:TPasMPInt32;
     JobEx:TPasMPJob;
 begin
- JobData:=PPasMPParallelForStartJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelForStartJobData(Pointer(@Job^.Data));
  Index:=JobData^.FirstIndex;
  EndIndex:=JobData^.LastIndex+1;
  if JobData^.FirstIndex<EndIndex then begin
@@ -14598,7 +14642,7 @@ begin
   Count:=EndIndex-Index;
   if Count<=Granularity then begin
    JobEx:=Job^;
-   NewJobDataEx:=PPasMPParallelForJobData(pointer(@JobEx.Data));
+   NewJobDataEx:=PPasMPParallelForJobData(Pointer(@JobEx.Data));
    NewJobDataEx^.StartJobData:=JobData;
    NewJobDataEx^.FirstIndex:=JobData^.FirstIndex;
    NewJobDataEx^.LastIndex:=JobData^.LastIndex;
@@ -14625,7 +14669,7 @@ begin
      inc(Size);
     end;
     NewJobs[JobIndex]:=Acquire(ParallelForJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-    NewJobData:=PPasMPParallelForJobData(pointer(@NewJobs[JobIndex]^.Data));
+    NewJobData:=PPasMPParallelForJobData(Pointer(@NewJobs[JobIndex]^.Data));
     NewJobData^.StartJobData:=JobData;
     NewJobData^.FirstIndex:=Index;
     NewJobData^.LastIndex:=(Index+Size)-1;
@@ -14643,11 +14687,12 @@ begin
  end;
 end;
 
-function TPasMP.ParallelFor(const Data:pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForProcedure:TPasMPParallelForProcedure;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32;const RecursiveSplit:Boolean):PPasMPJob;
-var JobData:PPasMPParallelForStartJobData;
+function TPasMP.ParallelFor(const Data: Pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForProcedure:TPasMPParallelForProcedure;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32;const RecursiveSplit:Boolean):PPasMPJob;
+var
+  JobData: PPasMPParallelForStartJobData;
 begin
  result:=Acquire(ParallelForStartJobFunction,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
- JobData:=PPasMPParallelForStartJobData(pointer(@result^.Data));
+ JobData:=PPasMPParallelForStartJobData(Pointer(@result^.Data));
  JobData^.Method.Code:=Addr(ParallelForProcedure);
  JobData^.Method.Data:=nil;
  JobData^.Data:=Data;
@@ -14663,11 +14708,12 @@ begin
  JobData^.RecursiveSplit:=RecursiveSplit;
 end;
 
-function TPasMP.ParallelFor(const Data:pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForMethod:TPasMPParallelForMethod;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32;const RecursiveSplit:Boolean):PPasMPJob;
-var JobData:PPasMPParallelForStartJobData;
+function TPasMP.ParallelFor(const Data:Pointer;const FirstIndex,LastIndex:TPasMPNativeInt;const ParallelForMethod:TPasMPParallelForMethod;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32;const RecursiveSplit:Boolean):PPasMPJob;
+var
+  JobData: PPasMPParallelForStartJobData;
 begin
  result:=Acquire(ParallelForStartJobFunction,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
- JobData:=PPasMPParallelForStartJobData(pointer(@result^.Data));
+ JobData:=PPasMPParallelForStartJobData(Pointer(@result^.Data));
  JobData^.Method:=TMethod(ParallelForMethod);
  JobData^.Data:=Data;
  JobData^.FirstIndex:=FirstIndex;
@@ -14684,7 +14730,7 @@ end;
 
 type PPasMPParallelDirectIntroSortJobData=^TPasMPParallelDirectIntroSortJobData;
      TPasMPParallelDirectIntroSortJobData=record
-      Items:pointer;
+      Items:Pointer;
       Left:TPasMPNativeInt;
       Right:TPasMPNativeInt;
       Depth:TPasMPInt32;
@@ -14701,9 +14747,9 @@ var NewJobs:array[0..1] of PPasMPJob;
     Left,Right,Size,Parent,Child,Middle,Pivot,i,j,iA,iB,iC:TPasMPNativeInt;
     ElementSize:TPasMPInt32;
     CompareFunc:TPasMPParallelSortCompareFunction;
-    Items{$ifdef PasMPAlternativeDirectHeapSort},Temp{$endif}:pointer;
+    Items{$IFDEF PasMPAlternativeDirectHeapSort},Temp{$ENDIF}:Pointer;
 begin
- JobData:=PPasMPParallelDirectIntroSortJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelDirectIntroSortJobData(Pointer(@Job^.Data));
  Left:=JobData^.Left;
  Right:=JobData^.Right;
  if Left<Right then begin
@@ -14719,7 +14765,7 @@ begin
     iC:=iB;
     while (iA>=Left) and
           (iC>=Left) and
-          (CompareFunc(pointer(@PByteArray(Items)^[iA*ElementSize]),pointer(@PByteArray(Items)^[iC*ElementSize]))>0) do begin
+          (CompareFunc(Pointer(@PByteArray(Items)^[iA*ElementSize]),Pointer(@PByteArray(Items)^[iC*ElementSize]))>0) do begin
      MemorySwap(@PByteArray(Items)^[iA*ElementSize],@PByteArray(Items)^[iC*ElementSize],ElementSize);
      dec(iA);
      dec(iC);
@@ -14730,7 +14776,7 @@ begin
   end else begin
    if (JobData^.Depth=0) or (Size<=JobData^.Granularity) then begin
     // Heap sort
-{$ifdef PasMPAlternativeDirectHeapSort}
+{$IFDEF PasMPAlternativeDirectHeapSort}
     GetMem(Temp,JobData^.ElementSize);
     try
      i:=Size div 2;
@@ -14750,10 +14796,10 @@ begin
       Parent:=i;
       Child:=(i*2)+1;
       while Child<Size do begin
-       if ((Child+1)<Size) and (CompareFunc(pointer(@PByteArray(Items)^[((Left+Child)+1)*ElementSize]),pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]))>0) then begin
+       if ((Child+1)<Size) and (CompareFunc(Pointer(@PByteArray(Items)^[((Left+Child)+1)*ElementSize]),Pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]))>0) then begin
         inc(Child);
        end;
-       if CompareFunc(pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]),Temp)>0 then begin
+       if CompareFunc(Pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]),Temp)>0 then begin
         Move(PByteArray(Items)^[(Left+Child)*ElementSize],PByteArray(Items)^[(Left+Parent)*ElementSize],ElementSize);
         Parent:=Child;
         Child:=(Parent*2)+1;
@@ -14766,7 +14812,7 @@ begin
     finally
      FreeMem(Temp);
     end;
-{$else}
+{$ELSE}
     i:=Size div 2;
     repeat
      if i>0 then begin
@@ -14783,10 +14829,10 @@ begin
      repeat
       Child:=(Parent*2)+1;
       if Child<Size then begin
-       if (Child<(Size-1)) and (CompareFunc(pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]),pointer(@PByteArray(Items)^[(Left+Child+1)*ElementSize]))<0) then begin
+       if (Child<(Size-1)) and (CompareFunc(Pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]),Pointer(@PByteArray(Items)^[(Left+Child+1)*ElementSize]))<0) then begin
         inc(Child);
        end;
-       if CompareFunc(pointer(@PByteArray(Items)^[(Left+Parent)*ElementSize]),pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]))<0 then begin
+       if CompareFunc(Pointer(@PByteArray(Items)^[(Left+Parent)*ElementSize]),Pointer(@PByteArray(Items)^[(Left+Child)*ElementSize]))<0 then begin
         MemorySwap(@PByteArray(Items)^[(Left+Parent)*ElementSize],@PByteArray(Items)^[(Left+Child)*ElementSize],ElementSize);
         Parent:=Child;
         continue;
@@ -14795,18 +14841,18 @@ begin
       break;
      until false;
     until false;
-{$endif}
+{$ENDIF}
    end else begin
     // Quick sort width median-of-three optimization
     Middle:=Left+((Right-Left) shr 1);
     if (Right-Left)>3 then begin
-     if CompareFunc(pointer(@PByteArray(Items)^[Left*ElementSize]),pointer(@PByteArray(Items)^[Middle*ElementSize]))>0 then begin
+     if CompareFunc(Pointer(@PByteArray(Items)^[Left*ElementSize]),Pointer(@PByteArray(Items)^[Middle*ElementSize]))>0 then begin
       MemorySwap(@PByteArray(Items)^[Left*ElementSize],@PByteArray(Items)^[Middle*ElementSize],ElementSize);
      end;
-     if CompareFunc(pointer(@PByteArray(Items)^[Left*ElementSize]),pointer(@PByteArray(Items)^[Right*ElementSize]))>0 then begin
+     if CompareFunc(Pointer(@PByteArray(Items)^[Left*ElementSize]),Pointer(@PByteArray(Items)^[Right*ElementSize]))>0 then begin
       MemorySwap(@PByteArray(Items)^[Left*ElementSize],@PByteArray(Items)^[Right*ElementSize],ElementSize);
      end;
-     if CompareFunc(pointer(@PByteArray(Items)^[Middle*ElementSize]),pointer(@PByteArray(Items)^[Right*ElementSize]))>0 then begin
+     if CompareFunc(Pointer(@PByteArray(Items)^[Middle*ElementSize]),Pointer(@PByteArray(Items)^[Right*ElementSize]))>0 then begin
       MemorySwap(@PByteArray(Items)^[Middle*ElementSize],@PByteArray(Items)^[Right*ElementSize],ElementSize);
      end;
     end;
@@ -14814,10 +14860,10 @@ begin
     i:=Left;
     j:=Right;
     repeat
-     while (i<Right) and (CompareFunc(pointer(@PByteArray(Items)^[i*ElementSize]),pointer(@PByteArray(Items)^[Pivot*ElementSize]))<0) do begin
+     while (i<Right) and (CompareFunc(Pointer(@PByteArray(Items)^[i*ElementSize]),Pointer(@PByteArray(Items)^[Pivot*ElementSize]))<0) do begin
       inc(i);
      end;
-     while (j>=i) and (CompareFunc(pointer(@PByteArray(Items)^[j*ElementSize]),pointer(@PByteArray(Items)^[Pivot*ElementSize]))>0) do begin
+     while (j>=i) and (CompareFunc(Pointer(@PByteArray(Items)^[j*ElementSize]),Pointer(@PByteArray(Items)^[Pivot*ElementSize]))>0) do begin
       dec(j);
      end;
      if i>j then begin
@@ -14837,7 +14883,7 @@ begin
     until false;
     if Left<j then begin
      NewJobs[0]:=Acquire(ParallelDirectIntroSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelDirectIntroSortJobData(pointer(@NewJobs[0]^.Data));
+     NewJobData:=PPasMPParallelDirectIntroSortJobData(Pointer(@NewJobs[0]^.Data));
      NewJobData^.Items:=JobData^.Items;
      NewJobData^.Left:=Left;
      NewJobData^.Right:=j;
@@ -14850,7 +14896,7 @@ begin
     end;
     if i<Right then begin
      NewJobs[1]:=Acquire(ParallelDirectIntroSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelDirectIntroSortJobData(pointer(@NewJobs[1]^.Data));
+     NewJobData:=PPasMPParallelDirectIntroSortJobData(Pointer(@NewJobs[1]^.Data));
      NewJobData^.Items:=JobData^.Items;
      NewJobData^.Left:=i;
      NewJobData^.Right:=Right;
@@ -14867,11 +14913,11 @@ begin
  end;
 end;
 
-function TPasMP.ParallelDirectIntroSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.ParallelDirectIntroSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 var JobData:PPasMPParallelDirectIntroSortJobData;
 begin
  result:=Acquire(ParallelDirectIntroSortJobFunction,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
- JobData:=PPasMPParallelDirectIntroSortJobData(pointer(@result^.Data));
+ JobData:=PPasMPParallelDirectIntroSortJobData(Pointer(@result^.Data));
  JobData^.Items:=Items;
  JobData^.Left:=Left;
  JobData^.Right:=Right;
@@ -14890,7 +14936,7 @@ end;
 
 type PPasMPParallelIndirectIntroSortJobData=^TPasMPParallelIndirectIntroSortJobData;
      TPasMPParallelIndirectIntroSortJobData=record
-      Items:pointer;
+      Items:Pointer;
       Left:TPasMPNativeInt;
       Right:TPasMPNativeInt;
       Depth:TPasMPInt32;
@@ -14900,14 +14946,14 @@ type PPasMPParallelIndirectIntroSortJobData=^TPasMPParallelIndirectIntroSortJobD
 
 procedure TPasMP.ParallelIndirectIntroSortJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
 type PPointers=^TPointers;
-     TPointers=array[0..($7fffffff div SizeOf(pointer))-1] of pointer;
+     TPointers=array[0..($7fffffff div SizeOf(Pointer))-1] of Pointer;
 var NewJobs:array[0..1] of PPasMPJob;
     JobData,NewJobData:PPasMPParallelIndirectIntroSortJobData;
     Left,Right,Size,Parent,Child,Middle,i,j:TPasMPNativeInt;
     CompareFunc:TPasMPParallelSortCompareFunction;
-    Items,Temp,Pivot:pointer;
+    Items,Temp,Pivot:Pointer;
 begin
- JobData:=PPasMPParallelIndirectIntroSortJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelIndirectIntroSortJobData(Pointer(@Job^.Data));
  Left:=JobData^.Left;
  Right:=JobData^.Right;
  if Left<Right then begin
@@ -14930,7 +14976,7 @@ begin
   end else begin
    if (JobData^.Depth=0) or (Size<=JobData^.Granularity) then begin
     // Heap sort
-{$ifdef PasMPAlternativeIndirectHeapSort}
+{$IFDEF PasMPAlternativeIndirectHeapSort}
     i:=Size div 2;
     repeat
      if i>0 then begin
@@ -14963,7 +15009,7 @@ begin
       break;
      until false;
     until false;
-{$else}
+{$ELSE}
     i:=Size div 2;
     Temp:=nil;
     repeat
@@ -14995,7 +15041,7 @@ begin
      end;
      PPointers(Items)^[Left+Parent]:=Temp;
     until false;
-{$endif}
+{$ENDIF}
    end else begin
     // Quick sort width median-of-three optimization
     Middle:=Left+((Right-Left) shr 1);
@@ -15040,7 +15086,7 @@ begin
     until false;
     if Left<j then begin
      NewJobs[0]:=Acquire(ParallelIndirectIntroSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelIndirectIntroSortJobData(pointer(@NewJobs[0]^.Data));
+     NewJobData:=PPasMPParallelIndirectIntroSortJobData(Pointer(@NewJobs[0]^.Data));
      NewJobData^.Items:=JobData^.Items;
      NewJobData^.Left:=Left;
      NewJobData^.Right:=j;
@@ -15052,7 +15098,7 @@ begin
     end;
     if i<Right then begin
      NewJobs[1]:=Acquire(ParallelIndirectIntroSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-     NewJobData:=PPasMPParallelIndirectIntroSortJobData(pointer(@NewJobs[1]^.Data));
+     NewJobData:=PPasMPParallelIndirectIntroSortJobData(Pointer(@NewJobs[1]^.Data));
      NewJobData^.Items:=JobData^.Items;
      NewJobData^.Left:=i;
      NewJobData^.Right:=Right;
@@ -15068,11 +15114,11 @@ begin
  end;
 end;
 
-function TPasMP.ParallelIndirectIntroSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.ParallelIndirectIntroSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 var JobData:PPasMPParallelIndirectIntroSortJobData;
 begin
  result:=Acquire(ParallelIndirectIntroSortJobFunction,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
- JobData:=PPasMPParallelIndirectIntroSortJobData(pointer(@result^.Data));
+ JobData:=PPasMPParallelIndirectIntroSortJobData(Pointer(@result^.Data));
  JobData^.Items:=Items;
  JobData^.Left:=Left;
  JobData^.Right:=Right;
@@ -15090,8 +15136,8 @@ end;
 
 type PPasMPParallelDirectMergeSortData=^TPasMPParallelDirectMergeSortData;
      TPasMPParallelDirectMergeSortData=record
-      Items:pointer;
-      Temp:pointer;
+      Items:Pointer;
+      Temp:Pointer;
       ElementSize:TPasMPInt32;
       Granularity:TPasMPInt32;
       CompareFunc:TPasMPParallelSortCompareFunction;
@@ -15113,10 +15159,10 @@ var NewJobs:array[0..1] of PPasMPJob;
     Left,Right,Size,Middle,iA,iB,iC,Count:TPasMPNativeInt;
     ElementSize:TPasMPInt32;
     CompareFunc:TPasMPParallelSortCompareFunction;
-    Items,Temp:pointer;
+    Items,Temp:Pointer;
     Data:PPasMPParallelDirectMergeSortData;
 begin
- JobData:=PPasMPParallelDirectMergeSortJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelDirectMergeSortJobData(Pointer(@Job^.Data));
  Left:=JobData^.Left;
  Right:=JobData^.Right;
  if Left<Right then begin
@@ -15127,16 +15173,16 @@ begin
   Size:=(Right-Left)+1;
   case Size of
    2:begin
-    if CompareFunc(pointer(@PByteArray(Items)^[Left*ElementSize]),pointer(@PByteArray(Items)^[Right*ElementSize]))>0 then begin
+    if CompareFunc(Pointer(@PByteArray(Items)^[Left*ElementSize]),Pointer(@PByteArray(Items)^[Right*ElementSize]))>0 then begin
      MemorySwap(@PByteArray(Items)^[Left*ElementSize],@PByteArray(Items)^[Right*ElementSize],ElementSize);
     end;
    end;
    3:begin
     Middle:=Left+1;
-    if CompareFunc(pointer(@PByteArray(Items)^[Left*ElementSize]),pointer(@PByteArray(Items)^[Middle*ElementSize]))<=0 then begin
-     if CompareFunc(pointer(@PByteArray(Items)^[Middle*ElementSize]),pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
+    if CompareFunc(Pointer(@PByteArray(Items)^[Left*ElementSize]),Pointer(@PByteArray(Items)^[Middle*ElementSize]))<=0 then begin
+     if CompareFunc(Pointer(@PByteArray(Items)^[Middle*ElementSize]),Pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
       // 0 <= 1 <= 2
-     end else if CompareFunc(pointer(@PByteArray(Items)^[Left*ElementSize]),pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
+     end else if CompareFunc(Pointer(@PByteArray(Items)^[Left*ElementSize]),Pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
       // 0 <= 2 < 1
       MemorySwap(@PByteArray(Items)^[Middle*ElementSize],@PByteArray(Items)^[Right*ElementSize],ElementSize);
      end else begin
@@ -15145,10 +15191,10 @@ begin
       MemorySwap(@PByteArray(Items)^[Middle*ElementSize],@PByteArray(Items)^[Right*ElementSize],ElementSize);
      end;
     end else begin
-     if CompareFunc(pointer(@PByteArray(Items)^[Left*ElementSize]),pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
+     if CompareFunc(Pointer(@PByteArray(Items)^[Left*ElementSize]),Pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
       // 1 < 0 <= 2
       MemorySwap(@PByteArray(Items)^[Left*ElementSize],@PByteArray(Items)^[Middle*ElementSize],ElementSize);
-     end else if CompareFunc(pointer(@PByteArray(Items)^[Middle*ElementSize]),pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
+     end else if CompareFunc(Pointer(@PByteArray(Items)^[Middle*ElementSize]),Pointer(@PByteArray(Items)^[Right*ElementSize]))<=0 then begin
       // 1 <= 2 < 0
       MemorySwap(@PByteArray(Items)^[Left*ElementSize],@PByteArray(Items)^[Middle*ElementSize],ElementSize);
       MemorySwap(@PByteArray(Items)^[Middle*ElementSize],@PByteArray(Items)^[Right*ElementSize],ElementSize);
@@ -15165,12 +15211,12 @@ begin
      try
       for iA:=Left+1 to Right do begin
        iB:=iA-1;
-       if (iB>=Left) and (CompareFunc(pointer(@PByteArray(Items)^[iB*ElementSize]),pointer(@PByteArray(Items)^[iA*ElementSize]))>0) then begin
+       if (iB>=Left) and (CompareFunc(Pointer(@PByteArray(Items)^[iB*ElementSize]),Pointer(@PByteArray(Items)^[iA*ElementSize]))>0) then begin
         Move(PByteArray(Items)^[iA*ElementSize],Temp^,ElementSize);
         repeat
          Move(PByteArray(Items)^[iB*ElementSize],PByteArray(Items)^[(iB+1)*ElementSize],ElementSize);
          dec(iB);
-        until not ((iB>=Left) and (CompareFunc(pointer(@PByteArray(Items)^[iB*ElementSize]),Temp)>0));
+        until not ((iB>=Left) and (CompareFunc(Pointer(@PByteArray(Items)^[iB*ElementSize]),Temp)>0));
         Move(Temp^,PByteArray(Items)^[(iB+1)*ElementSize],ElementSize);
        end;
       end;
@@ -15184,7 +15230,7 @@ begin
       iC:=iB;
       while (iA>=Left) and
             (iC>=Left) and
-            (CompareFunc(pointer(@PByteArray(Items)^[iA*ElementSize]),pointer(@PByteArray(Items)^[iC*ElementSize]))>0) do begin
+            (CompareFunc(Pointer(@PByteArray(Items)^[iA*ElementSize]),Pointer(@PByteArray(Items)^[iC*ElementSize]))>0) do begin
        MemorySwap(@PByteArray(Items)^[iA*ElementSize],@PByteArray(Items)^[iC*ElementSize],ElementSize);
        dec(iA);
        dec(iC);
@@ -15196,7 +15242,7 @@ begin
      Middle:=Left+((Right-Left) shr 1);
      if Left<Middle then begin
       NewJobs[0]:=Acquire(ParallelDirectMergeSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-      NewJobData:=PPasMPParallelDirectMergeSortJobData(pointer(@NewJobs[0]^.Data));
+      NewJobData:=PPasMPParallelDirectMergeSortJobData(Pointer(@NewJobs[0]^.Data));
       NewJobData^.Data:=Data;
       NewJobData^.Left:=Left;
       NewJobData^.Right:=Middle-1;
@@ -15206,7 +15252,7 @@ begin
      end;
      if Middle<=Right then begin
       NewJobs[1]:=Acquire(ParallelDirectMergeSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-      NewJobData:=PPasMPParallelDirectMergeSortJobData(pointer(@NewJobs[1]^.Data));
+      NewJobData:=PPasMPParallelDirectMergeSortJobData(Pointer(@NewJobs[1]^.Data));
       NewJobData^.Data:=JobData^.Data;
       NewJobData^.Left:=Middle;
       NewJobData^.Right:=Right;
@@ -15222,7 +15268,7 @@ begin
       iB:=Middle;
       iC:=Left;
       while (iA<Middle) and
-            (CompareFunc(pointer(@PByteArray(Items)^[iA*ElementSize]),pointer(@PByteArray(Items)^[iB*ElementSize]))<=0) do begin
+            (CompareFunc(Pointer(@PByteArray(Items)^[iA*ElementSize]),Pointer(@PByteArray(Items)^[iB*ElementSize]))<=0) do begin
        inc(iA);
       end;
       if iA<Middle then begin
@@ -15232,7 +15278,7 @@ begin
        inc(iB);
        inc(iC);
        while (iA<Middle) and (iB<=Right) do begin
-        if CompareFunc(pointer(@PByteArray(Items)^[iA*ElementSize]),pointer(@PByteArray(Items)^[iB*ElementSize]))>0 then begin
+        if CompareFunc(Pointer(@PByteArray(Items)^[iA*ElementSize]),Pointer(@PByteArray(Items)^[iB*ElementSize]))>0 then begin
          Move(PByteArray(Items)^[iB*ElementSize],PByteArray(Temp)^[iC*ElementSize],ElementSize);
          inc(iB);
         end else begin
@@ -15261,7 +15307,7 @@ end;
 
 type PPasMPParallelDirectMergeSortRootJobData=^TPasMPParallelDirectMergeSortRootJobData;
      TPasMPParallelDirectMergeSortRootJobData=record
-      Items:pointer;
+      Items:Pointer;
       Left:TPasMPNativeInt;
       Right:TPasMPNativeInt;
       Depth:TPasMPInt32;
@@ -15276,7 +15322,7 @@ var Data:TPasMPParallelDirectMergeSortData;
     ChildJobData:PPasMPParallelDirectMergeSortJobData;
     ChildJob:PPasMPJob;
 begin
- JobData:=PPasMPParallelDirectMergeSortRootJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelDirectMergeSortRootJobData(Pointer(@Job^.Data));
  GetMem(Data.Temp,((JobData^.Right-JobData^.Left)+1)*JobData^.ElementSize);
  try
   Data.Items:=JobData^.Items;
@@ -15284,7 +15330,7 @@ begin
   Data.Granularity:=JobData^.Granularity;
   Data.CompareFunc:=JobData^.CompareFunc;
   ChildJob:=Acquire(ParallelDirectMergeSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-  ChildJobData:=PPasMPParallelDirectMergeSortJobData(pointer(@ChildJob^.Data));
+  ChildJobData:=PPasMPParallelDirectMergeSortJobData(Pointer(@ChildJob^.Data));
   ChildJobData^.Data:=@Data;
   ChildJobData^.Left:=JobData^.Left;
   ChildJobData^.Right:=JobData^.Right;
@@ -15295,12 +15341,12 @@ begin
  end;
 end;
 
-function TPasMP.ParallelDirectMergeSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.ParallelDirectMergeSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const ElementSize:TPasMPInt32;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 var JobData:PPasMPParallelDirectMergeSortRootJobData;
 begin
  if ((Left+1)<Right) and (ElementSize>0) then begin
   result:=Acquire(ParallelDirectMergeSortRootJobFunction,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
-  JobData:=PPasMPParallelDirectMergeSortRootJobData(pointer(@result^.Data));
+  JobData:=PPasMPParallelDirectMergeSortRootJobData(Pointer(@result^.Data));
   JobData^.Items:=Items;
   JobData^.Left:=Left;
   JobData^.Right:=Right;
@@ -15322,8 +15368,8 @@ end;
 
 type PPasMPParallelIndirectMergeSortData=^TPasMPParallelIndirectMergeSortData;
      TPasMPParallelIndirectMergeSortData=record
-      Items:pointer;
-      Temp:pointer;
+      Items:Pointer;
+      Temp:Pointer;
       Granularity:TPasMPInt32;
       CompareFunc:TPasMPParallelSortCompareFunction;
      end;
@@ -15338,15 +15384,15 @@ type PPasMPParallelIndirectMergeSortData=^TPasMPParallelIndirectMergeSortData;
 
 procedure TPasMP.ParallelIndirectMergeSortJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
 type PPointers=^TPointers;
-     TPointers=array[0..($7fffffff div SizeOf(pointer))-1] of pointer;
+     TPointers=array[0..($7fffffff div SizeOf(Pointer))-1] of Pointer;
 var ChildJobs:array[0..1] of PPasMPJob;
     JobData,ChildJobData:PPasMPParallelIndirectMergeSortJobData;
     Left,Right,Size,Middle,i,j,iA,iB,iC,Count:TPasMPNativeInt;
     CompareFunc:TPasMPParallelSortCompareFunction;
-    Items,Temp:pointer;
+    Items,Temp:Pointer;
     Data:PPasMPParallelIndirectMergeSortData;
 begin
- JobData:=PPasMPParallelIndirectMergeSortJobData(pointer(@Job^.Data));
+ JobData:=PPasMPParallelIndirectMergeSortJobData(Pointer(@Job^.Data));
  Left:=JobData^.Left;
  Right:=JobData^.Right;
  if Left<Right then begin
@@ -15416,7 +15462,7 @@ begin
      Middle:=Left+((Right-Left) shr 1);
      if Left<Middle then begin
       ChildJobs[0]:=Acquire(ParallelIndirectMergeSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-      ChildJobData:=PPasMPParallelIndirectMergeSortJobData(pointer(@ChildJobs[0]^.Data));
+      ChildJobData:=PPasMPParallelIndirectMergeSortJobData(Pointer(@ChildJobs[0]^.Data));
       ChildJobData^.Data:=Data;
       ChildJobData^.Left:=Left;
       ChildJobData^.Right:=Middle-1;
@@ -15426,7 +15472,7 @@ begin
      end;
      if Middle<=Right then begin
       ChildJobs[1]:=Acquire(ParallelIndirectMergeSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-      ChildJobData:=PPasMPParallelIndirectMergeSortJobData(pointer(@ChildJobs[1]^.Data));
+      ChildJobData:=PPasMPParallelIndirectMergeSortJobData(Pointer(@ChildJobs[1]^.Data));
       ChildJobData^.Data:=JobData^.Data;
       ChildJobData^.Left:=Middle;
       ChildJobData^.Right:=Right;
@@ -15463,14 +15509,14 @@ begin
        end;
        if iA<Middle then begin
         Count:=Middle-iA;
-        Move(PPointers(Items)^[iA],PPointers(Temp)^[iC],Count*SizeOf(pointer));
+        Move(PPointers(Items)^[iA],PPointers(Temp)^[iC],Count*SizeOf(Pointer));
         inc(iC,Count);
        end;
        if iB<=Right then begin
         Count:=(Right-iB)+1;
-        Move(PPointers(Items)^[iB],PPointers(Temp)^[iC],Count*SizeOf(pointer));
+        Move(PPointers(Items)^[iB],PPointers(Temp)^[iC],Count*SizeOf(Pointer));
        end;
-       Move(PPointers(Temp)^[Left],PPointers(Items)^[Left],((Right-Left)+1)*SizeOf(pointer));
+       Move(PPointers(Temp)^[Left],PPointers(Items)^[Left],((Right-Left)+1)*SizeOf(Pointer));
       end;
      end;
     end;
@@ -15479,46 +15525,50 @@ begin
  end;
 end;
 
-type PPasMPParallelIndirectMergeSortRootJobData=^TPasMPParallelIndirectMergeSortRootJobData;
-     TPasMPParallelIndirectMergeSortRootJobData=record
-      Items:pointer;
-      Left:TPasMPNativeInt;
-      Right:TPasMPNativeInt;
-      Depth:TPasMPInt32;
-      Granularity:TPasMPInt32;
-      CompareFunc:TPasMPParallelSortCompareFunction;
-     end;
 
-procedure TPasMP.ParallelIndirectMergeSortRootJobFunction(const Job:PPasMPJob;const ThreadIndex:TPasMPInt32);
-var Data:TPasMPParallelIndirectMergeSortData;
-    JobData:PPasMPParallelIndirectMergeSortRootJobData;
-    ChildJobData:PPasMPParallelIndirectMergeSortJobData;
-    ChildJob:PPasMPJob;
+type
+  PPasMPParallelIndirectMergeSortRootJobData = ^TPasMPParallelIndirectMergeSortRootJobData;
+  TPasMPParallelIndirectMergeSortRootJobData = record
+    Items: Pointer;
+    Left: TPasMPNativeInt;
+    Right: TPasMPNativeInt;
+    Depth: TPasMPInt32;
+    Granularity: TPasMPInt32;
+    CompareFunc: TPasMPParallelSortCompareFunction;
+  end;
+
+
+procedure TPasMP.ParallelIndirectMergeSortRootJobFunction(const Job: PPasMPJob; const ThreadIndex: TPasMPInt32);
+var
+  Data: TPasMPParallelIndirectMergeSortData;
+  JobData: PPasMPParallelIndirectMergeSortRootJobData;
+  ChildJobData: PPasMPParallelIndirectMergeSortJobData;
+  ChildJob: PPasMPJob;
 begin
- JobData:=PPasMPParallelIndirectMergeSortRootJobData(pointer(@Job^.Data));
- GetMem(Data.Temp,((JobData^.Right-JobData^.Left)+1)*SizeOf(pointer));
- try
-  Data.Items:=JobData^.Items;
-  Data.Granularity:=JobData^.Granularity;
-  Data.CompareFunc:=JobData^.CompareFunc;
-  ChildJob:=Acquire(ParallelIndirectMergeSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
-  ChildJobData:=PPasMPParallelIndirectMergeSortJobData(pointer(@ChildJob^.Data));
-  ChildJobData^.Data:=@Data;
-  ChildJobData^.Left:=JobData^.Left;
-  ChildJobData^.Right:=JobData^.Right;
-  ChildJobData^.Depth:=JobData^.Depth;
-  Invoke(ChildJob);
- finally
-  FreeMem(Data.Temp);
- end;
+  JobData := PPasMPParallelIndirectMergeSortRootJobData(Pointer(@Job^.Data));
+  GetMem(Data.Temp,((JobData^.Right-JobData^.Left)+1)*SizeOf(Pointer));
+  try
+    Data.Items:=JobData^.Items;
+    Data.Granularity:=JobData^.Granularity;
+    Data.CompareFunc:=JobData^.CompareFunc;
+    ChildJob:=Acquire(ParallelIndirectMergeSortJobFunction,nil,nil,Job^.InternalData and PasMPJobTagShiftedMask,Job^.AreaMask,Job^.AvoidAreaMask);
+    ChildJobData:=PPasMPParallelIndirectMergeSortJobData(Pointer(@ChildJob^.Data));
+    ChildJobData^.Data:=@Data;
+    ChildJobData^.Left:=JobData^.Left;
+    ChildJobData^.Right:=JobData^.Right;
+    ChildJobData^.Depth:=JobData^.Depth;
+    Invoke(ChildJob);
+  finally
+    FreeMem(Data.Temp);
+  end;
 end;
 
-function TPasMP.ParallelIndirectMergeSort(const Items:pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
+function TPasMP.ParallelIndirectMergeSort(const Items:Pointer;const Left,Right:TPasMPNativeInt;const CompareFunc:TPasMPParallelSortCompareFunction;const Granularity:TPasMPInt32;const Depth:TPasMPInt32;const ParentJob:PPasMPJob;const Flags:TPasMPUInt32;const AreaMask:TPasMPUInt32;const AvoidAreaMask:TPasMPUInt32):PPasMPJob;
 var JobData:PPasMPParallelIndirectMergeSortRootJobData;
 begin
  if (Left+1)<Right then begin
   result:=Acquire(ParallelIndirectMergeSortRootJobFunction,nil,ParentJob,Flags,AreaMask,AvoidAreaMask);
-  JobData:=PPasMPParallelIndirectMergeSortRootJobData(pointer(@result^.Data));
+  JobData:=PPasMPParallelIndirectMergeSortRootJobData(Pointer(@result^.Data));
   JobData^.Items:=Items;
   JobData^.Left:=Left;
   JobData^.Right:=Right;
@@ -15538,27 +15588,28 @@ begin
 end;
 
 initialization
-{$ifdef UseThreadLocalStorage}
-{$if defined(UseThreadLocalStorageX8632) or defined(UseThreadLocalStorageX8664)}
- CurrentJobWorkerThreadTLSIndex:=TLSAlloc;
- CurrentJobWorkerThreadTLSOffset:={$if defined(UseThreadLocalStorageX8632)}$e10+(CurrentJobWorkerThreadTLSIndex*4){$else}$1480+(CurrentJobWorkerThreadTLSIndex*8){$ifend};
-{$ifend}
-{$endif}
- GlobalPasMP:=nil;
- GlobalPasMPCriticalSection:=TPasMPCriticalSection.Create;
-{$ifdef PasMPUseGlobalPasMPCountOfHardwareThreads}
+{$IFDEF UseThreadLocalStorage}
+  {$IF DEFINED(UseThreadLocalStorageX8632) or DEFINED(UseThreadLocalStorageX8664)}
+    CurrentJobWorkerThreadTLSIndex:=TLSAlloc;
+    CurrentJobWorkerThreadTLSOffset:={$IF DEFINED(UseThreadLocalStorageX8632)}$e10+(CurrentJobWorkerThreadTLSIndex*4){$ELSE}$1480+(CurrentJobWorkerThreadTLSIndex*8){$IFEND};
+  {$IFEND}
+{$ENDIF}
+ GlobalPasMP := nil;
+ GlobalPasMPCriticalSection := TPasMPCriticalSection.Create;
+{$IFDEF PasMPUseGlobalPasMPCountOfHardwareThreads}
  GlobalPasMPCountOfHardwareThreads:=TPasMP.GetCountOfHardwareThreads(GlobalPasMPAvailableCPUCores);
  if GlobalPasMPCountOfHardwareThreads<1 then begin
   GlobalPasMPCountOfHardwareThreads:=1;
  end;
-{$endif}
-{$ifdef Windows}
+{$ENDIF}
+{$IFDEF Windows}
  timeBeginPeriod(1);
-{$endif}
+{$ENDIF}
+
 finalization
-{$ifdef Windows}
+{$IFDEF Windows}
  timeEndPeriod(1);
-{$endif}
+{$ENDIF}
  if assigned(GlobalPasMP) then begin
   TPasMP.DestroyGlobalInstance;
  end;
