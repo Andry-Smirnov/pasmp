@@ -8,25 +8,24 @@
       <Unit>
         <Filename Value="dynamicarray.lpr"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos X="3" Y="3"/>
-        <UsageCount Value="32"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="47" Y="24"/>
+        <UsageCount Value="38"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\src\PasMP.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="13457"/>
-        <CursorPos X="24" Y="13489"/>
-        <UsageCount Value="32"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6620"/>
+        <CursorPos X="3" Y="6601"/>
+        <UsageCount Value="38"/>
         <Bookmarks Count="4">
-          <Item0 X="10" Y="14763" ID="2"/>
-          <Item1 X="37" Y="11834" ID="3"/>
-          <Item2 X="15" Y="15938" ID="4"/>
-          <Item3 X="8" Y="13492" ID="1"/>
+          <Item0 X="15" Y="16361" ID="4"/>
+          <Item1 X="3" Y="14492" ID="2"/>
+          <Item2 X="6" Y="14746" ID="3"/>
+          <Item3 X="25" Y="7055" ID="1"/>
         </Bookmarks>
-        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\sysosh.inc"/>
@@ -57,129 +56,14 @@
         <CursorPos X="10" Y="2543"/>
         <UsageCount Value="9"/>
       </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-base\src\syncobjs.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="28"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14569" Column="25" TopLine="14554"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14577" Column="76" TopLine="14567"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14913" Column="107" TopLine="14878"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15889" Column="25" TopLine="15884"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15905" Column="77" TopLine="15884"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15989" Column="21" TopLine="15971"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="12503" Column="27" TopLine="12470"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14445" Column="71" TopLine="14419"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14440" Column="46" TopLine="14419"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15028" Column="15" TopLine="14988"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14997" Column="10" TopLine="14988"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15956" Column="43" TopLine="15929"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15947" Column="44" TopLine="15929"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15949" Column="78" TopLine="15929"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="7296" Column="28" TopLine="7272"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14336" Column="15" TopLine="14328"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="11817" Column="46" TopLine="11788"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="16029" Column="74" TopLine="15988"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14769" Column="85" TopLine="14746"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="16019" Column="137" TopLine="15978"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14757" Column="102" TopLine="14753"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="14982" Column="44" TopLine="14943"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15910" Column="32" TopLine="15870"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="15903" Column="21" TopLine="15870"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="6022" Column="17" TopLine="5979"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="13397" Column="45" TopLine="13366"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="13426" Column="11" TopLine="13415"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="13492" Column="15" TopLine="13454"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="13493" Column="18" TopLine="13454"/>
-      </Position>
-      <Position>
-        <Filename Value="..\..\src\PasMP.pas"/>
-        <Caret Line="13496" Column="17" TopLine="13454"/>
-      </Position>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes ActiveMode=""/>
