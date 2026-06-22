@@ -3790,7 +3790,7 @@ asm
   {$error Non-supported target platform configuration}
 {$IFEND}
 Loop:
-  ldrexd	r0, R1,[r2] // loads r0 and r1 from Pointer to Destination (r2), so r0 = Destination.Lo, r1 = Destination.Hi
+  ldrexd  r0, R1,[r2] // loads r0 and r1 from Pointer to Destination (r2), so r0 = Destination.Lo, r1 = Destination.Hi
   eors r3, R0, R4 // compare Destination.Lo (r0) with Comperand.Lo (r4)
   eoreqs r3, R1, R5 // compare Destination.Hi (r1) with Comperand.Hi (r5)
   strexdeq r3, R6, R7,[r2]  // [r2]=r6 and [r2+4]=r7 and r3=result (0 for success or 1 for failure)
@@ -8678,11 +8678,11 @@ begin
  repeat
   Tail.Value := fTail^.Value;
   TPasMPMemoryBarrier.Read;
-	Next.Value := PPasMPThreadSafeQueueNode(Tail.PointerValue)^.Next.Value;
+  Next.Value := PPasMPThreadSafeQueueNode(Tail.PointerValue)^.Next.Value;
   TPasMPMemoryBarrier.Read;
   CheckTail.Value := fTail^.Value;
   if {$IFDEF CPU64}(Tail.TagValue = CheckTail.TagValue) and (Tail.PointerValue = CheckTail.PointerValue){$ELSE}Tail.Value.Value = CheckTail.Value.Value{$ENDIF} then begin
-	 if Assigned(Next.PointerValue) then begin
+   if Assigned(Next.PointerValue) then begin
     Temporary.PointerValue := Next.PointerValue;
     Temporary.TagValue := Tail.TagValue + 1;
     TPasMPInterlocked.CompareExchange(fTail^.Value, Temporary.Value, Tail.Value);
@@ -8753,7 +8753,7 @@ begin
    if {$IFDEF cpu64}(Head.PointerValue <> Tail.PointerValue) or (Head.TagValue <> Tail.TagValue){$ELSE}Head.Value.Value <> Tail.Value.Value{$ENDIF} then begin
     // Not in the original paper, but there is a race condition where push adds a node, but leaves Node^.Next^.Previous uninitialized for a short time.
     // This only manifests too when FirstNodePrevious.TagValue = Head.TagValue, which is also very rare. If they aren't equal, FixList fixes the issue
-		// (or at least it takes long enough, so that things settle). So here ensure time is not wasted getting to the end-game only to try to dereference
+    // (or at least it takes long enough, so that things settle). So here ensure time is not wasted getting to the end-game only to try to dereference
     // nil.
     if Assigned(FirstNodePrevious.PointerValue) then begin
      if FirstNodePrevious.TagValue<>Head.TagValue then begin
