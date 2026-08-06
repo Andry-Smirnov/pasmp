@@ -13124,8 +13124,11 @@ begin
   ThreadInitialization;
   fPasMPInstance.fSystemIsReadyEvent.WaitFor(INFINITE);
   fPasMPInstance.WaitForWakeUp;
-  SpinCount := 0;
-  CountMaxSpinCount := 128;
+  SpinCount:=0;
+  // Few hot steal rounds only, then sleep on the wake-up event: idle workers otherwise hammer the
+  // job queue cache lines with steal attempts at full speed, which also slows down the threads
+  // that are doing real work (job submitters wake sleeping workers via WakeUpAll anyway)
+  CountMaxSpinCount:=8;
   while not fSystemThread.Terminated do begin
    Job := GetJob;
    if Assigned(Job) then begin
